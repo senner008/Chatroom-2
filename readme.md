@@ -21,6 +21,9 @@
 - handle, test and illustrate concurrency issue - PARTIALLY DONE
 - Client side tests using jest - PARTIALLY DONE
 - Dynamic room creation - DONE
+- Move logic in connection callback to action methods. spilt into logic and render methods
+- remove logic from listeners
+- send room over ws and push to room list
 - XUnit tests
 - Show other users connection status
 - Edit/Delete previous posts

@@ -20,8 +20,9 @@
 - loading spinners - Partinally DONE
 - handle, test and illustrate concurrency issue - PARTIALLY DONE
 - Client side tests using jest - PARTIALLY DONE
+- Dynamic room creation - DONE
+- XUnit tests
 - Show other users connection status
-- Dynamic room creation
 - Edit/Delete previous posts
 - HTMLSanitizer to global filter
 - Encryption

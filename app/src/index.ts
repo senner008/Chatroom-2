@@ -18,7 +18,6 @@ import { renderRooms } from "./render/render-rooms";
     var connection = Connection(new signalR.HubConnectionBuilder().withUrl("/chatHub").build());
 
     connection.onStartRender(async rooms => {  
-        console.log("callback!")
         renderInit(rooms);
         $("#reconnect-button").on("click", connection.restart);
         Logger.connectionState("Connectection state is on", StatusEnum.success);
@@ -49,7 +48,6 @@ import { renderRooms } from "./render/render-rooms";
     });
     
     await connection.start();
-    console.log("dsds")
 
 })();
 

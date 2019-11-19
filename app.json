@@ -1,0 +1,16 @@
+{
+    "buildpacks": [
+      {
+        "url": "https://github.com/jincod/dotnetcore-buildpack#v3.0.100"
+      }
+    ],
+    "env": {
+      "HEROKU_PRODUCTION": {
+        "required": true
+      },
+      "MYSQL_DB": {
+        "required": true
+      }
+    },
+    "name": "chatroom-efcore-identity"
+  }

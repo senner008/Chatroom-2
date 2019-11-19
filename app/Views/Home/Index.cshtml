@@ -1,0 +1,84 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+
+<header id="chatroom-header" >
+    <h3>Chatroom</h3>
+    <div id="connectionInfo">
+        <ul>
+            <li id="connection-state"></li>
+            <li id="connection-message"></li>
+            <li id="reconnect-button"><button>Reconnect</button></li>
+        </ul>
+    </div>
+</header>
+
+<div class="modal fade" id="room-create-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Enter room name and select users</h5>
+  
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="">Room name</span>
+            </div>
+            <input type="text" class="form-control room-name">
+        </div>
+        <ul class="list-group user-list">
+
+        </ul>  
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary save-changes">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="posts-container">
+    <nav id="rooms-list">
+        <ul class="list-group create">
+            <li class="list-group-item">Create room<i class="fas fa-folder-plus fa-lg" style="padding-left: 10px"></i></li>
+        </ul>
+        
+        <ul class="list-group rooms">
+            
+        </ul>
+    </nav>
+    <main>
+        <div class="container">
+             <div class="loader">Loading...</div>
+            <div id="posts">
+                <div class="post">
+                </div>
+            </div>
+            <div id="post-input">
+                <div class="row">
+                   
+                <div class="col-4"><input type="text" id="messageInput" />
+                <form id="hubsendpost" style="display:none" method="post"></form>
+                <div class="row">
+                    <div class="col-6">
+                        <input type="button" id="sendButton" value="Send Message" />
+                    </div>
+                </div>
+              
+            </div>
+        </div>
+    </main>
+</div>
+
+<script src="~/custom/main.js" asp-append-version="true"></script>
+
+
+
+

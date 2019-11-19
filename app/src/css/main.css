@@ -1,0 +1,167 @@
+/* Custom styles
+-------------------------------------------------- */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  height : 100vh;
+  flex-direction: column;
+  margin: 0;
+
+}
+
+body header {
+  height: 60px;
+}
+
+body .container {
+  flex-grow: 1;
+  height: 100%;
+}
+
+footer {
+  position: relative !important;
+  height: 60px;
+  width: 100%;
+}
+
+.container main {
+  display : flex;
+  flex-direction: column;
+  height: 100%;
+  padding : 0 !important;
+}
+
+#posts-container {
+    display : flex;
+    flex-grow: 1;
+  }
+
+#posts-container .container {
+  display : flex;
+  flex-direction: column;
+  justify-content: space-between;;
+}
+
+#posts-container .container #posts {
+  overflow: auto;
+}
+
+#posts-container nav {
+  flex: 1 1 100px;
+  margin-right: 20px;
+  cursor: pointer;
+}
+
+#posts-container main {
+  flex: 3 1 200px;
+}
+
+#posts-container #post-input { 
+  display: none;
+
+}
+
+.post {
+  display: flex;
+}
+  
+.post .user {
+  margin-right: 15px;
+  font-weight: bold;
+  min-width: 150px;
+}
+
+.room-selected {
+  background: lightblue;
+}
+
+#chatroom-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+
+
+
+/* Modal
+-------------------------------------------------- */
+
+.modal-dialog .user-list {
+  cursor: pointer;
+}
+
+.user-select {
+  background: lightblue;
+}
+
+
+/* Loader
+-------------------------------------------------- */
+
+  .loader {
+    font-size: 10px;
+    margin: 50px auto;
+    text-indent: -9999em;
+    width: 11em;
+    height: 11em;
+    border-radius: 50%;
+    background: #3d58dc;
+    background: -moz-linear-gradient(left, #3d58dc 10%, rgba(61,88,220, 0) 42%);
+    background: -webkit-linear-gradient(left, #3d58dc 10%, rgba(61,88,220, 0) 42%);
+    background: -o-linear-gradient(left, #3d58dc 10%, rgba(61,88,220, 0) 42%);
+    background: -ms-linear-gradient(left, #3d58dc 10%, rgba(61,88,220, 0) 42%);
+    background: linear-gradient(to right, #3d58dc 10%, rgba(61,88,220, 0) 42%);
+    position: relative;
+    -webkit-animation: load3 1.4s infinite linear;
+    animation: load3 1.4s infinite linear;
+    -webkit-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    transform: translateZ(0);
+  }
+  .loader:before {
+    width: 50%;
+    height: 50%;
+    background: #3d58dc;
+    border-radius: 100% 0 0 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    content: '';
+  }
+  .loader:after {
+    background: white;
+    width: 75%;
+    height: 75%;
+    border-radius: 50%;
+    content: '';
+    margin: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+  }
+  @-webkit-keyframes load3 {
+    0% {
+      -webkit-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+    100% {
+      -webkit-transform: rotate(360deg);
+      transform: rotate(360deg);
+    }
+  }
+  @keyframes load3 {
+    0% {
+      -webkit-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+    100% {
+      -webkit-transform: rotate(360deg);
+      transform: rotate(360deg);
+    }
+  }

@@ -50,8 +50,8 @@
 ## NOTES:
 - _context.Database.EnsureCreated(); adds an extrea 200 ms to the db call
 
-![Db issue unsolved](https://github.com/senner008/Chatroom---continued/blob/master/dbissue.png)
-![Db issue unsolved](https://github.com/senner008/Chatroom---continued/blob/master/dbissue_solved.png)
+![Db issue unsolved](https://github.com/senner008/Chatroom-2/blob/master/dbissue.png)
+![Db issue unsolved](https://github.com/senner008/Chatroom-2/blob/master/dbissue_solved.png)
 
 
 ```

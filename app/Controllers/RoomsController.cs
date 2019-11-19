@@ -65,7 +65,7 @@ namespace app.Controllers
             };
             await _context.Rooms.AddAsync(room);
             await _context.SaveChangesAsync();
-            await _hubContext.Clients.All.SendAsync ("CreateRoomMessage", "room created");
+            await _hubContext.Clients.All.SendAsync ("CreateRoomMessage", room.Name, room.Id);
             
             return Ok();
 

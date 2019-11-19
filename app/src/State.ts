@@ -1,14 +1,14 @@
 import { IRoomClass } from "./Rooms";
 
 interface IState {
-    rooms : IRoomClass[];
+    rooms : any;
     activeRoom : number;
     users : any
 }
 
 const State = (function IIFE() {
     var state : IState = {
-        rooms : null,
+        rooms : {},
         activeRoom : null,
         users : null
     }
@@ -26,7 +26,9 @@ const State = (function IIFE() {
             state.rooms[post.roomId].addPost(post);
         },
         setRooms(roomObjects) : void {
-            state.rooms = roomObjects;
+            for (let room in roomObjects) {
+                state.rooms[room] = roomObjects[room]
+            }
         },
         setUsers(users) {
             state.users = users;

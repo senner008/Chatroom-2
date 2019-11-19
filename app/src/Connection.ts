@@ -37,19 +37,19 @@ export function Connection(connection : IHubConnection) {
     const callback : any = {};
 
     const api = {
-        onStartRender(cb) {
+        onStart(cb) {
             callback['onStart'] = cb; 
         },
-        onCloseRender(cb) {
+        onClose(cb) {
             callback['onClose'] = cb; 
         },
-        onReceiveRender(cb) {
+        onReceiveMessage(cb) {
             callback['onReceive'] = cb; 
         },
-        onReceiveRoomRender(cb) {
+        onReceiveRoom(cb) {
             callback['onReceiveRoom'] = cb; 
         },
-        onRestartRender(cb) {
+        onRestart(cb) {
             callback['onRestart'] = cb; 
         },
         async start() {
@@ -65,9 +65,7 @@ export function Connection(connection : IHubConnection) {
         async onStart() {
             appInit = new Promise(async (res, rej) => {
                 addLog("Connection started");
-                var rooms = await getRooms();
-                State.setRooms(RoomsFactory(rooms));
-                await callback.onStart(rooms);
+                await callback.onStart();
                 res();
             });  
             await appInit;
@@ -84,17 +82,13 @@ export function Connection(connection : IHubConnection) {
         },
         async onReceive(userName, postBody, roomId, createDate) {
             addLog(`Message reveived from ${userName} in room: ${roomId}`);
-            await appInit;
             var post = {userName, postBody, roomId, createDate}
-            State.addPost(post);
+            // TODO : simplify - should just await onStart
+            await appInit;
             callback.onReceive(post);
         },
-        async onReceiveRoom(message) {
-            console.log("room message recived :")
-            console.log(message)
-            var rooms = await getRooms();
-            State.setRooms(RoomsFactory(rooms));
-            callback.onReceiveRoom(rooms);
+        async onReceiveRoom(roomname, roomId) {
+            callback.onReceiveRoom({name : roomname, id : roomId});
         }
     }
 

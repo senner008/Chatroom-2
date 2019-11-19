@@ -23,7 +23,7 @@ var asynCallback = jest.fn();
 test('connection should fire onStartRender callback on start', async () => {
  
     var connection = Connection(connectionMock);
-    connection.onStartRender(asynCallback);
+    connection.onStart(asynCallback);
     await connection.start();
     // Assert
     expect(asynCallback).toHaveBeenCalledTimes(1);
@@ -34,23 +34,11 @@ test('connection should fire onStartRender callback on start', async () => {
 test('State active room should be null on start', async () => {
    
     var connection = Connection(connectionMock);
-    connection.onStartRender(asynCallback);
+    connection.onStart(asynCallback);
     await connection.start();
 
     // Assert
     expect(State.getActiveRoom()).toBeNull();
-
-});
-
-
-test('connection should pass rooms to onStartRender callback on start', async () => {
-    
-    var connection = Connection(connectionMock);
-    connection.onStartRender(async (rooms) => {
-        // Assert
-        expect(rooms[0].name).toBe("Public");
-    });
-    await connection.start();
 
 });
 

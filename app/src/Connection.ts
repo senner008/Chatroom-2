@@ -7,7 +7,8 @@ interface IHubConnection {
     onclose : (callback) => void;
     on : (name, callback) => void
     state : number
-    start : () => void
+    start : () => void;
+    send : (method : string, message: Object) => void;
 }
 
 export function Connection(connection : IHubConnection) {
@@ -58,6 +59,9 @@ export function Connection(connection : IHubConnection) {
         async restart() {
             await StartConnection(_internal.onRestart);
          
+        },
+        send(message, roomId) {
+           connection.send("SendMessage", {"message" : message, "roomId" : roomId});
         }
     }
 
@@ -95,6 +99,7 @@ export function Connection(connection : IHubConnection) {
     connection.onclose(_internal.onclose);
     connection.on("ReceiveMessage", _internal.onReceive);
     connection.on("CreateRoomMessage", _internal.onReceiveRoom);
+
 
     return api;
 

@@ -13,15 +13,15 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-namespace app
+namespace app.Repositories
 {
-    public class MessageHandler 
+    public class  HubRepository : IHubRepository 
     {
         public ApplicationDbContext _context { get; }
         public UserManager<ApplicationUser> _userManager { get; }
         public IHttpContextAccessor _httpContext { get; }
 
-        public MessageHandler(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IHttpContextAccessor httpContext)
+        public HubRepository(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IHttpContextAccessor httpContext)
         {
 
             _context = context;
@@ -71,7 +71,6 @@ namespace app
         {
             return room.UsersLink.Where(userRoom => userRoom.RoomId == room.Id).Select(userRoom => userRoom.UserId);
         }
-
 
         private async Task<Room> FindRoom(int roomId) 
         {

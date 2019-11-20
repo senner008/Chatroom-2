@@ -1,4 +1,5 @@
 using System;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Hosting;
@@ -11,6 +12,7 @@ using SignalRChat.Hubs;
 using Microsoft.AspNetCore.Http;
 using app.Models;
 using Microsoft.AspNetCore.Mvc;
+using app.Repositories;
 
 namespace app
 {
@@ -44,13 +46,12 @@ namespace app
             services.AddControllersWithViews();
             services.AddRazorPages();
             services.AddSignalR();
-            services.AddScoped<UserManager<ApplicationUser>>();
+            services.AddScoped<IDisposable, UserManager<ApplicationUser>>();
             services.AddScoped<HttpContextAccessor>();
-            services.AddScoped<MessageHandler>();
+            services.AddScoped<IHubRepository, HubRepository>();
+
             services.AddSingleton<HubLogger>();
             
-
-
             services.AddMvc(options =>
             {
                 options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
@@ -94,7 +95,7 @@ namespace app
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
-                endpoints.MapHub<ChatHub>("chatHub");
+                endpoints.MapHub<ChatHub>("/hub");
             });
         }
     }

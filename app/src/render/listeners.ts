@@ -14,12 +14,12 @@ function roomClickListener () {
 }
 
 // TODO : move logic to actions
-function sendClickListener() {
-    $("#sendButton").on("click", function (e) {
-        var message = (<HTMLInputElement> document.getElementById("messageInput")).value;
-        sendMessage(message);
-    });    
-}
+// function sendClickListener() {
+//     $("#sendButton").on("click", function (e) {
+//         var message = (<HTMLInputElement> document.getElementById("messageInput")).value;
+//         sendMessage(message);
+//     });    
+// }
 
 // TODO : move logic to actions
 function CreateRoomClickHandler() {
@@ -38,7 +38,6 @@ function usersClickHandler() {
     var publicLi = $(".modal-body .user-list").find("[data-user-nickname='public']");
     function handler (e) {
         if ( e.target.dataset.userNickname === "public" ) {
-            console.log("dsds")
             $(".modal-body .user-list li").each((index,li) => li.classList.remove("user-select"))
             publicLi.addClass("user-select")
         } else {
@@ -70,7 +69,7 @@ function modalSaveChangesClickHandler() {
 export function addListeners () {
     roomClickListener();
     CreateRoomClickHandler()
-    sendClickListener();
+    // sendClickListener();
     usersClickHandler();
     modalSaveChangesClickHandler();
 }

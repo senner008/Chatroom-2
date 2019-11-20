@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using System.IO;
+using app.Repositories;
 
 namespace app.Controllers
 {
@@ -22,13 +23,13 @@ namespace app.Controllers
         // private readonly ILogger<PostsController> _logger;
         public ApplicationDbContext _context { get; }
         public UserManager<ApplicationUser> _userManager { get; }
-        public MessageHandler _messageHandler { get; }
+        public IHubRepository _hubRepository { get; }
 
-        public PostsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, MessageHandler messageHandler)
+        public PostsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IHubRepository hubRepository)
         {
             _context = context;
             _userManager = userManager;
-            _messageHandler = messageHandler;
+            _hubRepository = hubRepository;
         }
 
         // post because of validation token
@@ -82,7 +83,7 @@ namespace app.Controllers
             if (posts.Any())
             {
                 try {
-                    Room hasRoomAccess = await _messageHandler.FindAndValidateRoom(id);
+                    Room hasRoomAccess = await _hubRepository.FindAndValidateRoom(id);
                     System.Console.WriteLine("roomid:" + id);
                 } catch (Exception ex) {
                     System.Console.WriteLine("dsffdsf");

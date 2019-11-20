@@ -9,5 +9,3 @@ export async function createRoom(users, name) {
     sendCreateRoom(users, name);
 }
 
-
-

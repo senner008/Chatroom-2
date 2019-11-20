@@ -14,12 +14,13 @@ import { actionReceiveMessage, actionReceiveMessageRender } from "./actions/acti
 import { actionReceiveRoom, actionReceiveRoomRender } from "./actions/action-receive-room";
 import { actionOncloseRender } from "./actions/action-onclose";
 import { actionOnRestartRender } from "./actions/action-onrestart";
+import { State } from "./State";
 
 
 
 (async function init () {
 
-    var connection = Connection(new signalR.HubConnectionBuilder().withUrl("/chatHub").build());
+    var connection = Connection(new signalR.HubConnectionBuilder().withUrl("/hub").build());
 
     connection.onStart(async () => {
         await actionInit(actionInitRender)  
@@ -44,6 +45,12 @@ import { actionOnRestartRender } from "./actions/action-onrestart";
     await connection.start();
     
     $("#reconnect-button").on("click", connection.restart);
+
+    $("#sendButton").on("click", function (e) {
+        var message = (<HTMLInputElement> document.getElementById("messageInput")).value;
+        const roomId = State.getActiveRoom().id;
+        connection.send(message,roomId);
+    });    
 })();
 
 

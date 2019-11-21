@@ -26,12 +26,11 @@ namespace test
             {
                 Clients = mockClients.Object
             };
- 
             await chathub.SendMessage(postmessage);
 
             // Assert
+            // Really calls SendAsync which works as an extension method
             mockClients.Verify(clients => clients.Users(receivers), Times.Once);
- 
             mockClientProxy.Verify(
                 clientProxy => clientProxy.SendCoreAsync(
                     "ReceiveMessage",
@@ -60,7 +59,6 @@ namespace test
             // Assert
             mockClients.Verify(clients => clients.All, Times.Never());
             mockClients.Verify(clients => clients.Users(receivers), Times.Once);
- 
             mockClientProxy.Verify(
                 clientProxy => clientProxy.SendCoreAsync(
                     "ReceiveMessage",
@@ -92,9 +90,7 @@ namespace test
             await chathub.SendMessage(postmessage);
  
             // Assert
-            mockClients.Verify(clients => clients.All, Times.Once);
-
-            // really calls SendAsync which works as an extension method
+            mockClients.Verify(clients => clients.All, Times.Once);  
             mockClientProxy.Verify(
                 clientProxy => clientProxy.SendCoreAsync(
                     "ReceiveMessage",

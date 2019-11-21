@@ -1,20 +1,18 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using app;
-using app.Controllers;
 using app.Models;
 using app.Repositories;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 
 namespace SignalRChat.Hubs
 {
 
-
+    [Authorize (Roles = "Admin")]
     public class ChatHub : Hub
     {
     

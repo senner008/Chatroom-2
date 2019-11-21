@@ -4,6 +4,8 @@ using app.Controllers;
 using app.Models;
 using app.Repositories;
 using Moq;
+using SignalRChat.Hubs;
+
 namespace test
 {
     public class IHubContextMethods {

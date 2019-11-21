@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace SignalRChat.Hubs
 {
-
     [Authorize (Roles = "Admin")]
     public class ChatHub : Hub
     {

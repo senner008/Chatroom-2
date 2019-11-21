@@ -111,9 +111,10 @@ namespace SignalRChat.Hubs
 
     }
 
-    public class HubMessage
-    {
- 
+    public class Postmessage {
+        public string Message { get; set; }
+
+        public int RoomId { get; set; }
     }
 
 }

@@ -12,6 +12,7 @@ using app.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using SignalRChat.Hubs;
 
 namespace app.Repositories
 {

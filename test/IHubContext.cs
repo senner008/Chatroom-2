@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using app.Controllers;
 using app.Models;
 using app.Repositories;
-using Microsoft.AspNetCore.SignalR;
 using Moq;
 namespace test
 {

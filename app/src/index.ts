@@ -15,6 +15,7 @@ import { actionReceiveRoom, actionReceiveRoomRender } from "./actions/action-rec
 import { actionOncloseRender } from "./actions/action-onclose";
 import { actionOnRestartRender } from "./actions/action-onrestart";
 import { State } from "./State";
+import { actionReceiveErrorRender, actionReceiveError } from "./actions/action-receive-error";
 
 
 
@@ -40,6 +41,10 @@ import { State } from "./State";
 
     connection.onRestart(async () => {
         await actionOnRestartRender();
+    });
+
+    connection.onReceiveError(async (error) => {
+        await actionReceiveError(error, actionReceiveErrorRender);
     });
     
     await connection.start();

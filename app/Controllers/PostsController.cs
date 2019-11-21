@@ -12,6 +12,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using System.IO;
 using app.Repositories;
+using System.Net.Http;
+using System.Net;
 
 namespace app.Controllers
 {
@@ -37,8 +39,14 @@ namespace app.Controllers
         [Route("{id}")]
         public async Task<IActionResult> getPostsByRoomId(int id)
         {
-            var headers = Request.Headers;
-            var watch = System.Diagnostics.Stopwatch.StartNew();
+           
+            try {
+                Room hasRoomAccess = await _hubRepository.FindAndValidateRoom(id);
+            } catch (Exception ex) {
+                return BadRequest("User room denied");
+            }  
+
+             var watch = System.Diagnostics.Stopwatch.StartNew();
 
             // TODO : create stored procedure :
 
@@ -82,16 +90,12 @@ namespace app.Controllers
 
             if (posts.Any())
             {
-                try {
-                    Room hasRoomAccess = await _hubRepository.FindAndValidateRoom(id);
-                    System.Console.WriteLine("roomid:" + id);
-                } catch (Exception ex) {
-                    System.Console.WriteLine("dsffdsf");
-                    return BadRequest("User room denied");
-                }
+               Response.Headers.Add("Response-message", "Posts received");
+               return Ok(posts);
             }
 
-            return Ok(posts);
+            return NotFound("Unable to retrieve posts");
+            
 
         }
 

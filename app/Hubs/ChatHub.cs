@@ -58,29 +58,24 @@ namespace SignalRChat.Hubs
 
                 await SendWSMessage (room.IsPublic ? Clients.All : Clients.Users (receivers));
 
-               // await Clients.All.SendAsync ("ReceiveMessage",  post.User.NickName, post.PostBody, post.RoomId, Helper.ToMiliseconds (post.CreateDate));
-
                 ///
                 /// DANGER ZONE
                 ///
 
                 // Simulate slow Db save 
                 // TODO : create test 
-                 Thread.Sleep (20000);
+                //  Thread.Sleep (20000);
                 await _hubRepository.SavePost (post);
                 System.Console.WriteLine ("post saved");
 
             } catch (Exception ex) {
                 // TODO : handle and send down errors
-                // return await Error (ex.Message);
+                 await Clients.Caller.SendAsync ("ErrorMessage", ex.Message);
             } finally {
                 System.Console.WriteLine ("FINALLY!");
                 // UNSUBSCRIBE TO EVENT
                 _hubLogger._connections.UserAdded -= UserAddedEvent;
-
-
             }
-            // return Ok ();
         }
 
         public override async Task OnConnectedAsync()

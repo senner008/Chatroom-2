@@ -53,6 +53,9 @@ export function Connection(connection : IHubConnection) {
         onRestart(cb) {
             callback['onRestart'] = cb; 
         },
+        onReceiveError(cb) {
+            callback['onReceiveError'] = cb; 
+        },
         async start() {
             await StartConnection(_internal.onStart);
         },
@@ -84,7 +87,7 @@ export function Connection(connection : IHubConnection) {
             addLog("Connection closed");
             callback.onClose();
         },
-        async onReceive(userName, postBody, roomId, createDate) {
+        async onReceiveMessage(userName, postBody, roomId, createDate) {
             addLog(`Message reveived from ${userName} in room: ${roomId}`);
             var post = {userName, postBody, roomId, createDate}
             // TODO : simplify - should just await onStart
@@ -92,12 +95,18 @@ export function Connection(connection : IHubConnection) {
             callback.onReceive(post);
         },
         async onReceiveRoom(roomname, roomId) {
+            addLog(`Room reveived with id: ${roomId}`);
             callback.onReceiveRoom({name : roomname, id : roomId});
+        },
+        async onReceiveError(error) {
+            addLog(`Error : ${error}`);
+            callback.onReceiveError(error);
         }
     }
 
     connection.onclose(_internal.onclose);
-    connection.on("ReceiveMessage", _internal.onReceive);
+    connection.on("ReceiveMessage", _internal.onReceiveMessage);
+    connection.on("ErrorMessage", _internal.onReceiveError);
     connection.on("CreateRoomMessage", _internal.onReceiveRoom);
 
 

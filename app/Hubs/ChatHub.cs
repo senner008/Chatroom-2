@@ -14,7 +14,6 @@ namespace SignalRChat.Hubs
     [Authorize (Roles = "Admin")]
     public class ChatHub : Hub
     {
-    
         public HubLogger _hubLogger { get; }
         public IHubRepository _hubRepository { get; }
 

@@ -7,15 +7,7 @@ const color = {
     green : {color: "green"}
 }
 
-// const messages = {
-//     messageAdded() { return "Message added to room" + State.getRoomNameById(State.getRoomId()) },
-//     roomsRetrieved() { return "Rooms retrieved"},
-//     retrievedPosts() { return "successfully retireved posts for " + State.getRoomNameById(State.getRoomId())}
-// }
-
-// TODO : Log to session storage. Should display messages comming from server
 const Logger  = (function() {
-
     return Object.freeze({
         message(msg  : string, status : StatusEnum) {
             if (status == StatusEnum.success)

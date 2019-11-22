@@ -1,3 +1,4 @@
+import { Logger } from "./GlobalLogger";
 
 
 export async function ajaxPost<T>(url, data = {})  {
@@ -17,7 +18,6 @@ function fetchAction(url, data) {
   });
 }
 
-import { Logger } from "./Logger";
 
 export enum StatusEnum {
     success,
@@ -33,7 +33,7 @@ export async function ErrorHandler<T> (action) : Promise<T[]> {
         Logger.message(response.headers.get('Response-message'), StatusEnum.success);
         return await jsonOrText<T>(response);
     } catch (err) {
-        Logger.message(err.toString(), StatusEnum.fail);
+        Logger.message(err, StatusEnum.fail);
         return [] as any;
     }
 }

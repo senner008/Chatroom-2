@@ -3,6 +3,11 @@ using System.Linq;
 
 namespace SignalRChat.Hubs
 {
+    public class UserConnectionInfo
+    {
+        public string ConnectionId { get; set; }
+        public string NickName { get; set; }
+    }
     public delegate void UserAddedEvent(object sender, AddMyUserEventArgs args);
 
     public class AddMyUserEventArgs
@@ -12,8 +17,8 @@ namespace SignalRChat.Hubs
     public class ConnectionMapping<T>
     {
      
-        public readonly Dictionary<T, HashSet<string>> _connections =
-            new Dictionary<T, HashSet<string>>();
+        public readonly Dictionary<T, UserConnectionInfo> _connections =
+            new Dictionary<T, UserConnectionInfo>();
         private UserAddedEvent userAdded;
 
 
@@ -43,56 +48,43 @@ namespace SignalRChat.Hubs
             }
         }
 
-        public void Add(T key, string connectionId)
+        public void Add(T key, UserConnectionInfo userInfo)
         {
-            lock (_connections)
-            {
-                HashSet<string> connections;
-                if (!_connections.TryGetValue(key, out connections))
+            if (!_connections.ContainsKey(key))
                 {
-                    connections = new HashSet<string>();
-                    _connections.Add(key, connections);
+                    _connections.Add(key, userInfo);
                 }
 
-                lock (connections)
-                {
-                    connections.Add(connectionId);
-                }
-            }
             if (userAdded != null)
                 userAdded(this, new AddMyUserEventArgs { Id = key as string});
         }
 
-        public IEnumerable<string> GetConnections(T key)
+        public UserConnectionInfo GetConnections(T key)
         {
-            HashSet<string> connections;
-            if (_connections.TryGetValue(key, out connections))
-            {
-                return connections;
-            }
 
-            return Enumerable.Empty<string>();
+            if (_connections.ContainsKey(key))
+            {
+                return _connections[key];
+            }
+            return null;
+
         }
 
-        public void Remove(T key, string connectionId)
+        public void Update(T key, string nickName)
         {
             lock (_connections)
             {
-                HashSet<string> connections;
-                if (!_connections.TryGetValue(key, out connections))
-                {
-                    return;
+                if (_connections.ContainsKey(key)) {
+                    _connections[key] =  new UserConnectionInfo { ConnectionId = GetConnections(key).ConnectionId, NickName = nickName };
                 }
+            }
+        }
 
-                lock (connections)
-                {
-                    connections.Remove(connectionId);
-
-                    if (connections.Count == 0)
-                    {
-                        _connections.Remove(key);
-                    }
-                }
+        public void Remove(T key)
+        {
+            lock (_connections)
+            {
+                _connections.Remove(key);   
             }
         }
     }

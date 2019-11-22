@@ -14,7 +14,7 @@ namespace SignalRChat.Hubs
         public HubLogger()
         {
             _connections = new ConnectionMapping<string>();
-            System.Console.WriteLine("hub logge constructed");
+            System.Console.WriteLine("hub logger constructed");
         }
     }
 

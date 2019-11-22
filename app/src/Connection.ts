@@ -1,6 +1,5 @@
-import { RoomsFactory } from "./Rooms";
-import { State } from "./State";
-import { getRooms } from "./ajaxMethods";
+
+import { StatusEnum } from "./Ajax";
 
 
 interface IHubConnection {
@@ -14,7 +13,7 @@ interface IHubConnection {
 export function Connection(connection : IHubConnection) {
 
     var appInit : Promise<boolean>;
-    var logs = {};
+    // var logs = {};
 
     async function StartConnection (cb) : Promise<boolean> {
         var tries = 1;
@@ -31,9 +30,17 @@ export function Connection(connection : IHubConnection) {
         })();
     }
     
-    function addLog(msg) {
-        var datenow = new Date();
-        logs[datenow.toString()] = msg;
+    function addLog(msg, status) {
+   
+        // var datenow = new Date();
+        // logs[datenow.toString()] = msg;
+        callback.onLog(msg, status);
+    }
+    function addLogConnection(msg, status) {
+   
+        // var datenow = new Date();
+        // logs[datenow.toString()] = msg;
+        callback.onLogConnection(msg, status);
     }
     const callback : any = {};
 
@@ -53,9 +60,6 @@ export function Connection(connection : IHubConnection) {
         onRestart(cb) {
             callback['onRestart'] = cb; 
         },
-        onReceiveError(cb) {
-            callback['onReceiveError'] = cb; 
-        },
         async start() {
             await StartConnection(_internal.onStart);
         },
@@ -65,42 +69,48 @@ export function Connection(connection : IHubConnection) {
         },
         send(message, roomId) {
            connection.send("SendMessage", {"message" : message, "roomId" : roomId});
+        },
+        onLog(cb) {
+            callback['onLog'] = cb;
+        },
+        onLogConnection(cb) {
+            callback['onLogConnection'] = cb;
         }
     }
 
     const _internal = {
         async onStart() {
             appInit = new Promise(async (res, rej) => {
-                addLog("Connection started");
                 await callback.onStart();
+                addLogConnection("Connection started", StatusEnum.success);
                 res();
             });  
             await appInit;
         },
         onRestart() {
+            addLogConnection("Connection restarted", StatusEnum.success);
             callback.onRestart();
         },
         onStartFail(error) {
-            addLog(error);
+            addLog(error, StatusEnum.fail);
         },
         onclose() {
-            addLog("Connection closed");
+            addLogConnection("Connection closed", StatusEnum.fail);
             callback.onClose();
         },
         async onReceiveMessage(userName, postBody, roomId, createDate) {
-            addLog(`Message reveived from ${userName} in room: ${roomId}`);
+            addLog(`Message received from ${userName} in room: ${roomId}`, StatusEnum.success);
             var post = {userName, postBody, roomId, createDate}
             // TODO : simplify - should just await onStart
             await appInit;
             callback.onReceive(post);
         },
         async onReceiveRoom(roomname, roomId) {
-            addLog(`Room reveived with id: ${roomId}`);
+            addLog(`Room received with id: ${roomId}`, StatusEnum.success);
             callback.onReceiveRoom({name : roomname, id : roomId});
         },
         async onReceiveError(error) {
-            addLog(`Error : ${error}`);
-            callback.onReceiveError(error);
+            addLog(`Error : ${error}`, StatusEnum.fail);
         }
     }
 

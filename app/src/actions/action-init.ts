@@ -4,8 +4,7 @@ import { addListeners } from "../render/listeners";
 import { getRooms } from "../ajaxMethods";
 import { State } from "../State";
 import { RoomsFactory } from "../Rooms";
-import { Logger } from "../Logger";
-import { StatusEnum } from "../Ajax";
+
 
 export async function actionInit(render) {
     var rooms = await getRooms();
@@ -18,6 +17,4 @@ export function actionInitRender(rooms) {
     renderView(true);
     addListeners();
     showLoader(false);
-    Logger.connectionState("Connectection state is on", StatusEnum.success);
-    Logger.message("", StatusEnum.success);
 }

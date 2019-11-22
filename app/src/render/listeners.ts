@@ -1,5 +1,4 @@
 import {  actionRoomSelect, actionRoomSelectRender1, actionRoomSelectRender2 } from "../actions/action-room-select";
-import { sendMessage } from "../actions/sendMessage";
 import { State } from "../State";
 import { renderUsers } from "./render-create-room";
 import { setUsers, createRoom } from "../actions/createRoom";
@@ -44,7 +43,6 @@ function usersClickHandler() {
             publicLi.removeClass("user-select")
             e.target.classList.toggle("user-select")
         }
-      
     }
 }
 

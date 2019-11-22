@@ -39,63 +39,39 @@ namespace app.Controllers
         [Route("{id}")]
         public async Task<IActionResult> getPostsByRoomId(int id)
         {
-           
+            // throw new Exception();
+            List<PostModel> posts;
             try {
                 Room hasRoomAccess = await _hubRepository.FindAndValidateRoom(id);
+
+                posts = await _context.Posts
+                    .Where(post => post.RoomId == id)
+                    .OrderByDescending(post => post.Id)
+                    .Take(10)
+                    .Include(post => post.Rooms)
+                    .ThenInclude(room => room.UsersLink)
+                    .Select(post => new PostModel { 
+                        PostBody = post.PostBody, 
+                        UserName = post.User.NickName, 
+                        CreateDate = Helper.ToMiliseconds(post.CreateDate),
+                        RoomId = post.RoomId
+                    })
+                    .AsNoTracking()
+                    .ToListAsync();
+
+            } catch (MyChatHubException ex) {
+                 return BadRequest(ex.Message);
             } catch (Exception ex) {
-                return BadRequest("User room denied");
-            }  
+                return BadRequest("An error has occurred");
+            } 
 
-             var watch = System.Diagnostics.Stopwatch.StartNew();
-
-            // TODO : create stored procedure :
-
-            // SELECT `t`.`PostBody`, `a`.`NickName`, `t`.`CreateDate`, `r`.`IsPublic`, `t`.`Id`, `a`.`Id`, `r`.`Id`, `u`.`UserId`, `u`.`RoomId`
-            // FROM(
-            //     SELECT `p`.`Id`, `p`.`CreateDate`, `p`.`Likes`, `p`.`PostBody`, `p`.`RoomId`, `p`.`UpdateDate`, `p`.`UserId`
-            //     FROM `Posts` AS `p`
-            //     WHERE(`p`.`RoomId` = 1) AND 1 IS NOT NULL
-            //     ORDER BY `p`.`Id` DESC
-            //     LIMIT 100
-            // ) AS `t`
-            // INNER JOIN `AspNetUsers` AS `a` ON `t`.`UserId` = `a`.`Id`
-            // INNER JOIN `Rooms` AS `r` ON `t`.`RoomId` = `r`.`Id`
-            // LEFT JOIN `UserRoom` AS `u` ON `r`.`Id` = `u`.`RoomId`
-            // ORDER BY `t`.`Id` DESC, `a`.`Id`, `r`.`Id`, `u`.`UserId`, `u`.`RoomId`;
-
-            var posts = await _context.Posts
-
-                .Where(post => post.RoomId == id)
-                .OrderByDescending(post => post.Id)
-                .Take(10)
-                .Include(post => post.Rooms)
-                .ThenInclude(room => room.UsersLink)
-                .Select(post => new PostModel { 
-                    PostBody = post.PostBody, 
-                    UserName = post.User.NickName, 
-                    CreateDate = Helper.ToMiliseconds(post.CreateDate),
-                    RoomId = post.RoomId
-                })
-                .AsNoTracking()
-                .ToListAsync();
-
-            watch.Stop();
-            // // TODO : Why is the ef core sql execution twice as slow? 
-
-
-            var elapsedMs = watch.ElapsedMilliseconds;
-            System.Console.WriteLine("---------------------------");
-            System.Console.WriteLine(elapsedMs);
-
-
-            if (posts.Any())
+            if (posts != null && posts.Any())
             {
-               Response.Headers.Add("Response-message", "Posts received");
-               return Ok(posts);
+                Response.Headers.Add("Response-message", "Posts received");
+                return Ok(posts);
             }
 
             return NotFound("Unable to retrieve posts");
-            
 
         }
 

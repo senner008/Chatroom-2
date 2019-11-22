@@ -14,10 +14,10 @@ const State = (function IIFE() {
     }
 
     return Object.freeze({
-        async setActiveRoom(id, posts) {
+        setActiveRoom(id, posts) {
             if(id === null) state.activeRoom = null;
             state.activeRoom = id;
-            await state.rooms[id].onActive(posts);
+            state.rooms[id].onActive(posts);
         },
         getActiveRoom() {
             return state.activeRoom ? state.rooms[state.activeRoom] : null;

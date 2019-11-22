@@ -10,7 +10,7 @@ export async function actionRoomSelect(e, render1, render2) {
     var id = Number(e.target.dataset.id)
     render1(id);
     var getPosts = await getPostsByRoomId(id)
-    await State.setActiveRoom(id, getPosts);
+    State.setActiveRoom(id, getPosts);
     render2();
 }
 

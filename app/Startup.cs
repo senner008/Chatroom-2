@@ -1,4 +1,5 @@
 using System;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Hosting;
@@ -11,6 +12,7 @@ using SignalRChat.Hubs;
 using Microsoft.AspNetCore.Http;
 using app.Models;
 using Microsoft.AspNetCore.Mvc;
+using app.Repositories;
 
 namespace app
 {
@@ -44,13 +46,12 @@ namespace app
             services.AddControllersWithViews();
             services.AddRazorPages();
             services.AddSignalR();
-            services.AddScoped<UserManager<ApplicationUser>>();
+            services.AddScoped<IDisposable, UserManager<ApplicationUser>>();
             services.AddScoped<HttpContextAccessor>();
-            services.AddScoped<MessageHandler>();
-            services.AddSingleton<HubLogger>();
+            services.AddScoped<IHubRepository, HubRepository>();
+
+            services.AddSingleton<IHubLogger, HubLogger>();
             
-
-
             services.AddMvc(options =>
             {
                 options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
@@ -75,6 +76,7 @@ namespace app
             }
             else
             {
+     
                 app.UseExceptionHandler("/Home/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
@@ -94,7 +96,7 @@ namespace app
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
-                endpoints.MapHub<ChatHub>("chatHub");
+                endpoints.MapHub<ChatHub>("/hub");
             });
         }
     }

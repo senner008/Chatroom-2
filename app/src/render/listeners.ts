@@ -1,33 +1,26 @@
-import {  roomShow } from "../actions/roomSelect";
-import { sendMessage } from "../actions/sendMessage";
-
-import { renderRoomListSelect } from "./render-rooms";
+import {  actionRoomSelect, actionRoomSelectRender1, actionRoomSelectRender2 } from "../actions/action-room-select";
 import { State } from "../State";
-import { renderPostInputField, showLoader, showModal } from "./render";
-import { renderPostList } from "./render-posts";
 import { renderUsers } from "./render-create-room";
 import { setUsers, createRoom } from "../actions/createRoom";
+import { showModal } from "./render";
+
 
 
 function roomClickListener () {
-    $("#rooms-list").find('.rooms').on("click", async function (e) {
-        showLoader(true)
-        var id = Number(e.target.dataset.id)
-        renderRoomListSelect(id);
-        await roomShow(id)
-        renderPostInputField(true);
-        renderPostList(State.getActiveRoom().posts);
-        showLoader(false)
+    $("#rooms-list").find('.rooms').on("click", (e) => {
+        actionRoomSelect(e, actionRoomSelectRender1, actionRoomSelectRender2)
     });
 }
 
-function sendClickListener() {
-    $("#sendButton").on("click", function (e) {
-        var message = (<HTMLInputElement> document.getElementById("messageInput")).value;
-        sendMessage(message);
-    });    
-}
+// TODO : move logic to actions
+// function sendClickListener() {
+//     $("#sendButton").on("click", function (e) {
+//         var message = (<HTMLInputElement> document.getElementById("messageInput")).value;
+//         sendMessage(message);
+//     });    
+// }
 
+// TODO : move logic to actions
 function CreateRoomClickHandler() {
     $("#rooms-list .create").on("click", async () => {
         await setUsers()
@@ -38,21 +31,18 @@ function CreateRoomClickHandler() {
 }
 
 // TODO : move logic to render folder
-
 function usersClickHandler() {
     $(".modal-body .user-list").off();
     $(".modal-body .user-list").on("click", handler)
     var publicLi = $(".modal-body .user-list").find("[data-user-nickname='public']");
     function handler (e) {
         if ( e.target.dataset.userNickname === "public" ) {
-            console.log("dsds")
             $(".modal-body .user-list li").each((index,li) => li.classList.remove("user-select"))
             publicLi.addClass("user-select")
         } else {
             publicLi.removeClass("user-select")
             e.target.classList.toggle("user-select")
         }
-      
     }
 }
 
@@ -77,7 +67,7 @@ function modalSaveChangesClickHandler() {
 export function addListeners () {
     roomClickListener();
     CreateRoomClickHandler()
-    sendClickListener();
+    // sendClickListener();
     usersClickHandler();
     modalSaveChangesClickHandler();
 }

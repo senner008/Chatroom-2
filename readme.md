@@ -20,8 +20,15 @@
 - loading spinners - Partinally DONE
 - handle, test and illustrate concurrency issue - PARTIALLY DONE
 - Client side tests using jest - PARTIALLY DONE
+- Dynamic room creation - DONE
+- XUnit tests - PARTIALLY DONE
+- Move logic in connection callback to action methods. spilt into logic and render methods
+- handle init in razor. use dynamic room routing
+- allow user readonly roles for testing. create automated bot testing
+- add validation
+- remove logic from listeners
+- send room over ws and push to room list
 - Show other users connection status
-- Dynamic room creation
 - Edit/Delete previous posts
 - HTMLSanitizer to global filter
 - Encryption
@@ -48,9 +55,11 @@
 
 ## NOTES:
 - _context.Database.EnsureCreated(); adds an extrea 200 ms to the db call
+- users only allowed to send one message to hub at a time when not in controller
+- 
 
-![Db issue unsolved](https://github.com/senner008/Chatroom---continued/blob/master/dbissue.png)
-![Db issue unsolved](https://github.com/senner008/Chatroom---continued/blob/master/dbissue_solved.png)
+![Db issue unsolved](https://github.com/senner008/Chatroom-2/blob/master/dbissue.png)
+![Db issue unsolved](https://github.com/senner008/Chatroom-2/blob/master/dbissue_solved.png)
 
 
 ```

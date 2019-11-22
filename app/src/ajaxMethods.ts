@@ -1,6 +1,5 @@
 import { ajaxPost } from "./Ajax";
 
-
 export interface IPost {
     postBody: string;
     userName: string;
@@ -18,23 +17,20 @@ export interface IRoom {
 }
 
 
-
 export async function getPostsByRoomId(roomId) {
-    return await ajaxPost<IPost>(`Posts/${roomId}`, "", "Post messages received");
+    return await ajaxPost<IPost>(`Posts/${roomId}`, "");
 }
 
 export async function getAllUsers() {
-    return await ajaxPost<IUser>(`Users`, "", "Users received");
+    return await ajaxPost<IUser>(`Users`, "");
 }
 
 export async function getRooms() {
-    return await ajaxPost<IRoom>("Rooms", "", "Rooms retireved");
+    return await ajaxPost<IRoom>("Rooms", "");
 }
 
 export async function sendCreateRoom(users, name) {
-    console.log(users)
-    console.log(name)
-    return await ajaxPost<IRoom>("rooms/create", { roomname : name , UserList : users }, "");
+    return await ajaxPost<IRoom>("rooms/create", { roomname : name , UserList : users });
 }
 
 

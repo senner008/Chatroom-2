@@ -25,7 +25,7 @@ namespace app.Controllers
         private readonly ILogger<HomeController> _logger;
 
 
-        public HomeController(ILogger<HomeController> logger, IHubContext<ChatHub> hubContext, MessageHandler messageHandler)
+        public HomeController(ILogger<HomeController> logger, IHubContext<ChatHub> hubContext)
         {
             _logger = logger;
 
@@ -39,6 +39,7 @@ namespace app.Controllers
             return View();
         }
 
+        [Route("/Privacy")]
         public IActionResult Privacy()
         {
             return View();

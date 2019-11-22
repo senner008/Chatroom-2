@@ -7,14 +7,20 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace SignalRChat.Hubs
 {
-    public class HubLogger
+    public class HubLogger : IHubLogger
     {
-        public readonly  ConnectionMapping<string> _connections = new ConnectionMapping<string>();
+        public ConnectionMapping<string> _connections { get; }
 
         public HubLogger()
         {
-            System.Console.WriteLine("hub logge constructed");
+            _connections = new ConnectionMapping<string>();
+            System.Console.WriteLine("hub logger constructed");
         }
+    }
+
+    public interface IHubLogger
+    {
+        ConnectionMapping<string> _connections { get; }
     }
 
 }

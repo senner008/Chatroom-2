@@ -1,56 +1,59 @@
 import "./css/aspstyles.css";
 import "./css/main.css";
-import {State} from "./State";
+
 import { Connection } from "./Connection";
 import * as signalR from "@aspnet/signalr";
-import { Logger } from "./Logger";
-import { renderInit } from "./render/render-init";
-import { renderPost } from "./render/render-posts";
-import { renderView } from "./render/render";
-import { IPost } from "./ajaxMethods";
-import { StatusEnum } from "./Ajax";
-import { renderRooms } from "./render/render-rooms";
-
+import { IPost, IRoom } from "./ajaxMethods";
+import { actionInit, actionInitRender } from "./actions/action-init";
+import { actionReceiveMessage, actionReceiveMessageRender } from "./actions/action-receive-message";
+import { actionReceiveRoom, actionReceiveRoomRender } from "./actions/action-receive-room";
+import { actionOncloseRender } from "./actions/action-onclose";
+import { actionOnRestartRender } from "./actions/action-onrestart";
+import { State } from "./State";
+import { Logger } from "./GlobalLogger";
 
 
 (async function init () {
 
-    var connection = Connection(new signalR.HubConnectionBuilder().withUrl("/chatHub").build());
+    var connection = Connection(new signalR.HubConnectionBuilder().withUrl("/hub").build());
 
-    connection.onStartRender(async rooms => {  
-        console.log("callback!")
-        renderInit(rooms);
-        $("#reconnect-button").on("click", connection.restart);
-        Logger.connectionState("Connectection state is on", StatusEnum.success);
-        Logger.message("", StatusEnum.success);
+    connection.onStart(async () => {
+        await actionInit(actionInitRender)  
     });
     
-    connection.onReceiveRender((post : IPost) => {
-        if (State.getActiveRoom() !== null && State.getActiveRoom().id == post.roomId) {  
-            renderPost(post.userName, post.postBody);
-        }
-        Logger.message(`post message received in room: ${post.roomId}`, StatusEnum.success);
+    connection.onReceiveMessage(async (post : IPost) => {
+        await actionReceiveMessage(post, actionReceiveMessageRender);   
     });
 
-    connection.onReceiveRoomRender((rooms) => {
-        renderRooms(rooms);
-        Logger.message(`new room added`, StatusEnum.success);
+    connection.onReceiveRoom(async (room: IRoom) => {
+        await actionReceiveRoom(room, actionReceiveRoomRender)
     });
 
-    connection.onCloseRender(() => {
-        renderView(false);
-        Logger.connectionState("Connectection state is off", StatusEnum.fail);
+    connection.onClose(async () => {
+        await actionOncloseRender();
     });
 
-    connection.onRestartRender(() => {
-        renderView(true);
-        Logger.connectionState("Connectection state is on", StatusEnum.success);
-        Logger.message("", StatusEnum.success);
+    connection.onRestart(async () => {
+        await actionOnRestartRender();
+    });
+
+    connection.onLog(async (log, status) => {
+        Logger.message(log, status);
+    });
+
+    connection.onLogConnection(async (log, status) => {
+        Logger.connectionState(log, status);
     });
     
     await connection.start();
-    console.log("dsds")
+    
+    $("#reconnect-button").on("click", connection.restart);
 
+    $("#sendButton").on("click", function (e) {
+        var message = (<HTMLInputElement> document.getElementById("messageInput")).value;
+        const roomId = State.getActiveRoom().id;
+        connection.send(message,roomId);
+    });    
 })();
 
 

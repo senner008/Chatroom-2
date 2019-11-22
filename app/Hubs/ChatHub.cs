@@ -1,53 +1,123 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using app;
 using app.Models;
-using Microsoft.AspNetCore.Identity;
+using app.Repositories;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 
 namespace SignalRChat.Hubs
 {
+    [Authorize (Roles = "Admin")]
     public class ChatHub : Hub
     {
+        
+        public IHubRepository _hubRepository { get; }
+        public IHubLogger _hubLogger { get; }
 
-     
-        private readonly UserManager<ApplicationUser> _userManager;
-        public HubLogger _hubLogger { get; }
-
-        public ChatHub(UserManager<ApplicationUser> userManager, HubLogger hubLogger)
+        public ChatHub(IHubRepository hubRepository, IHubLogger hubLogger)
         {
-            _userManager = userManager;
+            // System.Console.WriteLine("----------instantiate ChatHub-------------");
+            
+            _hubRepository = hubRepository;
             _hubLogger = hubLogger;
+        }
+        private List<string> receivers = null;
+        private  Post post = null;
+        private Room room = null;
+
+        // This event will send message to users who connect between message sent and add to db ( in danger zone )
+        private async Task SendToUserAdded (string userAddedId) {
+            string findInReceievers = receivers.FirstOrDefault (id => id == userAddedId);
+            if (room.IsPublic || findInReceievers != null) {
+                await SendWSMessage (Clients.User (userAddedId));
+               System.Console.WriteLine ("User: " + userAddedId + " has logged on and received message: " + post.PostBody);
+            }
+        }
+        private async Task SendWSMessage (IClientProxy proxy) {
+            await proxy.SendAsync ("ReceiveMessage", await _hubRepository.GetCurrentUserNickName(Context.UserIdentifier), post.PostBody, post.RoomId, Helper.ToMiliseconds (post.CreateDate));
+        }
+        private async void UserAddedCallback (object sender, AddMyUserEventArgs args) => await SendToUserAdded (args.Id);
+        
+        public async Task SendMessage ([FromBody] Postmessage postmessage) {
+  
+            try {
+                
+                room = await _hubRepository.FindAndValidateRoom (postmessage.RoomId, Context.UserIdentifier);
+                post = _hubRepository.CreateAndValidatePost (postmessage, Context.UserIdentifier);
+                receivers = _hubRepository.FindReceivers (room).ToList ();
+
+                // Subscribe to event
+                _hubLogger._connections.UserAdded += UserAddedCallback;
+                
+                // Send Websocket message
+                await SendWSMessage (room.IsPublic ? Clients.All : Clients.Users (receivers));
+
+                ///
+                /// DANGER ZONE
+                ///
+
+                // Thread.Sleep (2000);
+                // Message saved
+                await _hubRepository.SavePost (post);
+                
+
+            } catch (MyChatHubException ex) {
+                // sendAsync exceptions are also caught here
+                // create custom IHubRepository exception
+                // create generoic message for all other exceptions
+                await Clients.Caller.SendAsync ("ErrorMessage", ex.Message);
+            } catch (Exception ex) {
+                await Clients.Caller.SendAsync ("ErrorMessage", "An error has occurred");
+                // throw new Exception(ex.Message);           
+            } finally {
+                // System.Console.WriteLine ("FINALLY!");
+                // UNSUBSCRIBE TO EVENT
+                _hubLogger._connections.UserAdded -= UserAddedCallback;
+            }
+ 
         }
 
         public override async Task OnConnectedAsync()
 	    {
-            System.Console.WriteLine("----------------");
-            System.Console.WriteLine("User has connected : ");
-	        System.Console.WriteLine(Context.User.Identity.Name);
-            var id = (await _userManager.FindByNameAsync(Context.User.Identity.Name)).Id;
-	        System.Console.WriteLine(id);
-            System.Console.WriteLine("----------------");
-     
-            _hubLogger._connections.Add(id, Context.ConnectionId);
+        
+            var id = Context.UserIdentifier;
+             _hubLogger._connections.Add(id, new UserConnectionInfo { ConnectionId = Context.ConnectionId});
+
+            // System.Console.WriteLine("----------------");
+            // System.Console.WriteLine("User has connected : ");
+	        // System.Console.WriteLine(Context.User.Identity.Name);
+            // System.Console.WriteLine(id);
+            // System.Console.WriteLine("----------------");
 
             await base.OnConnectedAsync();
-
 	    }
 
-          public override async Task OnDisconnectedAsync(Exception exception)
-	    {
-            System.Console.WriteLine("----------------");
-            System.Console.WriteLine("User has DISConnected : ");
-	        System.Console.WriteLine(Context.User.Identity.Name);
-            var id = (await _userManager.FindByNameAsync(Context.User.Identity.Name)).Id;
-            System.Console.WriteLine(id);
-            System.Console.WriteLine("----------------");
+        public override async Task OnDisconnectedAsync(Exception exception)
+	    {       
 
-            _hubLogger._connections.Remove(id, Context.ConnectionId);
+            var id = Context.UserIdentifier;
+            _hubLogger._connections.Remove(id);
+
+            // System.Console.WriteLine("----------------");
+            // System.Console.WriteLine("User has dis-connected : ");
+	        // System.Console.WriteLine(Context.User.Identity.Name);
+            // System.Console.WriteLine(id);
+            // System.Console.WriteLine("----------------");
 
             await base.OnDisconnectedAsync(exception);
 	    }
 
+    }
+
+    public class Postmessage {
+        public string Message { get; set; }
+
+        public int RoomId { get; set; }
     }
 
 }

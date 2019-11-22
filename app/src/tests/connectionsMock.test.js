@@ -17,16 +17,19 @@ var connectionMock = {
 // replace ajaxPost with mock
 ajaxPostDependencies.ajaxPost = () => [{name: 'Public', id: 1}];
 // replace asynCallback with mock
-var asynCallback = jest.fn();
+
+var onStart_Callback = jest.fn();
+var onLogConnection_Callback = jest.fn();
 
 
 test('connection should fire onStartRender callback on start', async () => {
- 
+
     var connection = Connection(connectionMock);
-    connection.onStartRender(asynCallback);
+    connection.onStart(onStart_Callback);
+    connection.onLogConnection(onLogConnection_Callback);
     await connection.start();
     // Assert
-    expect(asynCallback).toHaveBeenCalledTimes(1);
+    expect(onStart_Callback).toHaveBeenCalledTimes(1);
 
 });
 
@@ -34,7 +37,8 @@ test('connection should fire onStartRender callback on start', async () => {
 test('State active room should be null on start', async () => {
    
     var connection = Connection(connectionMock);
-    connection.onStartRender(asynCallback);
+    connection.onStart(onStart_Callback);
+    connection.onLogConnection(onLogConnection_Callback);
     await connection.start();
 
     // Assert
@@ -42,15 +46,15 @@ test('State active room should be null on start', async () => {
 
 });
 
-
-test('connection should pass rooms to onStartRender callback on start', async () => {
-    
+test('Connection start should fire onLogConnection callback', async () => {
+   
     var connection = Connection(connectionMock);
-    connection.onStartRender(async (rooms) => {
-        // Assert
-        expect(rooms[0].name).toBe("Public");
-    });
+    connection.onStart(onStart_Callback);
+    connection.onLogConnection(onLogConnection_Callback);
     await connection.start();
+
+    // Assert
+    expect(onLogConnection_Callback).toHaveBeenCalledTimes(1);
 
 });
 

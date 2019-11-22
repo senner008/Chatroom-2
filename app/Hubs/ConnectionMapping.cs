@@ -3,6 +3,11 @@ using System.Linq;
 
 namespace SignalRChat.Hubs
 {
+    public class UserConnectionInfo
+    {
+        public string ConnectionId { get; set; }
+        public string NickName { get; set; }
+    }
     public delegate void UserAddedEvent(object sender, AddMyUserEventArgs args);
 
     public class AddMyUserEventArgs
@@ -12,18 +17,18 @@ namespace SignalRChat.Hubs
     public class ConnectionMapping<T>
     {
      
-        public readonly Dictionary<T, HashSet<string>> _connections =
-            new Dictionary<T, HashSet<string>>();
+        public  Dictionary<T, UserConnectionInfo> _connections =
+            new Dictionary<T, UserConnectionInfo>();
         private UserAddedEvent userAdded;
-
 
         public event UserAddedEvent UserAdded
         {
             add
-            {
-                
+            {   
+                System.Console.WriteLine(userAdded == null);
                 if (userAdded == null || !userAdded.GetInvocationList().Contains(value))
                 {
+                    
                     System.Console.WriteLine("adding...");
                     userAdded += value;
                 }
@@ -35,64 +40,47 @@ namespace SignalRChat.Hubs
             }
         }
 
-        public int Count
-        {
-            get
-            {
-                return _connections.Count;
-            }
-        }
-
-        public void Add(T key, string connectionId)
+        public void Add(T key, UserConnectionInfo userInfo)
         {
             lock (_connections)
             {
-                HashSet<string> connections;
-                if (!_connections.TryGetValue(key, out connections))
+                if (!_connections.ContainsKey(key))
                 {
-                    connections = new HashSet<string>();
-                    _connections.Add(key, connections);
-                }
-
-                lock (connections)
-                {
-                    connections.Add(connectionId);
+                    _connections.Add(key, userInfo);
                 }
             }
+          
             if (userAdded != null)
                 userAdded(this, new AddMyUserEventArgs { Id = key as string});
         }
 
-        public IEnumerable<string> GetConnections(T key)
-        {
-            HashSet<string> connections;
-            if (_connections.TryGetValue(key, out connections))
-            {
-                return connections;
-            }
-
-            return Enumerable.Empty<string>();
-        }
-
-        public void Remove(T key, string connectionId)
+        public UserConnectionInfo GetConnections(T key)
         {
             lock (_connections)
             {
-                HashSet<string> connections;
-                if (!_connections.TryGetValue(key, out connections))
+                if (_connections.ContainsKey(key))
                 {
-                    return;
+                    return _connections[key];
                 }
+            }
+            return null;
+        }
 
-                lock (connections)
-                {
-                    connections.Remove(connectionId);
-
-                    if (connections.Count == 0)
-                    {
-                        _connections.Remove(key);
-                    }
+        public void Update(T key, string nickName)
+        {
+            lock (_connections)
+            {
+                if (_connections.ContainsKey(key)) {
+                    _connections[key] =  new UserConnectionInfo { ConnectionId = GetConnections(key).ConnectionId, NickName = nickName };
                 }
+            }
+        }
+
+        public void Remove(T key)
+        {
+            lock (_connections)
+            {
+                _connections.Remove(key);   
             }
         }
     }

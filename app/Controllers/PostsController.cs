@@ -11,6 +11,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using System.IO;
+using app.Repositories;
+using System.Net.Http;
+using System.Net;
 
 namespace app.Controllers
 {
@@ -22,13 +25,13 @@ namespace app.Controllers
         // private readonly ILogger<PostsController> _logger;
         public ApplicationDbContext _context { get; }
         public UserManager<ApplicationUser> _userManager { get; }
-        public MessageHandler _messageHandler { get; }
+        public IHubRepository _hubRepository { get; }
 
-        public PostsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, MessageHandler messageHandler)
+        public PostsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IHubRepository hubRepository)
         {
             _context = context;
             _userManager = userManager;
-            _messageHandler = messageHandler;
+            _hubRepository = hubRepository;
         }
 
         // post because of validation token
@@ -36,61 +39,39 @@ namespace app.Controllers
         [Route("{id}")]
         public async Task<IActionResult> getPostsByRoomId(int id)
         {
-            var headers = Request.Headers;
-            var watch = System.Diagnostics.Stopwatch.StartNew();
+            // throw new Exception();
+            List<PostModel> posts;
+            try {
+                Room hasRoomAccess = await _hubRepository.FindAndValidateRoom(id);
 
-            // TODO : create stored procedure :
+                posts = await _context.Posts
+                    .Where(post => post.RoomId == id)
+                    .OrderByDescending(post => post.Id)
+                    .Take(10)
+                    .Include(post => post.Rooms)
+                    .ThenInclude(room => room.UsersLink)
+                    .Select(post => new PostModel { 
+                        PostBody = post.PostBody, 
+                        UserName = post.User.NickName, 
+                        CreateDate = Helper.ToMiliseconds(post.CreateDate),
+                        RoomId = post.RoomId
+                    })
+                    .AsNoTracking()
+                    .ToListAsync();
 
-            // SELECT `t`.`PostBody`, `a`.`NickName`, `t`.`CreateDate`, `r`.`IsPublic`, `t`.`Id`, `a`.`Id`, `r`.`Id`, `u`.`UserId`, `u`.`RoomId`
-            // FROM(
-            //     SELECT `p`.`Id`, `p`.`CreateDate`, `p`.`Likes`, `p`.`PostBody`, `p`.`RoomId`, `p`.`UpdateDate`, `p`.`UserId`
-            //     FROM `Posts` AS `p`
-            //     WHERE(`p`.`RoomId` = 1) AND 1 IS NOT NULL
-            //     ORDER BY `p`.`Id` DESC
-            //     LIMIT 100
-            // ) AS `t`
-            // INNER JOIN `AspNetUsers` AS `a` ON `t`.`UserId` = `a`.`Id`
-            // INNER JOIN `Rooms` AS `r` ON `t`.`RoomId` = `r`.`Id`
-            // LEFT JOIN `UserRoom` AS `u` ON `r`.`Id` = `u`.`RoomId`
-            // ORDER BY `t`.`Id` DESC, `a`.`Id`, `r`.`Id`, `u`.`UserId`, `u`.`RoomId`;
+            } catch (MyChatHubException ex) {
+                 return BadRequest(ex.Message);
+            } catch (Exception ex) {
+                return BadRequest("An error has occurred");
+            } 
 
-            var posts = await _context.Posts
-
-                .Where(post => post.RoomId == id)
-                .OrderByDescending(post => post.Id)
-                .Take(10)
-                .Include(post => post.Rooms)
-                .ThenInclude(room => room.UsersLink)
-                .Select(post => new PostModel { 
-                    PostBody = post.PostBody, 
-                    UserName = post.User.NickName, 
-                    CreateDate = Helper.ToMiliseconds(post.CreateDate),
-                    RoomId = post.RoomId
-                })
-                .AsNoTracking()
-                .ToListAsync();
-
-            watch.Stop();
-            // // TODO : Why is the ef core sql execution twice as slow? 
-
-
-            var elapsedMs = watch.ElapsedMilliseconds;
-            System.Console.WriteLine("---------------------------");
-            System.Console.WriteLine(elapsedMs);
-
-
-            if (posts.Any())
+            if (posts != null && posts.Any())
             {
-                try {
-                    Room hasRoomAccess = await _messageHandler.FindAndValidateRoom(id);
-                    System.Console.WriteLine("roomid:" + id);
-                } catch (Exception ex) {
-                    System.Console.WriteLine("dsffdsf");
-                    return BadRequest("User room denied");
-                }
+                Response.Headers.Add("Response-message", "Posts received");
+                return Ok(posts);
             }
 
-            return Ok(posts);
+            return NotFound("Unable to retrieve posts");
 
         }
 

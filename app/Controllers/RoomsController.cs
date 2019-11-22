@@ -39,15 +39,16 @@ namespace app.Controllers
         [Route("/Rooms")]
         public async Task<IActionResult> Index()
         {
+            Response.Headers.Add("Response-message", "Rooms received");
             return Ok(await _context.Rooms.Select(room => new { Id =  room.Id, Name = room.Name }).ToListAsync());
         }
 
-        [HttpGet]
-        [Route("/Rooms/UserRooms")]
-        public async Task<IActionResult> Userrooms()
-        {
-            return Ok(await _context.Set<UserRoom>().ToListAsync());
-        }
+        // [HttpGet]
+        // [Route("/Rooms/UserRooms")]
+        // public async Task<IActionResult> Userrooms()
+        // {
+        //     return Ok(await _context.Set<UserRoom>().ToListAsync());
+        // }
 
         [HttpPost]
         [Route("/Rooms/Create")]
@@ -65,7 +66,7 @@ namespace app.Controllers
             };
             await _context.Rooms.AddAsync(room);
             await _context.SaveChangesAsync();
-            await _hubContext.Clients.All.SendAsync ("CreateRoomMessage", "room created");
+            await _hubContext.Clients.All.SendAsync ("CreateRoomMessage", room.Name, room.Id);
             
             return Ok();
 

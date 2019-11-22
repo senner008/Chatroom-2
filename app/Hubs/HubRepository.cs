@@ -28,41 +28,21 @@ namespace app.Repositories
             _hubLogger = hubLogger;
         }
 
-        public void AddUserToDictionary(string userId, string connectionId) 
-        {
-            _hubLogger._connections.Add(userId, new UserConnectionInfo { ConnectionId = connectionId});
-        }
-
-       
-        public void RemoveUserFromDictionary(string id) 
-        {
-            _hubLogger._connections.Remove(id);
-        }
-
          public async Task<string> GetCurrentUserNickName(string userId)
         {
             var nickname =  _hubLogger._connections.GetConnections(userId)?.NickName;
-            if (nickname == null) {
-                System.Console.WriteLine("getting nickname...");
-                nickname =  (await _userManager.GetUserAsync(_httpContext.HttpContext.User)).NickName;
-                _hubLogger._connections.Update(userId, nickname);
+            if (nickname == null) {    
+                try {
+                    System.Console.WriteLine("lookup nickname...");
+                    var user = await _userManager.GetUserAsync(_httpContext.HttpContext.User);
+                    nickname = user.NickName;
+                    _hubLogger._connections.Update(userId, nickname); 
+                } catch (Exception ex){
+                    throw new Exception();
+                }   
             }
-             return nickname;  
+            return nickname;  
         }
-
-        
-
-
-        // public void AttachUserAddedEvent(Action<object,AddMyUserEventArgs> event2)
-        // {
-        //     _hubLogger._connections.UserAdded += event2 as UserAddedEvent;
-        // }
-
-        // public void UnAttachUserAddedEvent(Delegate UserAddedEvent)
-        // {
-        //     throw new NotImplementedException();
-        // }
-
 
         public async Task SavePost(Post post) 
         {

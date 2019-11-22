@@ -21,7 +21,7 @@ namespace SignalRChat.Hubs
 
         public ChatHub(IHubRepository hubRepository, IHubLogger hubLogger)
         {
-            System.Console.WriteLine("----------instantiate ChatHub-------------");
+            // System.Console.WriteLine("----------instantiate ChatHub-------------");
             
             _hubRepository = hubRepository;
             _hubLogger = hubLogger;
@@ -35,7 +35,7 @@ namespace SignalRChat.Hubs
             string findInReceievers = receivers.FirstOrDefault (id => id == userAddedId);
             if (room.IsPublic || findInReceievers != null) {
                 await SendWSMessage (Clients.User (userAddedId));
-                // System.Console.WriteLine ("User: " + userAddedId + " has logged on and received message: " + post.PostBody);
+               System.Console.WriteLine ("User: " + userAddedId + " has logged on and received message: " + post.PostBody);
             }
         }
         private async Task SendWSMessage (IClientProxy proxy) {
@@ -64,7 +64,7 @@ namespace SignalRChat.Hubs
 
                 // Simulate slow Db save 
                 // TODO : create test 
-                // Thread.Sleep (10000);
+                // Thread.Sleep (2000);
                 await _hubRepository.SavePost (post);
                 System.Console.WriteLine ("post saved");
 
@@ -88,13 +88,13 @@ namespace SignalRChat.Hubs
 	    {
         
             var id = Context.UserIdentifier;
-            _hubRepository.AddUserToDictionary(id, Context.ConnectionId);
+             _hubLogger._connections.Add(id, new UserConnectionInfo { ConnectionId = Context.ConnectionId});
 
-            System.Console.WriteLine("----------------");
-            System.Console.WriteLine("User has connected : ");
-	        System.Console.WriteLine(Context.User.Identity.Name);
-            System.Console.WriteLine(id);
-            System.Console.WriteLine("----------------");
+            // System.Console.WriteLine("----------------");
+            // System.Console.WriteLine("User has connected : ");
+	        // System.Console.WriteLine(Context.User.Identity.Name);
+            // System.Console.WriteLine(id);
+            // System.Console.WriteLine("----------------");
 
             await base.OnConnectedAsync();
 	    }
@@ -103,13 +103,13 @@ namespace SignalRChat.Hubs
 	    {       
 
             var id = Context.UserIdentifier;
-            _hubRepository.RemoveUserFromDictionary(id);
+            _hubLogger._connections.Remove(id);
 
-            System.Console.WriteLine("----------------");
-            System.Console.WriteLine("User has dis-connected : ");
-	        System.Console.WriteLine(Context.User.Identity.Name);
-            System.Console.WriteLine(id);
-            System.Console.WriteLine("----------------");
+            // System.Console.WriteLine("----------------");
+            // System.Console.WriteLine("User has dis-connected : ");
+	        // System.Console.WriteLine(Context.User.Identity.Name);
+            // System.Console.WriteLine(id);
+            // System.Console.WriteLine("----------------");
 
             await base.OnDisconnectedAsync(exception);
 	    }

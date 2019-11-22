@@ -17,18 +17,18 @@ namespace SignalRChat.Hubs
     public class ConnectionMapping<T>
     {
      
-        public readonly Dictionary<T, UserConnectionInfo> _connections =
+        public  Dictionary<T, UserConnectionInfo> _connections =
             new Dictionary<T, UserConnectionInfo>();
         private UserAddedEvent userAdded;
-
 
         public event UserAddedEvent UserAdded
         {
             add
-            {
-                
+            {   
+                System.Console.WriteLine(userAdded == null);
                 if (userAdded == null || !userAdded.GetInvocationList().Contains(value))
                 {
+                    
                     System.Console.WriteLine("adding...");
                     userAdded += value;
                 }
@@ -40,34 +40,30 @@ namespace SignalRChat.Hubs
             }
         }
 
-        public int Count
-        {
-            get
-            {
-                return _connections.Count;
-            }
-        }
-
         public void Add(T key, UserConnectionInfo userInfo)
         {
-            if (!_connections.ContainsKey(key))
+            lock (_connections)
+            {
+                if (!_connections.ContainsKey(key))
                 {
                     _connections.Add(key, userInfo);
                 }
-
+            }
+          
             if (userAdded != null)
                 userAdded(this, new AddMyUserEventArgs { Id = key as string});
         }
 
         public UserConnectionInfo GetConnections(T key)
         {
-
-            if (_connections.ContainsKey(key))
+            lock (_connections)
             {
-                return _connections[key];
+                if (_connections.ContainsKey(key))
+                {
+                    return _connections[key];
+                }
             }
             return null;
-
         }
 
         public void Update(T key, string nickName)

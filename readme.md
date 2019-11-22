@@ -21,13 +21,13 @@
 - handle, test and illustrate concurrency issue - PARTIALLY DONE
 - Client side tests using jest - PARTIALLY DONE
 - Dynamic room creation - DONE
+- XUnit tests - PARTIALLY DONE
+- Move logic in connection callback to action methods. spilt into logic and render methods
 - handle init in razor. use dynamic room routing
 - allow user readonly roles for testing. create automated bot testing
 - add validation
-- Move logic in connection callback to action methods. spilt into logic and render methods
 - remove logic from listeners
 - send room over ws and push to room list
-- XUnit tests
 - Show other users connection status
 - Edit/Delete previous posts
 - HTMLSanitizer to global filter

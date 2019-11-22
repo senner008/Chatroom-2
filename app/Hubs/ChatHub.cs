@@ -41,7 +41,7 @@ namespace SignalRChat.Hubs
         private async Task SendWSMessage (IClientProxy proxy) {
             await proxy.SendAsync ("ReceiveMessage", await _hubRepository.GetCurrentUserNickName(Context.UserIdentifier), post.PostBody, post.RoomId, Helper.ToMiliseconds (post.CreateDate));
         }
-        private async void UserAddedEvent (object sender, AddMyUserEventArgs args) => await SendToUserAdded (args.Id);
+        private async void UserAddedCallback (object sender, AddMyUserEventArgs args) => await SendToUserAdded (args.Id);
         
         public async Task SendMessage ([FromBody] Postmessage postmessage) {
   
@@ -51,22 +51,20 @@ namespace SignalRChat.Hubs
                 post = _hubRepository.CreateAndValidatePost (postmessage, Context.UserIdentifier);
                 receivers = _hubRepository.FindReceivers (room).ToList ();
 
-                // SUBSCRIBE TO EVENT
-                _hubLogger._connections.UserAdded += UserAddedEvent;
+                // Subscribe to event
+                _hubLogger._connections.UserAdded += UserAddedCallback;
                 
-                // _hubLogger._connections.UserAdded += UserAddedEvent;
-                System.Console.WriteLine("sending message...");
+                // Send Websocket message
                 await SendWSMessage (room.IsPublic ? Clients.All : Clients.Users (receivers));
 
                 ///
                 /// DANGER ZONE
                 ///
 
-                // Simulate slow Db save 
-                // TODO : create test 
                 // Thread.Sleep (2000);
+                // Message saved
                 await _hubRepository.SavePost (post);
-                System.Console.WriteLine ("post saved");
+                
 
             } catch (MyChatHubException ex) {
                 // sendAsync exceptions are also caught here
@@ -79,7 +77,7 @@ namespace SignalRChat.Hubs
             } finally {
                 // System.Console.WriteLine ("FINALLY!");
                 // UNSUBSCRIBE TO EVENT
-                _hubLogger._connections.UserAdded -= UserAddedEvent;
+                _hubLogger._connections.UserAdded -= UserAddedCallback;
             }
  
         }

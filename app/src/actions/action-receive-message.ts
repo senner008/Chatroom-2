@@ -3,6 +3,7 @@ import { renderPost } from "../render/render-posts";
 
 
 export async function actionReceiveMessage(post, render) {
+    console.log(post)
     State.addPost(post);
     render(post)
 }

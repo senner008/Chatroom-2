@@ -14,6 +14,7 @@ using System.IO;
 using app.Repositories;
 using System.Net.Http;
 using System.Net;
+using System.Numerics;
 
 namespace app.Controllers
 {
@@ -71,9 +72,11 @@ namespace app.Controllers
 
         public string UserName { get; set; }
 
-        public double CreateDate { get; set; }
+        public DateTime CreateDate { get; set; }
 
         public int RoomId { get; set;}
+
+        public string Identifier { get; set; }
 
     }
 }

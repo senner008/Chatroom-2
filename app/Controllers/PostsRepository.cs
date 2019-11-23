@@ -36,13 +36,14 @@ namespace app.Controllers
                 .Where(post => post.RoomId == id)
                 .OrderByDescending(post => post.Id)
                 .Take(10)
-                .Include(post => post.Rooms)
+                .Include(post => post.Room)
                 .ThenInclude(room => room.UsersLink)
                 .Select(post => new PostModel { 
                     PostBody = post.PostBody, 
                     UserName = post.User.NickName, 
-                    CreateDate = Helper.ToMiliseconds(post.CreateDate),
-                    RoomId = post.RoomId
+                    CreateDate = post.CreateDate,
+                    RoomId = post.RoomId,
+                    Identifier = Helper.GuidToBigInt(post.Identifier)
                 })
                 .AsNoTracking()
                 .ToListAsync();

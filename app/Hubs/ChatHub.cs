@@ -30,6 +30,8 @@ namespace SignalRChat.Hubs
         private  Post post = null;
         private Room room = null;
 
+        private string nickname = null;
+
         // This event will send message to users who connect between message sent and add to db ( in danger zone )
         private async Task SendToUserAdded (string userAddedId) {
             string findInReceievers = receivers.FirstOrDefault (id => id == userAddedId);
@@ -39,14 +41,25 @@ namespace SignalRChat.Hubs
             }
         }
         private async Task SendWSMessage (IClientProxy proxy) {
-            await proxy.SendAsync ("ReceiveMessage", await _hubRepository.GetCurrentUserNickName(Context.UserIdentifier), post.PostBody, post.RoomId, Helper.ToMiliseconds (post.CreateDate));
+        // Folowing operation here can cause InvalidOperationException : 
+        // await _hubRepository.GetCurrentUserNickName(Context.UserIdentifier);
+        // An exception occurred while iterating over the results of a query for context type 'app.Data.ApplicationDbContext'.
+        // System.InvalidOperationException: A second operation started on this context before a previous operation completed. This is usually caused by different threads using the same instance of DbContext. For more information on how to avoid threading issues with DbContext, see https://go.microsoft.com/fwlink/?linkid=2097913.
+            await proxy.SendAsync (
+                "ReceiveMessage", 
+                nickname, 
+                post.PostBody, 
+                post.RoomId, 
+                post.CreateDate, 
+                Helper.GuidToBigInt(post.Identifier)
+            );
         }
         private async void UserAddedCallback (object sender, AddMyUserEventArgs args) => await SendToUserAdded (args.Id);
         
         public async Task SendMessage ([FromBody] Postmessage postmessage) {
   
             try {
-                
+                nickname = await _hubRepository.GetCurrentUserNickName(Context.UserIdentifier);
                 room = await _hubRepository.FindAndValidateRoom (postmessage.RoomId, Context.UserIdentifier);
                 post = _hubRepository.CreateAndValidatePost (postmessage, Context.UserIdentifier);
                 receivers = _hubRepository.FindReceivers (room).ToList ();
@@ -61,7 +74,7 @@ namespace SignalRChat.Hubs
                 /// DANGER ZONE
                 ///
 
-                // Thread.Sleep (2000);
+                // Thread.Sleep (20000);
                 // Message saved
                 await _hubRepository.SavePost (post);
                 
@@ -84,7 +97,8 @@ namespace SignalRChat.Hubs
 
         public override async Task OnConnectedAsync()
 	    {
-        
+
+            System.Console.WriteLine(Context.ConnectionId);
             var id = Context.UserIdentifier;
              _hubLogger._connections.Add(id, new UserConnectionInfo { ConnectionId = Context.ConnectionId});
 

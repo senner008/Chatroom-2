@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using app.Data;
 using app.Models;
@@ -9,6 +10,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SignalRChat.Hubs;
+
 
 namespace app.Repositories
 {
@@ -71,6 +73,7 @@ namespace app.Repositories
 
         public async Task<Room> FindAndValidateRoom(int roomId, string userId = null) 
         {
+          
              var room = await FindRoom(roomId);
              if (room == null) throw new MyChatHubException("Invalid room selection");
 
@@ -96,13 +99,14 @@ namespace app.Repositories
         private async Task<bool> UserHasRoomAccess(Room room, string userId = null)
         {
       
-
+                        
                 if (room.IsPublic) {
                    return true;
                 }
 
                 if (userId == null) {
-                    userId = (await _userManager.GetUserAsync(_httpContext.HttpContext.User)).Id;
+                    //   userId = (await _userManager.GetUserAsync(_httpContext.HttpContext.User)).Id;
+                   userId = _httpContext.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
                 }          
 
                 var RoomHasUser = room.UsersLink.FirstOrDefault(userRoom => userRoom.UserId == userId);
@@ -122,13 +126,14 @@ namespace app.Repositories
 
         private Post CreatePost(string message, int roomId, string userId)
         {
-            // throw new Exception();
+           
             return new Post 
             { 
                 UserId = userId, 
                 RoomId = roomId, 
                 PostBody = message, 
-                CreateDate = DateTime.Now
+                CreateDate = DateTime.Now,
+                Identifier = Guid.NewGuid()
             };
         }
 

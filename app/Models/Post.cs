@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Identity;
 
 namespace app.Models
@@ -40,9 +41,13 @@ namespace app.Models
         [Required]
         public int RoomId { get; set; }
 
+        [Required]
+        [Column(TypeName = "char(36)")]
+        public Guid Identifier { get; set; }
+
         public ApplicationUser User { get; set; }
 
         // TODO : rename Rooms to Room
-        public Room Rooms { get; set; }
+        public Room Room { get; set; }
     }
 }

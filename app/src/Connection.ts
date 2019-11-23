@@ -98,9 +98,9 @@ export function Connection(connection : IHubConnection) {
             addLogConnection("Connection closed", StatusEnum.fail);
             callback.onClose();
         },
-        async onReceiveMessage(userName, postBody, roomId, createDate) {
+        async onReceiveMessage(userName, postBody, roomId, createDate, identifier) {
             addLog(`Message received from ${userName} in room: ${roomId}`, StatusEnum.success);
-            var post = {userName, postBody, roomId, createDate}
+            var post = {userName, postBody, roomId, createDate, identifier}
             // TODO : simplify - should just await onStart
             await appInit;
             callback.onReceive(post);

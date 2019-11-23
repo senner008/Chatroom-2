@@ -179,7 +179,8 @@ namespace app.Migrations
                     CreateDate = table.Column<DateTime>(nullable: false),
                     UpdateDate = table.Column<DateTime>(nullable: false),
                     UserId = table.Column<string>(nullable: false),
-                    RoomId = table.Column<int>(nullable: false)
+                    RoomId = table.Column<int>(nullable: false),
+                    Identifier = table.Column<Guid>(type: "char(36)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -209,7 +210,8 @@ namespace app.Migrations
                     CreateDate = table.Column<DateTime>(nullable: false),
                     UpdateDate = table.Column<DateTime>(nullable: false),
                     UserId = table.Column<string>(nullable: false),
-                    RoomId = table.Column<int>(nullable: false)
+                    RoomId = table.Column<int>(nullable: false),
+                    Identifier = table.Column<Guid>(type: "char(36)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -255,7 +257,7 @@ namespace app.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "2350d687-f137-47b6-a3df-3e2de39b442e", "a0f3b1db-5cd4-48ea-9b1f-aa80426be288", "Admin", "ADMIN" });
+                values: new object[] { "1aef70f2-8d10-4cfc-8a74-109993052b09", "0f3e9bb1-c4b3-484f-8719-8d51bd8bdacf", "Admin", "ADMIN" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

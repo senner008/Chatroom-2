@@ -4,7 +4,8 @@ export interface IPost {
     postBody: string;
     userName: string;
     createDate: number;
-    roomId: number
+    roomId: number,
+    identifier : string;
 }
 
 export interface IUser {

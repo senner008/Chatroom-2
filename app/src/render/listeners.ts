@@ -68,7 +68,6 @@ function modalSaveChangesClickHandler() {
 export function addListeners () {
     roomClickListener();
     CreateRoomClickHandler()
-    // sendClickListener();
     usersClickHandler();
     modalSaveChangesClickHandler();
 }

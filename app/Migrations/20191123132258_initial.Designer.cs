@@ -9,14 +9,14 @@ using app.Data;
 namespace app.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20191110210134_initial")]
+    [Migration("20191123132258_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.0.0")
+                .HasAnnotation("ProductVersion", "3.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -47,8 +47,8 @@ namespace app.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "2350d687-f137-47b6-a3df-3e2de39b442e",
-                            ConcurrencyStamp = "a0f3b1db-5cd4-48ea-9b1f-aa80426be288",
+                            Id = "1aef70f2-8d10-4cfc-8a74-109993052b09",
+                            ConcurrencyStamp = "0f3e9bb1-c4b3-484f-8719-8d51bd8bdacf",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
@@ -236,6 +236,9 @@ namespace app.Migrations
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<Guid>("Identifier")
+                        .HasColumnType("char(36)");
+
                     b.Property<int>("Likes")
                         .HasColumnType("int");
 
@@ -270,6 +273,9 @@ namespace app.Migrations
 
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<Guid>("Identifier")
+                        .HasColumnType("char(36)");
 
                     b.Property<int>("Likes")
                         .HasColumnType("int");
@@ -383,7 +389,7 @@ namespace app.Migrations
 
             modelBuilder.Entity("app.Models.Post", b =>
                 {
-                    b.HasOne("app.Models.Room", "Rooms")
+                    b.HasOne("app.Models.Room", "Room")
                         .WithMany("Posts")
                         .HasForeignKey("RoomId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -398,7 +404,7 @@ namespace app.Migrations
 
             modelBuilder.Entity("app.Models.PostArchive", b =>
                 {
-                    b.HasOne("app.Models.Room", "Rooms")
+                    b.HasOne("app.Models.Room", "Room")
                         .WithMany()
                         .HasForeignKey("RoomId")
                         .OnDelete(DeleteBehavior.Cascade)

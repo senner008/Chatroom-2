@@ -25,12 +25,12 @@
 - Move logic in connection callback to action methods. spilt into logic and render methods - DONE
 - handle init in razor. use dynamic room routing - DONE
 - send room over ws and push to room list - DONE
-- add validation
-- create unique identifier for postsStorage keys - Guid
+- add validation - DONE 
+- create unique identifier for postsStorage keys - DONE
+- HTMLSanitizer to global filter - DONE
 - remove logic from listeners
 - Show other users connection status
 - Edit/Delete previous posts
-- HTMLSanitizer to global filter
 - Encryption
 - log everything client and server side
 - add content security policies

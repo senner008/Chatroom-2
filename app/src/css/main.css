@@ -61,7 +61,7 @@ footer {
 }
 
 #posts-container #post-input { 
-
+display: none;
 }
 
 .post {

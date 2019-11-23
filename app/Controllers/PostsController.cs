@@ -15,6 +15,7 @@ using app.Repositories;
 using System.Net.Http;
 using System.Net;
 using System.Numerics;
+using System.Threading;
 
 namespace app.Controllers
 {
@@ -42,7 +43,6 @@ namespace app.Controllers
         [Route("{id}")]
         public async Task<IActionResult> getPostsByRoomId(int id)
         {
-            // throw new Exception();
             IEnumerable<PostModel> posts;
             try {
                 Room hasRoomAccess = await _hubRepository.FindAndValidateRoom(id);

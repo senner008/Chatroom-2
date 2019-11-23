@@ -8,7 +8,8 @@ import { showModal } from "./render";
 
 function roomClickListener () {
     $("#rooms-list").find('.rooms').on("click", (e) => {
-        actionRoomSelect(e, actionRoomSelectRender1, actionRoomSelectRender2)
+        var id = Number(e.target.dataset.id);
+        actionRoomSelect(id, actionRoomSelectRender1, actionRoomSelectRender2, true)
     });
 }
 

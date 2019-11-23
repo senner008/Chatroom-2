@@ -26,12 +26,14 @@ namespace app.Controllers
         public ApplicationDbContext _context { get; }
         public UserManager<ApplicationUser> _userManager { get; }
         public IHubRepository _hubRepository { get; }
+        public IPostsRepository _postsRepository { get; }
 
-        public PostsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IHubRepository hubRepository)
+        public PostsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IHubRepository hubRepository, IPostsRepository postsRepository)
         {
             _context = context;
             _userManager = userManager;
             _hubRepository = hubRepository;
+            _postsRepository = postsRepository;
         }
 
         // post because of validation token
@@ -40,24 +42,11 @@ namespace app.Controllers
         public async Task<IActionResult> getPostsByRoomId(int id)
         {
             // throw new Exception();
-            List<PostModel> posts;
+            IEnumerable<PostModel> posts;
             try {
                 Room hasRoomAccess = await _hubRepository.FindAndValidateRoom(id);
 
-                posts = await _context.Posts
-                    .Where(post => post.RoomId == id)
-                    .OrderByDescending(post => post.Id)
-                    .Take(10)
-                    .Include(post => post.Rooms)
-                    .ThenInclude(room => room.UsersLink)
-                    .Select(post => new PostModel { 
-                        PostBody = post.PostBody, 
-                        UserName = post.User.NickName, 
-                        CreateDate = Helper.ToMiliseconds(post.CreateDate),
-                        RoomId = post.RoomId
-                    })
-                    .AsNoTracking()
-                    .ToListAsync();
+                posts = await _postsRepository.getPostsByRoomId(id);
 
             } catch (MyChatHubException ex) {
                  return BadRequest(ex.Message);
@@ -67,7 +56,7 @@ namespace app.Controllers
 
             if (posts != null && posts.Any())
             {
-                Response.Headers.Add("Response-message", "Posts received");
+                Response.Headers.Add("Response-message", "Posts received for room " + id);
                 return Ok(posts);
             }
 

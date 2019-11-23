@@ -1,9 +1,20 @@
-﻿@{
+﻿@model ChatHubViewModel
+@{
     ViewData["Title"] = "Home Page";
+
+  
+ 
 }
 
+@if(@ViewBag.RouteId != null) 
+{
+    @:<header data-init-room=@ViewBag.RouteId id='chatroom-header'>
+}
+else 
+{
+    @:<header id='chatroom-header' >
+}    
 
-<header id="chatroom-header" >
     <h3>Chatroom</h3>
     <div id="connectionInfo">
         <ul>

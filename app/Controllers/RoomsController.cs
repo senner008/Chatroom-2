@@ -21,13 +21,16 @@ namespace app.Controllers
     public class RoomsController : Controller
     {
         private readonly ILogger<RoomsController> _logger;
+
+        public IRoomsRepository _roomsRepository { get; }
         public ApplicationDbContext _context { get; }
 
         public UserManager<ApplicationUser> _userManager { get; }
         public IHubContext<ChatHub> _hubContext { get; }
 
-        public RoomsController(ILogger<RoomsController> logger, ApplicationDbContext context,  UserManager<ApplicationUser> userManager, IHubContext<ChatHub> hubContext)
+        public RoomsController(IRoomsRepository roomsRepository, ILogger<RoomsController> logger, ApplicationDbContext context,  UserManager<ApplicationUser> userManager, IHubContext<ChatHub> hubContext)
         {
+            _roomsRepository = roomsRepository;
             _logger = logger;
             _context = context;
             _userManager = userManager;
@@ -40,7 +43,8 @@ namespace app.Controllers
         public async Task<IActionResult> Index()
         {
             Response.Headers.Add("Response-message", "Rooms received");
-            return Ok(await _context.Rooms.Select(room => new { Id =  room.Id, Name = room.Name }).ToListAsync());
+            var rooms = await _roomsRepository.getRooms();
+            return Ok(rooms.Select(room => new { Id =  room.Id, Name = room.Name }));
         }
 
         // [HttpGet]

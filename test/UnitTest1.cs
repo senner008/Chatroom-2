@@ -142,7 +142,7 @@ namespace test
             mockClientProxy.Verify(
                 clientProxy => clientProxy.SendCoreAsync(
                     "ReceiveMessage",
-                   It.Is<object[]>(o => o.Length == 4),
+                   It.Is<object[]>(o => o.Length == 5),
                     default(CancellationToken)),
                 Times.Exactly(1));
         }
@@ -157,6 +157,7 @@ namespace test
             room.IsPublic = true;
             mockClients.Setup(clients => clients.User(UserIdentifierString)).Returns(mockClientProxy.Object);
             mockClients.Setup(clients => clients.All).Returns(mockClientProxy.Object);
+            mockRepo.Setup(repo => repo.GetCurrentUserNickName(UserIdentifierString)).Returns(Task.FromResult("hello"));
             mockRepo.Setup(repo => repo.SavePost(post)).Returns(Task.Factory.StartNew(() => {
                 // Simulate slow db save call
                 Thread.Sleep(2000);
@@ -184,7 +185,7 @@ namespace test
             mockClientProxy.Verify(
                 clientProxy => clientProxy.SendCoreAsync(
                     "ReceiveMessage",
-                   It.Is<object[]>(o => o.Length == 4),
+                   It.Is<object[]>(o => o.Length == 5),
                     default(CancellationToken)),
                 Times.Exactly(2));
 

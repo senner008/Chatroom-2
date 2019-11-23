@@ -14,6 +14,8 @@ using System.IO;
 using app.Repositories;
 using System.Net.Http;
 using System.Net;
+using System.Numerics;
+using System.Threading;
 
 namespace app.Controllers
 {
@@ -41,7 +43,6 @@ namespace app.Controllers
         [Route("{id}")]
         public async Task<IActionResult> getPostsByRoomId(int id)
         {
-            // throw new Exception();
             IEnumerable<PostModel> posts;
             try {
                 Room hasRoomAccess = await _hubRepository.FindAndValidateRoom(id);
@@ -60,7 +61,7 @@ namespace app.Controllers
                 return Ok(posts);
             }
 
-            return NotFound("Unable to retrieve posts");
+            return NotFound("There are no posts in this room");
 
         }
 
@@ -71,9 +72,11 @@ namespace app.Controllers
 
         public string UserName { get; set; }
 
-        public double CreateDate { get; set; }
+        public DateTime CreateDate { get; set; }
 
         public int RoomId { get; set;}
+
+        public string Identifier { get; set; }
 
     }
 }

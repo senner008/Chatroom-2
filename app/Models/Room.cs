@@ -16,4 +16,17 @@ namespace app.Models
         public ICollection<UserRoom> UsersLink { get; set; }
         public ICollection<Post> Posts { get; set; }
     }
+
+     public class RoomCreateModel
+    {
+        [Required (ErrorMessage ="Please enter a valid room name")]
+        [RegularExpression(@"^[a-zA-Z''-'\s]{1,30}$", ErrorMessage = "Characters are not allowed or length exceeded")]
+        [HTMLSanitizerError(ErrorMessage = "Invalid input")]
+        public string RoomName { get; set; }
+
+        [Required]
+        [EnsureMaxTenUsers(ErrorMessage = "A maximum of 10 users are allowed in private rooms")]
+        [EnsureUserNamesAreStringsAndMaxLength30(ErrorMessage = "User nicknames length exceeded")]
+        public List<string> UserList {get; set;}
+    }
 }

@@ -139,7 +139,8 @@ public static class SeedData
                 UserId = user.Id, 
                 RoomId = random.Next(1, 4), 
                 PostBody = "bla bla bla...", 
-                CreateDate = DateTime.Now
+                CreateDate = DateTime.Now,
+                Identifier = Guid.NewGuid()
             });
         }
         EntityFrameworkManager.ContextFactory = context => {

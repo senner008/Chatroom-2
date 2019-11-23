@@ -1,13 +1,31 @@
+import { actionRoomSelect, actionRoomSelectRender1, actionRoomSelectRender2 } from "../actions/action-room-select";
+
+
+const roomsList = $("#rooms-list");
 
 export function renderRoomListSelect(id) {
-    $("#rooms-list").find('li').each((index, li) => li.classList.remove("room-selected"));
-    $("#rooms-list").find("[data-id='" + id + "']")[0].classList.add("room-selected");
+    roomsList.find('li').each((index, li) => li.classList.remove("room-selected"));
+    roomsList.find(`[data-id='${id}']`)[0].classList.add("room-selected");
+}
+
+export function pushState (id) {
+    history.pushState(id, id, `/RoomInit/${id}`);
+}
+
+window.onpopstate = function(event) {
+    console.log(event.state)
+    actionRoomSelect(Number(event.state), actionRoomSelectRender1, actionRoomSelectRender2, false)
+};
+
+
+export function roomExists(id) {
+    return roomsList.find(`[data-id='${id}']`).length > 0;
 }
 
 export async function renderRooms (rooms) {
     if (rooms.length === 0) return;
     var list = rooms.map(room => {
-        return '<li data-id="' + room.id + '"' + 'class="list-group-item">' + room.name + '</li>';
+        return `<li data-id='${room.id}' class="list-group-item">${room.name}</li>`;
     })
-    $("#rooms-list").find('.rooms').html(list);
+    roomsList.find('.rooms').html(list);
 }

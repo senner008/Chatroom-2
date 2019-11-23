@@ -10,9 +10,10 @@ using Z.EntityFramework.Extensions;
 
 public static class SeedData
 {
-    public static async void SeedApplicationUsers(UserManager<ApplicationUser> userManager, string userName, string nickName, string password)
+    public static async void SeedApplicationUsers(UserManager<ApplicationUser> userManager, string userName, string nickName, string password, RoleManager<IdentityRole> roleManager)
     {
-        // TODO : make generic
+
+    
         if (await userManager.FindByEmailAsync(userName) == null)
         {
             ApplicationUser user = new ApplicationUser
@@ -128,7 +129,7 @@ public static class SeedData
 
         List<Post> Posts = new List<Post>();
 
-        int rowsToInsert = 100000;
+        int rowsToInsert = 10;
 
         for (var i = 1; i < rowsToInsert; i++) 
         {

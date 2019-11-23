@@ -22,7 +22,7 @@
 - Client side tests using jest - PARTIALLY DONE
 - Dynamic room creation - DONE
 - XUnit tests - PARTIALLY DONE
-- Move logic in connection callback to action methods. spilt into logic and render methods
+- Move logic in connection callback to action methods. spilt into logic and render methods - DONE
 - handle init in razor. use dynamic room routing
 - allow user readonly roles for testing. create automated bot testing
 - add validation

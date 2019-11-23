@@ -24,19 +24,31 @@ namespace app.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
+        public IPostsRepository _postsRepository { get; }
+        public IRoomsRepository _roomsRepository { get; }
 
-        public HomeController(ILogger<HomeController> logger, IHubContext<ChatHub> hubContext)
+        public HomeController(ILogger<HomeController> logger, IHubContext<ChatHub> hubContext, IPostsRepository postsRepository, IRoomsRepository roomsRepository)
         {
             _logger = logger;
-
+            _postsRepository = postsRepository;
+            _roomsRepository = roomsRepository;
         }
 
 
         [HttpGet]
         [Route("/")]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             return View();
+        }
+
+        [HttpGet]
+        [Route("/RoomInit/{id}")]
+        public IActionResult RoomInit([FromRoute] int id)
+        {
+            // handle global error if id invalid
+            ViewBag.RouteId = id;
+            return View("Index");
         }
 
         [Route("/Privacy")]
@@ -51,5 +63,6 @@ namespace app.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
+
 
 }

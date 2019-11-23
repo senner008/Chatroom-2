@@ -2,16 +2,16 @@
 import { State } from "../State";
 import { getPostsByRoomId } from "../ajaxMethods";
 import { showLoader, renderPostInputField } from "../render/render";
-import { renderRoomListSelect } from "../render/render-rooms";
+import { renderRoomListSelect, roomExists, pushState } from "../render/render-rooms";
 import { renderPostList } from "../render/render-posts";
 
-export async function actionRoomSelect(e, render1, render2) {
-    
-    var id = Number(e.target.dataset.id)
+export async function actionRoomSelect(id, render1, render2, shouldPushState) {
+    if (!roomExists(id)) return 
     render1(id);
     var getPosts = await getPostsByRoomId(id)
     State.setActiveRoom(id, getPosts);
     render2();
+    if (shouldPushState) pushState(id);
 }
 
 export async function actionRoomSelectRender1(id) {

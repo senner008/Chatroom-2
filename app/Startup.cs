@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Http;
 using app.Models;
 using Microsoft.AspNetCore.Mvc;
 using app.Repositories;
+using app.Controllers;
 
 namespace app
 {
@@ -32,7 +33,9 @@ namespace app
             Boolean isProduction = !String.IsNullOrEmpty (Environment.GetEnvironmentVariable ("HEROKU_PRODUCTION"));
             string CnString = isProduction ? Environment.GetEnvironmentVariable ("MYSQL_DB") : Configuration.GetConnectionString("CodeToShowDb");
 
-            services.AddDbContext<ApplicationDbContext>(options => options.UseMySql(CnString));
+           services.AddDbContext<ApplicationDbContext>(options => options.UseMySql(CnString));
+
+        //    services.AddDbContext<ApplicationDbContext>(options => options.UseInMemoryDatabase("chatroom"));
 
             services.AddDefaultIdentity<ApplicationUser> (options => {
                 options.SignIn.RequireConfirmedAccount = true;
@@ -49,6 +52,10 @@ namespace app
             services.AddScoped<IDisposable, UserManager<ApplicationUser>>();
             services.AddScoped<HttpContextAccessor>();
             services.AddScoped<IHubRepository, HubRepository>();
+            services.AddScoped<IPostsRepository, PostsRepository>();
+            services.AddScoped<IRoomsRepository, RoomsRepository>();
+
+
 
             services.AddSingleton<IHubLogger, HubLogger>();
             
@@ -59,14 +66,15 @@ namespace app
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, UserManager<ApplicationUser> userManager, ApplicationDbContext context)
+        public void Configure(RoleManager<IdentityRole> roleManager, IApplicationBuilder app, IWebHostEnvironment env, UserManager<ApplicationUser> userManager, ApplicationDbContext context)
         {
             if (env.IsDevelopment())
             {
+                // These will run synchronously when without await 
                 var pass = Configuration.GetSection ("Passwords").GetSection ("adminpass").Value;
-                SeedData.SeedApplicationUsers (userManager, "alpha@mail.com", "alpha", pass);
-                SeedData.SeedApplicationUsers (userManager, "beta@mail.com", "beta", pass);
-                SeedData.SeedApplicationUsers (userManager, "gamma@mail.com", "gamma", pass);
+                SeedData.SeedApplicationUsers (userManager, "alpha@mail.com", "alpha", pass, roleManager);
+                SeedData.SeedApplicationUsers (userManager, "beta@mail.com", "beta", pass, roleManager);
+                SeedData.SeedApplicationUsers (userManager, "gamma@mail.com", "gamma", pass, roleManager);
 
                 SeedData.SeedApplicationRooms(context, userManager);
                 SeedData.SeedApplicationPosts(context, userManager, Configuration.GetConnectionString("CodeToShowDb"));

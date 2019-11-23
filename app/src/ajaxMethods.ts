@@ -18,19 +18,19 @@ export interface IRoom {
 
 
 export async function getPostsByRoomId(roomId) {
-    return await ajaxPost<IPost>(`Posts/${roomId}`, "");
+    return await ajaxPost<IPost>(`/Posts/${roomId}`, "");
 }
 
 export async function getAllUsers() {
-    return await ajaxPost<IUser>(`Users`, "");
+    return await ajaxPost<IUser>(`/Users`, "");
 }
 
 export async function getRooms() {
-    return await ajaxPost<IRoom>("Rooms", "");
+    return await ajaxPost<IRoom>("/Rooms", "");
 }
 
 export async function sendCreateRoom(users, name) {
-    return await ajaxPost<IRoom>("rooms/create", { roomname : name , UserList : users });
+    return await ajaxPost<IRoom>("/rooms/create", { roomname : name , UserList : users });
 }
 
 

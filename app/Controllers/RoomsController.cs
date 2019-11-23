@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
 using SignalRChat.Hubs;
+using System.ComponentModel.DataAnnotations;
 
 namespace app.Controllers
 {
@@ -54,12 +55,13 @@ namespace app.Controllers
         //     return Ok(await _context.Set<UserRoom>().ToListAsync());
         // }
 
+        // TODO : Global validation fail handling
         [HttpPost]
         [Route("/Rooms/Create")]
         public async Task<IActionResult> Index([FromBody] RoomCreateModel roomCreateModel)
         {
+
             var getUsers = await _userManager.Users.Where(user => roomCreateModel.UserList.Any(nickname => user.NickName == nickname)).ToListAsync();
-            System.Console.WriteLine(getUsers);
          
             // TODO : in try catch
             var room = new Room
@@ -77,12 +79,7 @@ namespace app.Controllers
         }
     }
 
-    public class RoomCreateModel
-    {
-        public string RoomName { get; set; }
-
-        public List<string> UserList {get; set;}
-    }
+   
 
 
 }

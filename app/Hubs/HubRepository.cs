@@ -58,14 +58,15 @@ namespace app.Repositories
         }
 
         public Post CreateAndValidatePost(Postmessage postMessage, string userId) 
-        {
-            // var user =  await _userManager.GetUserAsync(_httpContext.HttpContext.User);
-            // if (user == null) throw new InvalidOperationException("Unable to retrieve user");
-            
+        {         
+            var modelStateValidator = new ModelStateValidator();
+            var validatePostMessage = modelStateValidator.ValidatePost<Postmessage>(postMessage);
+            if (!validatePostMessage) throw new MyChatHubException(modelStateValidator.validationResults.FirstOrDefault().ErrorMessage);
+
             var post = CreatePost(postMessage.Message, postMessage.RoomId, userId);
 
-            bool isValid = ValidatePost(post);
-            if (!isValid) throw new MyChatHubException("Invalid post submission");
+            bool isValid = modelStateValidator.ValidatePost<Post>(post);
+            if (!isValid) throw new MyChatHubException(modelStateValidator.validationResults.FirstOrDefault().ErrorMessage);
 
             return post;
 
@@ -77,7 +78,7 @@ namespace app.Repositories
              var room = await FindRoom(roomId);
              if (room == null) throw new MyChatHubException("Invalid room selection");
 
-             bool hasAccess = await UserHasRoomAccess(room, userId);
+             bool hasAccess = UserHasRoomAccess(room, userId);
              if (!hasAccess) throw new MyChatHubException("Room access denied");
 
              return room;
@@ -96,7 +97,7 @@ namespace app.Repositories
             .FirstOrDefaultAsync(room => room.Id == roomId);
         }
 
-        private async Task<bool> UserHasRoomAccess(Room room, string userId = null)
+        private bool UserHasRoomAccess(Room room, string userId = null)
         {
       
                         
@@ -105,7 +106,6 @@ namespace app.Repositories
                 }
 
                 if (userId == null) {
-                    //   userId = (await _userManager.GetUserAsync(_httpContext.HttpContext.User)).Id;
                    userId = _httpContext.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
                 }          
 
@@ -117,13 +117,7 @@ namespace app.Repositories
 
                return false;  
         }
-        private bool ValidatePost(Post post)
-        {
-            var context = new ValidationContext(post, serviceProvider: null, items: null);
-            var validationResults = new List<ValidationResult>();
-            return Validator.TryValidateObject(post, context, validationResults, true);
-        }
-
+      
         private Post CreatePost(string message, int roomId, string userId)
         {
            

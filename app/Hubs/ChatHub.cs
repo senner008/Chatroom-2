@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -126,12 +127,6 @@ namespace SignalRChat.Hubs
             await base.OnDisconnectedAsync(exception);
 	    }
 
-    }
-
-    public class Postmessage {
-        public string Message { get; set; }
-
-        public int RoomId { get; set; }
     }
 
 }

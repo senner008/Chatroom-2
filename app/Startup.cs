@@ -14,6 +14,7 @@ using app.Models;
 using Microsoft.AspNetCore.Mvc;
 using app.Repositories;
 using app.Controllers;
+using System.Linq;
 
 namespace app
 {
@@ -62,6 +63,13 @@ namespace app
             services.AddMvc(options =>
             {
                 options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+            }).ConfigureApiBehaviorOptions(options => {
+                //options.SuppressModelStateInvalidFilter = true;
+                options.InvalidModelStateResponseFactory = actionContext =>
+                {
+                    var modelState = actionContext.ModelState.FirstOrDefault().Value.Errors.FirstOrDefault().ErrorMessage;
+                    return new BadRequestObjectResult(modelState);
+                };
             });
         }
 

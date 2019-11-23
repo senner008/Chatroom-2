@@ -61,7 +61,7 @@ namespace app.Controllers
                 return Ok(posts);
             }
 
-            return NotFound("Unable to retrieve posts");
+            return NotFound("There are no posts in this room");
 
         }
 

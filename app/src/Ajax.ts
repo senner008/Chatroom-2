@@ -33,6 +33,8 @@ export async function ErrorHandler<T> (action) : Promise<T[]> {
         Logger.message(response.headers.get('Response-message'), StatusEnum.success);
         return await jsonOrText<T>(response);
     } catch (err) {
+      console.log(err)
+        // var error = err === 'object' ? err.error : err;
         Logger.message(err, StatusEnum.fail);
         return [] as any;
     }

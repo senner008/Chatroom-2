@@ -18,16 +18,16 @@
 - add connection state to State object - DONE
 - add reconnect button - DONE
 - loading spinners - Partinally DONE
-- handle, test and illustrate concurrency issue - PARTIALLY DONE
+- handle, test and illustrate concurrency issue - DONE
 - Client side tests using jest - PARTIALLY DONE
 - Dynamic room creation - DONE
-- XUnit tests - PARTIALLY DONE
+- XUnit tests - PARTIALLY DONE - ADD MORE
 - Move logic in connection callback to action methods. spilt into logic and render methods - DONE
-- handle init in razor. use dynamic room routing
-- allow user readonly roles for testing. create automated bot testing
+- handle init in razor. use dynamic room routing - DONE
+- send room over ws and push to room list - DONE
 - add validation
+- create unique identifier for postsStorage keys - Guid
 - remove logic from listeners
-- send room over ws and push to room list
 - Show other users connection status
 - Edit/Delete previous posts
 - HTMLSanitizer to global filter
@@ -35,15 +35,12 @@
 - log everything client and server side
 - add content security policies
 - implement "load more messages"
-- create unique identifier for postsStorage keys - Guid
-- fix client side logging
-- clean up css
-- split render methods
 
 ## TODO SECONDARY : 
 - Runtime table creation using raw sql
 - simulate user interaction using puppeteer
-- hide rooms with no access on init rooms get 
+- hide rooms with no access on init rooms get
+- fix client side logging
 
 ## FEATURES TODO : 
 - Giphy insertion

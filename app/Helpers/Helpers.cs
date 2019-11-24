@@ -3,8 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
+using System.Linq;
 using System.Numerics;
 using Ganss.XSS;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Routing;
 
 namespace app {
     public static class Helper 
@@ -56,6 +60,20 @@ namespace app {
         }
     }
 
+    public class EnsureListMinimumOne : ValidationAttribute
+    {
+        public override bool IsValid(object value)
+        {
+            System.Console.WriteLine("dfsfsdfdsfdsfdsfdsfdsfdsfs");
+            var list = value as IList;
+            if (list != null)
+            {
+                if (list.Count < 1) return false;
+            }
+            return true;
+        }
+    }
+
     public class EnsureMaxTenUsers : ValidationAttribute
     {
         public override bool IsValid(object value)
@@ -74,10 +92,10 @@ namespace app {
         public override bool IsValid(object value)
         {
             var list = value as IList;
-           foreach( var user in list) {
-               if (!(user is string)) return false;
-               if (Convert.ToString(user).Length > 30) return false;
-           }
+            foreach( var user in list) {
+                if (!(user is string)) return false;
+                if (Convert.ToString(user).Length > 30) return false;
+            }
             return true;
         }
     }
@@ -104,4 +122,68 @@ namespace app {
         }
 
     }
+    public class ModelStateValidationActionFilterAttribute : ActionFilterAttribute
+    {
+        public override void OnActionExecuting(ActionExecutingContext actionContext)
+        {    
+           
+                  System.Console.WriteLine("in action filter...");
+                var modelState = actionContext.ModelState;
+
+                var modelStateMessage = actionContext.ModelState.FirstOrDefault().Value?.Errors?.FirstOrDefault()?.ErrorMessage;
+
+                if (!modelState.IsValid)
+                    actionContext.Result = new ContentResult()
+                    {
+                        Content = modelStateMessage,
+                        StatusCode = 400
+                    };
+                 
+                base.OnActionExecuting(actionContext);
+
+                System.Console.WriteLine(modelState.ErrorCount);
+               
+
+               // TODO : only in production
+                if (modelState.ErrorCount > 0) {
+                    System.Console.WriteLine(actionContext.ModelState.FirstOrDefault().Key);
+                     if ( actionContext.HttpContext.Request.Method.Contains("GET") ) {
+
+                          System.Console.WriteLine("redirecting");
+
+                           actionContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { 
+                                action = "404", 
+                                controller = "Error", 
+                                area = "" 
+                            }));
+                    }
+                      
+                }
+ 
+        }
+    }
+    public class HttpGlobalExceptionFilter : IExceptionFilter
+    {
+        public void OnException(ExceptionContext exceptionContext)
+        {
+            System.Console.WriteLine("EXCEPTION!");
+
+                   if ( exceptionContext.HttpContext.Request.Method.Contains("GET") ) {
+                    exceptionContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { 
+                            action = "Error", 
+                            controller = "Home", 
+                            area = "" 
+                        }));
+                   }
+                   else {
+                       
+                exceptionContext.Result = new ContentResult()
+                    {
+                        Content = "Home/Error",
+                        StatusCode = 302
+                    };
+                }
+        }
+    }
+    
 }

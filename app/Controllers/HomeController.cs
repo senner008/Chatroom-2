@@ -42,6 +42,7 @@ namespace app.Controllers
             return View();
         }
 
+
         [HttpGet]
         [Route("/RoomInit/{id}")]
         public IActionResult RoomInit([FromRoute] int id)
@@ -58,6 +59,7 @@ namespace app.Controllers
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        [Route("/Home/Error")]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });

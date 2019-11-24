@@ -52,7 +52,7 @@ namespace app.Controllers
             } catch (MyChatHubException ex) {
                  return BadRequest(ex.Message);
             } catch (Exception ex) {
-                return BadRequest("An error has occurred");
+                throw new Exception(); 
             } 
 
             if (posts != null && posts.Any())

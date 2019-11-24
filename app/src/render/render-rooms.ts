@@ -13,9 +13,13 @@ export function pushState (id) {
 }
 
 window.onpopstate = function(event) {
-    console.log(event.state)
     actionRoomSelect(Number(event.state), actionRoomSelectRender1, actionRoomSelectRender2, false)
 };
+
+export function appendRoom (room) {
+    var roomLi = `<li data-id='${room.id}' class="list-group-item">${room.name}</li>`;
+    roomsList.find('.rooms').append(roomLi);
+}
 
 
 export function roomExists(id) {

@@ -56,20 +56,19 @@ namespace app
             services.AddScoped<IPostsRepository, PostsRepository>();
             services.AddScoped<IRoomsRepository, RoomsRepository>();
 
-
-
             services.AddSingleton<IHubLogger, HubLogger>();
+
+            // https://stackoverflow.com/questions/55733521/asp-net-core-validation-after-filters
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true;
+            });
             
             services.AddMvc(options =>
             {
                 options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
-            }).ConfigureApiBehaviorOptions(options => {
-                //options.SuppressModelStateInvalidFilter = true;
-                options.InvalidModelStateResponseFactory = actionContext =>
-                {
-                    var modelState = actionContext.ModelState.FirstOrDefault().Value.Errors.FirstOrDefault().ErrorMessage;
-                    return new BadRequestObjectResult(modelState);
-                };
+                 options.Filters.Add(new ModelStateValidationActionFilterAttribute());  
+                  options.Filters.Add(typeof(HttpGlobalExceptionFilter));
             });
         }
 
@@ -89,6 +88,8 @@ namespace app
 
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
+
+                
             }
             else
             {
@@ -98,6 +99,9 @@ namespace app
                 app.UseHsts();
                 app.UseStatusCodePagesWithRedirects("/Error/{0}");
             }
+
+            // app.ConfigureExceptionHandler();
+
             app.UseHttpsRedirection();
              app.UseStaticFiles();
 

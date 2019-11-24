@@ -51,9 +51,10 @@ namespace app.Repositories
             try {
                 await _context.Posts.AddAsync(post);
                 await _context.SaveChangesAsync();
-            } catch (DbUpdateException err) {
+              
+            } catch (Exception err) {
                 // TODO : create custom exception
-                throw new MyChatHubException("Unable to persist message");
+                throw new Exception("Unable to persist message");
             }
         }
 

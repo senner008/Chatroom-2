@@ -27,10 +27,18 @@ namespace app.Controllers
         [Route("Error/{StatusCode}")]
         public IActionResult HttpStatusCodeHandler(int statusCode) 
         {
-            if (statusCode == 404) 
+            if (statusCode == 404) {
+                Response.StatusCode = 404;
                 ViewBag.ErrorMessage = "Sorry, the resource you requested not not exist";
-            Response.StatusCode = 404;
-            return View("NotFound");
+            }
+            else if (statusCode == 405) {
+                Response.StatusCode = 405;
+                ViewBag.ErrorMessage = "Sorry, the resource can not be accessed";
+            }
+
+            return View(statusCode.ToString());
         }
+
+       
     }
 }

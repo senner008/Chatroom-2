@@ -15,7 +15,7 @@ namespace app.Models
 
         [Required]
         [StringLength(1000, ErrorMessage = "Message is too long")]
-        [HTMLSanitizerError(ErrorMessage = "Invalid message")]
+        [HTMLSanitizerError(ErrorMessage = "Invalid input")]
         public string Message { get; set; }
 
         [Required]

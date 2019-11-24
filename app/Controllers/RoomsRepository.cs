@@ -29,7 +29,7 @@ namespace app.Controllers
             _context = context;
         }
 
-        public async Task<IEnumerable<Room>> getRooms()
+        public async Task<List<Room>> getRooms()
         {
             return await _context.Rooms.ToListAsync();
         }
@@ -38,7 +38,7 @@ namespace app.Controllers
 
     public interface IRoomsRepository
     {
-        Task<IEnumerable<Room>> getRooms();
+        Task<List<Room>> getRooms();
     }
 
 

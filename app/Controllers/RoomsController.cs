@@ -44,7 +44,14 @@ namespace app.Controllers
         public async Task<IActionResult> Index()
         {
             Response.Headers.Add("Response-message", "Rooms received");
-            var rooms = await _roomsRepository.getRooms();
+            List<Room> rooms;
+            try {
+                 rooms = await _roomsRepository.getRooms();
+            }
+            catch (Exception) {
+                throw new Exception();
+            }
+           
             return Ok(rooms.Select(room => new { Id =  room.Id, Name = room.Name }));
         }
 
@@ -61,19 +68,43 @@ namespace app.Controllers
         public async Task<IActionResult> Index([FromBody] RoomCreateModel roomCreateModel)
         {
 
-            var getUsers = await _userManager.Users.Where(user => roomCreateModel.UserList.Any(nickname => user.NickName == nickname)).ToListAsync();
+            
+
+            List<ApplicationUser> users;
+            try {
+                 users = await _userManager.Users.Where(user => roomCreateModel.UserList.Any(nickname => user.NickName == nickname)).ToListAsync();
+            } catch (Exception) {
+                throw new Exception(); 
+            }
+
+            List<Room> roomsList = new List<Room>();
+            try {
+                  roomsList = await _roomsRepository.getRooms();  
+            } catch (Exception) {
+                throw new Exception(); 
+            }
+
+            if (roomsList != null && roomsList.Any(room => room.Name == roomCreateModel.RoomName.Trim())) {
+                return BadRequest("Room name already taken");
+            }
          
             // TODO : in try catch
+            List<UserRoom> userRoomsList = users.Select(user => new UserRoom {  UserId = user.Id}).ToList();
             var room = new Room
             {
                 Name = roomCreateModel.RoomName,
-                IsPublic = getUsers.Count == 0 ? true : false,
-                UsersLink = getUsers.Select(user => new UserRoom {  UserId = user.Id}).ToList()
+                IsPublic = users.Count == 0 ? true : false,
+                UsersLink = userRoomsList
             };
-            await _context.Rooms.AddAsync(room);
-            await _context.SaveChangesAsync();
-            await _hubContext.Clients.All.SendAsync ("CreateRoomMessage", room.Name, room.Id);
-            
+            try {
+                await _context.Rooms.AddAsync(room);
+                await _context.SaveChangesAsync();
+                await _hubContext.Clients.All.SendAsync ("CreateRoomMessage", room.Name, room.Id);
+            }
+            catch (Exception) {
+                throw new Exception();
+            }
+          
             return Ok();
 
         }

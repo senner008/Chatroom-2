@@ -25,6 +25,7 @@ namespace app.Models
         public string RoomName { get; set; }
 
         [Required]
+        [EnsureListMinimumOne(ErrorMessage = "Please select at least one user for the room")]
         [EnsureMaxTenUsers(ErrorMessage = "A maximum of 10 users are allowed in private rooms")]
         [EnsureUserNamesAreStringsAndMaxLength30(ErrorMessage = "User nicknames length exceeded")]
         public List<string> UserList {get; set;}

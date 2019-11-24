@@ -67,7 +67,7 @@ namespace SignalRChat.Hubs
 
                 // Subscribe to event
                 _hubLogger._connections.UserAdded += UserAddedCallback;
-                
+     
                 // Send Websocket message
                 await SendWSMessage (room.IsPublic ? Clients.All : Clients.Users (receivers));
 
@@ -78,6 +78,8 @@ namespace SignalRChat.Hubs
                 // Thread.Sleep (20000);
                 // Message saved
                 await _hubRepository.SavePost (post);
+
+
                 
 
             } catch (MyChatHubException ex) {
@@ -86,8 +88,7 @@ namespace SignalRChat.Hubs
                 // create generoic message for all other exceptions
                 await Clients.Caller.SendAsync ("ErrorMessage", ex.Message);
             } catch (Exception ex) {
-                await Clients.Caller.SendAsync ("ErrorMessage", "An error has occurred");
-                // throw new Exception(ex.Message);           
+               await Clients.Caller.SendAsync ("ErrorMessage", "Error");        
             } finally {
                 // System.Console.WriteLine ("FINALLY!");
                 // UNSUBSCRIBE TO EVENT

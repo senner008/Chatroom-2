@@ -31,17 +31,15 @@ export function Connection(connection : IHubConnection) {
     }
     
     function addLog(msg, status) {
-   
-        // var datenow = new Date();
-        // logs[datenow.toString()] = msg;
         callback.onLog(msg, status);
     }
     function addLogConnection(msg, status) {
-   
-        // var datenow = new Date();
-        // logs[datenow.toString()] = msg;
         callback.onLogConnection(msg, status);
     }
+
+
+
+
     const callback : any = {};
 
     const api = {
@@ -110,7 +108,7 @@ export function Connection(connection : IHubConnection) {
             callback.onReceiveRoom({name : roomname, id : roomId});
         },
         async onReceiveError(error) {
-            addLog(`Error : ${error}`, StatusEnum.fail);
+            addLog(`${error}`, StatusEnum.fail);
         }
     }
 

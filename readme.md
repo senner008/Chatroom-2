@@ -28,6 +28,9 @@
 - add validation - DONE 
 - create unique identifier for postsStorage keys - DONE
 - HTMLSanitizer to global filter - DONE
+- controller tests, fake user tests, integration tests
+- global exception handling, return a redirect in ws message on db error
+- fix scrolling layout
 - remove logic from listeners
 - Show other users connection status
 - Edit/Delete previous posts

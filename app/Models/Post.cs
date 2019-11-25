@@ -50,4 +50,18 @@ namespace app.Models
         // TODO : rename Rooms to Room
         public Room Room { get; set; }
     }
+
+       public class PostModel
+        {
+            public string PostBody { get; set; }
+
+            public string UserName { get; set; }
+
+            public DateTime CreateDate { get; set; }
+
+            public int RoomId { get; set;}
+
+            public string Identifier { get; set; }
+
+        }
 }

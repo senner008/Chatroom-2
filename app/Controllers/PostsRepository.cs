@@ -23,7 +23,7 @@ namespace app.Controllers
         // private readonly ILogger<PostsRepository> _logger;
         public ApplicationDbContext _context { get; }
 
-        public PostsRepository(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IHubRepository hubRepository)
+        public PostsRepository(ApplicationDbContext context)
         {
             _context = context;
         }

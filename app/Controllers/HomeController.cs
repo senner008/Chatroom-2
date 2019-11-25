@@ -24,14 +24,11 @@ namespace app.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        public IPostsRepository _postsRepository { get; }
-        public IRoomsRepository _roomsRepository { get; }
 
-        public HomeController(ILogger<HomeController> logger, IHubContext<ChatHub> hubContext, IPostsRepository postsRepository, IRoomsRepository roomsRepository)
+
+        public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
-            _postsRepository = postsRepository;
-            _roomsRepository = roomsRepository;
         }
 
 

@@ -20,9 +20,8 @@ export async function actionRoomSelectRender1(id) {
 }
 export async function actionRoomSelectRender2() {
     renderPostInputField(true);
-    renderPostList(State.getActiveRoom().getPosts());
+    renderPostList(State.getActiveRoom().getSortedPostsList());
     renderView(true);
-   
     showLoader(false)
     scrollToBottom();
 }

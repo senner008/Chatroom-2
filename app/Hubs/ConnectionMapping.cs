@@ -17,8 +17,7 @@ namespace SignalRChat.Hubs
     public class ConnectionMapping<T>
     {
      
-        private  Dictionary<T, UserConnectionInfo> _connections =
-            new Dictionary<T, UserConnectionInfo>();
+        private  Dictionary<T, UserConnectionInfo> _connections = new Dictionary<T, UserConnectionInfo>();
         private UserAddedEvent userAdded;
         
         //https://stackoverflow.com/questions/2205711/should-i-lock-event

@@ -13,7 +13,6 @@ interface IHubConnection {
 export function Connection(connection : IHubConnection) {
 
     var appInit : Promise<boolean>;
-    // var logs = {};
 
     async function StartConnection (cb) : Promise<boolean> {
         var tries = 1;
@@ -36,9 +35,6 @@ export function Connection(connection : IHubConnection) {
     function addLogConnection(msg, status) {
         callback.onLogConnection(msg, status);
     }
-
-
-
 
     const callback : any = {};
 

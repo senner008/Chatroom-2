@@ -43,7 +43,7 @@ namespace app.Controllers
                     UserName = post.User.NickName, 
                     CreateDate = post.CreateDate,
                     RoomId = post.RoomId,
-                    Identifier = Helper.GuidToBigInt(post.Identifier)
+                    Identifier = post.Identifier.ToString()
                 })
                 .AsNoTracking()
                 .ToListAsync();

@@ -1,5 +1,5 @@
 
-
+// TODO : refactor
 const headerRender = (function IIFE ()  {
 
     function removeClasses(elem) {
@@ -34,6 +34,7 @@ export function showLoader(isOn : boolean) {
     $("#posts-container #posts")[isOn ? 'hide' : 'show']();
 }
 
+// TODO : get all elems with class state-conditional
 export function renderView(isTrue : boolean) : void {
     $("#posts-container main")[isTrue ? 'show' : 'hide'](); 
     $("#master-list .create")[isTrue ? 'show' : 'hide'](); 

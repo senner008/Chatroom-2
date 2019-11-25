@@ -52,7 +52,7 @@ namespace SignalRChat.Hubs
                 post.PostBody, 
                 post.RoomId, 
                 post.CreateDate, 
-                Helper.GuidToBigInt(post.Identifier)
+                post.Identifier.ToString()
             );
         }
         private async void UserAddedCallback (object sender, AddMyUserEventArgs args) => await SendToUserAdded (args.Id);

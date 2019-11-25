@@ -55,14 +55,6 @@ namespace app.Controllers
             return Ok(rooms.Select(room => new { Id =  room.Id, Name = room.Name }));
         }
 
-        // [HttpGet]
-        // [Route("/Rooms/UserRooms")]
-        // public async Task<IActionResult> Userrooms()
-        // {
-        //     return Ok(await _context.Set<UserRoom>().ToListAsync());
-        // }
-
-        // TODO : Global validation fail handling
         [HttpPost]
         [Route("/Rooms/Create")]
         public async Task<IActionResult> Index([FromBody] RoomCreateModel roomCreateModel)
@@ -87,7 +79,6 @@ namespace app.Controllers
                 return BadRequest("Room name already taken");
             }
          
-            // TODO : in try catch
             List<UserRoom> userRoomsList = users.Select(user => new UserRoom {  UserId = user.Id}).ToList();
             var room = new Room
             {

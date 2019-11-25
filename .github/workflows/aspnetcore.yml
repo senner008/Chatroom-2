@@ -15,12 +15,12 @@ jobs:
         dotnet-version: '3.0.100'
     - name: Build with dotnet
       run: dotnet build --configuration Release
-    - name: Run xUnit tests
-      run: dotnet test
-      env : 
-      MYSQL_DB : ${{ secrets.MYSQL_DB }}
     - name: Client project setup
       run: cd app && npm install && cd ..
     - name: Client unit tests
       run: cd app && npm run test && cd ..
+    - name: Run xUnit tests
+      run: dotnet test
+      env : 
+      MYSQL_DB : ${{ secrets.MYSQL_DB }}
 

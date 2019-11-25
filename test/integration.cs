@@ -25,12 +25,12 @@ namespace tests
             string wanted_path = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory()));
             // TODO :  better way to get app path?
             var parent = Directory.GetParent(wanted_path).Parent;
-            string env = Environment.GetEnvironmentVariable("MYSQL_DB");
+            string envdb = Environment.GetEnvironmentVariable("MYSQL_DB");
 
             var webhost = new WebHostBuilder();
-            if (!String.IsNullOrEmpty(env)) {       
+            if (!String.IsNullOrEmpty(envdb)) {       
                 webhost.ConfigureTestServices(services => {
-                    services.AddDbContext<ApplicationDbContext> (options => options.UseMySql(Environment.GetEnvironmentVariable("MYSQL_DB")));
+                    services.AddDbContext<ApplicationDbContext> (options => options.UseMySql(envdb));
                 });
             } else {
                  IConfigurationRoot configuration = new ConfigurationBuilder()

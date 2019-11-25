@@ -30,13 +30,11 @@ namespace app
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var db = Environment.GetEnvironmentVariable ("MYSQL_DB");
-            Boolean isProduction = !String.IsNullOrEmpty (db);
-            string CnString = isProduction ? db : Configuration.GetConnectionString("CodeToShowDb");
+            var envdb = Environment.GetEnvironmentVariable ("MYSQL_DB");
+            Boolean isProduction = !String.IsNullOrEmpty (envdb);
+            string CnString = isProduction ? envdb : Configuration.GetConnectionString("CodeToShowDb");
 
            services.AddDbContext<ApplicationDbContext>(options => options.UseMySql(CnString));
-
-        //    services.AddDbContext<ApplicationDbContext>(options => options.UseInMemoryDatabase("chatroom"));
 
             services.AddDefaultIdentity<ApplicationUser> (options => {
                 options.SignIn.RequireConfirmedAccount = true;

@@ -1,7 +1,7 @@
 import { actionRoomSelect, actionRoomSelectRender1, actionRoomSelectRender2 } from "../actions/action-room-select";
 
 
-const roomsList = $("#rooms-list");
+const roomsList = $("#master-list");
 
 export function renderRoomListSelect(id) {
     roomsList.find('li').each((index, li) => li.classList.remove("room-selected"));

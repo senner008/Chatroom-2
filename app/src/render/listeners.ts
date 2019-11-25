@@ -7,7 +7,7 @@ import { showModal } from "./render";
 
 
 function roomClickListener () {
-    $("#rooms-list").find('.rooms').on("click", (e) => {
+    $("#master-list").find('.rooms').on("click", (e) => {
         var id = Number(e.target.dataset.id);
         actionRoomSelect(id, actionRoomSelectRender1, actionRoomSelectRender2, true)
     });
@@ -23,7 +23,7 @@ function roomClickListener () {
 
 // TODO : move logic to actions
 function CreateRoomClickHandler() {
-    $("#rooms-list .create").on("click", async () => {
+    $("#master-list .create").on("click", async () => {
         await setUsers()
         renderUsers(State.getUsers())
         showModal();

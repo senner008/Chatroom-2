@@ -35,7 +35,7 @@ namespace app.Controllers
             return await _context.Posts
                 .Where(post => post.RoomId == id)
                 .OrderByDescending(post => post.Id)
-                .Take(10)
+                .Take(100)
                 .Include(post => post.Room)
                 .ThenInclude(room => room.UsersLink)
                 .Select(post => new PostModel { 

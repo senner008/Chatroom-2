@@ -8,7 +8,7 @@ import { actionInit, actionInitRender } from "./actions/action-init";
 import { actionReceiveMessage, actionReceiveMessageRender } from "./actions/action-receive-message";
 import { actionReceiveRoom, actionReceiveRoomRender } from "./actions/action-receive-room";
 import { actionOncloseRender } from "./actions/action-onclose";
-import { actionOnRestartRender, actionOnRestart } from "./actions/action-onrestart";
+import {  actionOnRestart } from "./actions/action-onrestart";
 import { State } from "./State";
 import { Logger } from "./GlobalLogger";
 

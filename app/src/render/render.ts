@@ -1,11 +1,25 @@
 
-export function renderConnectionMessage (msg, color) {
-    $("#connection-message").text(msg).css(color);
-}
 
-export function renderConnectionState (msg, color) {
-    $("#connection-state").text(msg).css(color);
-}
+const headerRender = (function IIFE ()  {
+
+    function removeClasses(elem) {
+        elem.find(".alert").removeClass("alert-success").removeClass("alert-danger")
+    }
+    var cnmessage = $("#connection-message");
+    var stateMessage = $("#connection-state");
+
+    return {
+        message (msg, color) {
+            removeClasses(cnmessage);
+            cnmessage.find(".alert").text(msg).addClass(msg ? color : "");
+        },
+        state (msg, color) {
+            removeClasses(stateMessage);
+            stateMessage.find(".alert").text(msg).addClass(msg ? color : "");
+        }
+    }
+})();
+
 
 export function showModal() {
     $('#room-create-modal').modal('show');
@@ -21,7 +35,11 @@ export function showLoader(isOn : boolean) {
 }
 
 export function renderView(isTrue : boolean) : void {
-    $("#posts-container")[isTrue ? 'show' : 'hide'](); 
+    $("#posts-container main")[isTrue ? 'show' : 'hide'](); 
+    $("#master-list .create")[isTrue ? 'show' : 'hide'](); 
+    $("#master-list .rooms")[isTrue ? 'show' : 'hide'](); 
     $("#connection-message")[isTrue ? 'show' : 'hide'](); 
     $("#reconnect-button")[isTrue ? 'hide' : 'show'](); 
 }
+
+export { headerRender }

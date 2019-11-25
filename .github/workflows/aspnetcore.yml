@@ -22,5 +22,5 @@ jobs:
     - name: Run xUnit tests
       run: dotnet test
       env : 
-      MYSQL_DB : ${{ secrets.MYSQL_DB }}
+        MYSQL_DB : ${{ secrets.MYSQL_DB }}
 

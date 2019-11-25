@@ -30,9 +30,9 @@ namespace app
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
-            Boolean isProduction = !String.IsNullOrEmpty (Environment.GetEnvironmentVariable ("HEROKU_PRODUCTION"));
-            string CnString = isProduction ? Environment.GetEnvironmentVariable ("MYSQL_DB") : Configuration.GetConnectionString("CodeToShowDb");
+            var db = Environment.GetEnvironmentVariable ("MYSQL_DB");
+            Boolean isProduction = !String.IsNullOrEmpty (db);
+            string CnString = isProduction ? db : Configuration.GetConnectionString("CodeToShowDb");
 
            services.AddDbContext<ApplicationDbContext>(options => options.UseMySql(CnString));
 
@@ -73,15 +73,15 @@ namespace app
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(RoleManager<IdentityRole> roleManager, IApplicationBuilder app, IWebHostEnvironment env, UserManager<ApplicationUser> userManager, ApplicationDbContext context)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, UserManager<ApplicationUser> userManager, ApplicationDbContext context)
         {
             if (env.IsDevelopment())
             {
                 // These will run synchronously when without await 
                 var pass = Configuration.GetSection ("Passwords").GetSection ("adminpass").Value;
-                SeedData.SeedApplicationUsers (userManager, "alpha@mail.com", "alpha", pass, roleManager);
-                SeedData.SeedApplicationUsers (userManager, "beta@mail.com", "beta", pass, roleManager);
-                SeedData.SeedApplicationUsers (userManager, "gamma@mail.com", "gamma", pass, roleManager);
+                SeedData.SeedApplicationUsers (userManager, "alpha@mail.com", "alpha", pass);
+                SeedData.SeedApplicationUsers (userManager, "beta@mail.com", "beta", pass);
+                SeedData.SeedApplicationUsers (userManager, "gamma@mail.com", "gamma", pass);
 
                 SeedData.SeedApplicationRooms(context, userManager);
                 SeedData.SeedApplicationPosts(context, userManager, Configuration.GetConnectionString("CodeToShowDb"));

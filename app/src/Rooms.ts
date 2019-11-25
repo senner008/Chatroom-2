@@ -7,7 +7,7 @@ export interface IRoomClass {
     id : number;
     onActive : (posts) => void;
     addPost : (post : IPost) => void;
-    getPosts : () => any;
+    getSortedPostsList : () => any;
 
 }
 
@@ -22,19 +22,22 @@ function RoomClass (name : string, id : number) : IRoomClass {
             posts.forEach(post => this.addPost(post));
         },
         addPost(post : IPost) {
+            console.log(post.identifier in posts)
             posts[post.identifier] = {
                 postBody : post.postBody,
                 postUser : post.userName,
                 roomId : id,
-                createDate : post.createDate
+                createDate : post.createDate,
+                createDateNumber :  new Date(post.createDate).getTime()
             }
+            console.log(posts)
         },
-        getPosts() {
+        getSortedPostsList() {
+            // TODO : show create date
             var list = "";
             Object.keys(posts)
-            .sort((a, b) => (posts[a].createDate > posts[b].createDate) ? 1 : -1)
+            .sort((a, b) => (posts[a].createDateNumber > posts[b].createDateNumber) ? 1 : -1)
             .forEach(function(v, i) {
-                console.log(typeof v)
                 list += postElement(posts[v].postUser, posts[v].postBody);
             });
             return list;

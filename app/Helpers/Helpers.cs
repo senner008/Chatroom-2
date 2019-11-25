@@ -127,7 +127,6 @@ namespace app {
         public override void OnActionExecuting(ActionExecutingContext actionContext)
         {    
            
-                  System.Console.WriteLine("in action filter...");
                 var modelState = actionContext.ModelState;
 
                 var modelStateMessage = actionContext.ModelState.FirstOrDefault().Value?.Errors?.FirstOrDefault()?.ErrorMessage;
@@ -141,7 +140,7 @@ namespace app {
                  
                 base.OnActionExecuting(actionContext);
 
-                System.Console.WriteLine(modelState.ErrorCount);
+           
                
 
                // TODO : only in production
@@ -166,7 +165,6 @@ namespace app {
     {
         public void OnException(ExceptionContext exceptionContext)
         {
-            System.Console.WriteLine("EXCEPTION!");
 
                    if ( exceptionContext.HttpContext.Request.Method.Contains("GET") ) {
                     exceptionContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { 

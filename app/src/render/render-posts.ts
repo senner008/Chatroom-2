@@ -18,3 +18,7 @@ export function postElement(user, msg) {
         <p class="post-message">${msg}</p>
     </div>`;
 }
+
+export function scrollToBottom() {
+    $(postsSelectors.posts)[0].scrollTop = $(postsSelectors.posts)[0].scrollHeight;
+}

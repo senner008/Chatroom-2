@@ -10,7 +10,7 @@ using Z.EntityFramework.Extensions;
 
 public static class SeedData
 {
-    public static async void SeedApplicationUsers(UserManager<ApplicationUser> userManager, string userName, string nickName, string password, RoleManager<IdentityRole> roleManager)
+    public static async void SeedApplicationUsers(UserManager<ApplicationUser> userManager, string userName, string nickName, string password)
     {
 
     

@@ -38,6 +38,7 @@ footer {
 #posts-container {
     display : flex;
     flex-grow: 1;
+    overflow: hidden;
   }
 
 #posts-container .container {
@@ -48,30 +49,76 @@ footer {
 
 #posts-container .container #posts {
   overflow: auto;
+  flex-grow : 1;
+}
+
+#input-container {
+  margin-top: 10px;
+  margin-bottom: 0px !important;
+}
+#post-input .row{
+  margin: 0 !important;
+}
+
+
+/* width */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: white;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: lightgrey;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
 }
 
 #posts-container nav {
   flex: 1 1 100px;
-  margin-right: 20px;
   cursor: pointer;
 }
 
 #posts-container main {
+  margin-left: 20px;
   flex: 3 1 200px;
+  padding-top: 10px !important;
+}
+
+#posts-container .container {
+  padding: 0 !important;
 }
 
 #posts-container #post-input { 
 display: none;
 }
 
+h2 {
+  margin : 0;
+  margin-left: 4px;
+  
+}
+
 .post {
   display: flex;
+  padding: 10px 0px;
 }
   
 .post .user {
-  margin-right: 15px;
+  margin-right: 20px;
   font-weight: bold;
-  min-width: 150px;
+}
+
+.post p {
+  margin : 0 !important;
+
 }
 
 .room-selected {
@@ -81,9 +128,18 @@ display: none;
 #chatroom-header {
   display: flex;
   justify-content: space-between;
+  height : 50px;
+  padding-top: 10px;
+  margin-bottom: 5px;
 }
 
+#chatroom-header li {
+  list-style: none;
+}
 
+.alert {
+  margin: 0 !important;
+}
 
 
 /* Modal

@@ -1,31 +1,20 @@
 
-import { renderConnectionMessage, renderConnectionState } from "./render/render";
+
 import { StatusEnum } from "./Ajax";
+import { headerRender } from "./render/render";
 
 const color = {
-    red : {color: "red"},
-    green : {color: "green"}
+    red : "alert-danger",
+    green : "alert-success"
 }
 
 const Logger  = (function() {
     return Object.freeze({
         message(msg  : string, status : StatusEnum) {
-            if (status == StatusEnum.success)
-            {
-                renderConnectionMessage(msg,color.green);
-            }
-            else {
-                renderConnectionMessage(msg,color.red);
-            }
+            headerRender.message(msg, status == StatusEnum.success ? color.green : color.red);
         },
         connectionState(msg  : string, status : StatusEnum) {
-            if (status == StatusEnum.success)
-            {
-               renderConnectionState(msg,color.green);
-            }
-            else {
-                renderConnectionState(msg,color.red);
-            }
+            headerRender.state(msg, status == StatusEnum.success ? color.green : color.red);
         }
     });
 }());

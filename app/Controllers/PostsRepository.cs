@@ -23,7 +23,7 @@ namespace app.Controllers
         // private readonly ILogger<PostsRepository> _logger;
         public ApplicationDbContext _context { get; }
 
-        public PostsRepository(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IHubRepository hubRepository)
+        public PostsRepository(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -35,7 +35,7 @@ namespace app.Controllers
             return await _context.Posts
                 .Where(post => post.RoomId == id)
                 .OrderByDescending(post => post.Id)
-                .Take(10)
+                .Take(100)
                 .Include(post => post.Room)
                 .ThenInclude(room => room.UsersLink)
                 .Select(post => new PostModel { 
@@ -43,7 +43,7 @@ namespace app.Controllers
                     UserName = post.User.NickName, 
                     CreateDate = post.CreateDate,
                     RoomId = post.RoomId,
-                    Identifier = Helper.GuidToBigInt(post.Identifier)
+                    Identifier = post.Identifier.ToString()
                 })
                 .AsNoTracking()
                 .ToListAsync();

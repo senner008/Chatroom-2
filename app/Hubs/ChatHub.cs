@@ -52,7 +52,7 @@ namespace SignalRChat.Hubs
                 post.PostBody, 
                 post.RoomId, 
                 post.CreateDate, 
-                Helper.GuidToBigInt(post.Identifier)
+                post.Identifier.ToString()
             );
         }
         private async void UserAddedCallback (object sender, AddMyUserEventArgs args) => await SendToUserAdded (args.Id);
@@ -67,10 +67,10 @@ namespace SignalRChat.Hubs
 
                 // Subscribe to event
                 _hubLogger._connections.UserAdded += UserAddedCallback;
-     
+
                 // Send Websocket message
                 await SendWSMessage (room.IsPublic ? Clients.All : Clients.Users (receivers));
-
+     
                 ///
                 /// DANGER ZONE
                 ///
@@ -79,16 +79,13 @@ namespace SignalRChat.Hubs
                 // Message saved
                 await _hubRepository.SavePost (post);
 
-
-                
-
             } catch (MyChatHubException ex) {
                 // sendAsync exceptions are also caught here
                 // create custom IHubRepository exception
                 // create generoic message for all other exceptions
                 await Clients.Caller.SendAsync ("ErrorMessage", ex.Message);
             } catch (Exception ex) {
-               await Clients.Caller.SendAsync ("ErrorMessage", "Error");        
+               await Clients.Caller.SendAsync ("ErrorMessage", "FatalError");        
             } finally {
                 // System.Console.WriteLine ("FINALLY!");
                 // UNSUBSCRIBE TO EVENT

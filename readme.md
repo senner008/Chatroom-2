@@ -29,16 +29,18 @@
 - create unique identifier for postsStorage keys - DONE
 - HTMLSanitizer to global filter - DONE
 - global exception handling, return a redirect in ws message on db error - DONE
-- controller tests, fake user tests, integration tests
-- fix scrolling layout
+- controller tests, integration tests - DONE
+- fix scrolling layout - DONE
+- add scroll to rooms
 - remove logic from listeners
+- add content security policies
+
+
+## TODO SECONDARY : 
+- implement "load more messages"
 - Show other users connection status
 - Edit/Delete previous posts
 - Encryption
-- add content security policies
-- implement "load more messages"
-
-## TODO SECONDARY : 
 - Runtime table creation using raw sql
 - simulate user interaction using puppeteer
 - hide rooms with no access on init rooms get

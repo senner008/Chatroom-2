@@ -27,7 +27,7 @@ namespace test
             this.post = hubInst.GetPost();
             this.postmessage = hubInst.GetPostMessage();
             this.receivers = hubInst.GetReceivers();
-             this.UserIdentifierString = hubInst.UserIdentifier();
+            this.UserIdentifierString = hubInst.UserIdentifier();
 
             mockRepo = new Mock<IHubRepository> ();
             mockRepo.Setup (repo => repo.FindAndValidateRoom (1, UserIdentifierString)).ReturnsAsync(room);
@@ -173,7 +173,8 @@ namespace test
                 Context = mockCallerContext.Object
             };
 
-            Task task1 = Task.Factory.StartNew(() => chathub.SendMessage(postmessage));
+            Task task1 = Task.Factory.StartNew
+            (() => chathub.SendMessage(postmessage));
             Thread.Sleep(1000);
             // Wait, then execute OnConnectedAsync like when user is connected
             Task task2 = Task.Factory.StartNew(() => chathub.OnConnectedAsync());

@@ -15,12 +15,16 @@ else
     @:<header id='chatroom-header' >
 }    
 
-    <h3>Chatroom</h3>
+    <h2>Chatroom</h2>
     <div id="connectionInfo">
         <ul>
-            <li id="connection-state"></li>
-            <li id="connection-message"></li>
-            <li id="reconnect-button"><button>Reconnect</button></li>
+
+            <li id="connection-message">
+                <div class="alert" role="alert">
+               
+                </div>
+            </li>
+            <li id="reconnect-button"> <button class="btn btn-outline-secondary" type="button">Reconnect</button></li>
         </ul>
     </div>
 </header>
@@ -56,11 +60,17 @@ else
 </div>
 
 <div id="posts-container">
-    <nav id="rooms-list">
+    <nav id="master-list">
+         <ul class="list-group connection">
+           <li class="list-group-item" id="connection-state">
+                <div class="alert" role="alert">
+               
+                </div>
+            </li>
+        </ul>
         <ul class="list-group create">
             <li class="list-group-item">Create room<i class="fas fa-folder-plus fa-lg" style="padding-left: 10px"></i></li>
         </ul>
-        
         <ul class="list-group rooms">
             
         </ul>
@@ -74,12 +84,10 @@ else
             </div>
             <div id="post-input">
                 <div class="row">
-                   
-                <div class="col-4"><input type="text" id="messageInput" />
-                <form id="hubsendpost" style="display:none" method="post"></form>
-                <div class="row">
-                    <div class="col-6">
-                        <input type="button" id="sendButton" value="Send Message" />
+                <div id="input-container" class="input-group mb-3">
+                    <input type="text" id="messageInput" class="form-control" placeholder="Message" aria-label="Message" aria-describedby="message">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" id="sendButton" type="button">Send message</button>
                     </div>
                 </div>
               
@@ -87,7 +95,7 @@ else
         </div>
     </main>
 </div>
-
+ <form id="hubsendpost" style="display:none" method="post"></form>
 <script src="~/custom/main.js" asp-append-version="true"></script>
 
 

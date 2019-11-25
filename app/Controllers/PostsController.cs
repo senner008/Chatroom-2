@@ -24,16 +24,11 @@ namespace app.Controllers
     [Route("[controller]")]
     public class PostsController : Controller
     {
-        // private readonly ILogger<PostsController> _logger;
-        public ApplicationDbContext _context { get; }
-        public UserManager<ApplicationUser> _userManager { get; }
         public IHubRepository _hubRepository { get; }
         public IPostsRepository _postsRepository { get; }
 
-        public PostsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IHubRepository hubRepository, IPostsRepository postsRepository)
+        public PostsController(IHubRepository hubRepository, IPostsRepository postsRepository)
         {
-            _context = context;
-            _userManager = userManager;
             _hubRepository = hubRepository;
             _postsRepository = postsRepository;
         }
@@ -57,7 +52,7 @@ namespace app.Controllers
 
             if (posts != null && posts.Any())
             {
-                Response.Headers.Add("Response-message", "Posts received for room " + id);
+                // Response.Headers.Add("Response-message", "Posts received for room " + id);
                 return Ok(posts);
             }
 
@@ -66,17 +61,5 @@ namespace app.Controllers
         }
 
     }
-    public class PostModel
-    {
-        public string PostBody { get; set; }
-
-        public string UserName { get; set; }
-
-        public DateTime CreateDate { get; set; }
-
-        public int RoomId { get; set;}
-
-        public string Identifier { get; set; }
-
-    }
+ 
 }

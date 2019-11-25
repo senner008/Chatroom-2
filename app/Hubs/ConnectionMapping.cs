@@ -20,23 +20,34 @@ namespace SignalRChat.Hubs
         public  Dictionary<T, UserConnectionInfo> _connections =
             new Dictionary<T, UserConnectionInfo>();
         private UserAddedEvent userAdded;
+        
+        //https://stackoverflow.com/questions/2205711/should-i-lock-event
+        private readonly object eventLock = new object();
 
         public event UserAddedEvent UserAdded
         {
             add
             {   
-                System.Console.WriteLine(userAdded == null);
-                if (userAdded == null || !userAdded.GetInvocationList().Contains(value))
+          
+                lock (eventLock) 
                 {
-                    
-                    System.Console.WriteLine("adding...");
-                    userAdded += value;
+                        if (userAdded == null || !userAdded.GetInvocationList().Contains(value))
+                        {
+                            
+                            System.Console.WriteLine("adding...");
+                            userAdded += value;
+                        }
                 }
+     
             }
             remove
             {
-                System.Console.WriteLine("removing...");
-                userAdded -= value;
+                lock (eventLock)
+                {
+                    System.Console.WriteLine("removing...");
+                     userAdded -= value;
+                }
+                
             }
         }
 
@@ -48,9 +59,16 @@ namespace SignalRChat.Hubs
                 {
                     _connections.Add(key, userInfo);
                 }
+                
             }
-          
-            if (userAdded != null)
+
+            UserAddedEvent handler;
+            lock (eventLock)
+            {
+                handler = userAdded;
+            }
+                
+            if (handler != null)
                 userAdded(this, new AddMyUserEventArgs { Id = key as string});
         }
 

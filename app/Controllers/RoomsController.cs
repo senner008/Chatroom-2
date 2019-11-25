@@ -67,8 +67,7 @@ namespace app.Controllers
         [Route("/Rooms/Create")]
         public async Task<IActionResult> Index([FromBody] RoomCreateModel roomCreateModel)
         {
-
-            
+    
 
             List<ApplicationUser> users;
             try {

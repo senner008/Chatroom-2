@@ -59,22 +59,22 @@ namespace test
             var viewResult = Assert.IsType<ViewResult>(result);
         }
 
-           [Fact]
-            public async Task Pssts_Controller_getPostsByRoomId_Should_Return_List_Of_Posts () 
-            {
-                // Arrange
-                var mockhubRepo = new Mock<IHubRepository>();
-                var mockPostsRepo = new Mock<IPostsRepository>();
-                mockPostsRepo.Setup(repo => repo.getPostsByRoomId(1)).ReturnsAsync(GetTestSessions());
+        [Fact]
+        public async Task Posts_Controller_getPostsByRoomId_Should_Return_List_Of_Posts () 
+        {
+            // Arrange
+            var mockhubRepo = new Mock<IHubRepository>();
+            var mockPostsRepo = new Mock<IPostsRepository>();
+            mockPostsRepo.Setup(repo => repo.getPostsByRoomId(1)).ReturnsAsync(GetTestSessions());
 
-                var controller = new PostsController(mockhubRepo.Object, mockPostsRepo.Object);
+            var controller = new PostsController(mockhubRepo.Object, mockPostsRepo.Object);
 
-                // Act
-                var result = await controller.getPostsByRoomId(1);
-                
-                // Assert
-                Assert.IsType<OkObjectResult>(result);
-            }
+            // Act
+            var result = await controller.getPostsByRoomId(1);
+            
+            // Assert
+            Assert.IsType<OkObjectResult>(result);
+        }
 
     }
 }

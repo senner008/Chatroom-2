@@ -31,8 +31,7 @@ namespace app
         public void ConfigureServices(IServiceCollection services)
         {
             var envdb = Environment.GetEnvironmentVariable ("MYSQL_DB");
-            Boolean isProduction = !String.IsNullOrEmpty (envdb);
-            string CnString = isProduction ? envdb : Configuration.GetConnectionString("CodeToShowDb");
+            string CnString = !String.IsNullOrEmpty (envdb) ? envdb : Configuration.GetConnectionString("CodeToShowDb");
 
            services.AddDbContext<ApplicationDbContext>(options => options.UseMySql(CnString));
 
@@ -65,8 +64,8 @@ namespace app
             services.AddMvc(options =>
             {
                 options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
-                 options.Filters.Add(new ModelStateValidationActionFilterAttribute());  
-                  options.Filters.Add(typeof(HttpGlobalExceptionFilter));
+                options.Filters.Add(new ModelStateValidationActionFilterAttribute());  
+                options.Filters.Add(typeof(HttpGlobalExceptionFilter));
             });
         }
 
@@ -86,12 +85,10 @@ namespace app
 
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
-
-                
+  
             }
             else
             {
-     
                 app.UseExceptionHandler("/Home/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();

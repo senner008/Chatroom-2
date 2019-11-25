@@ -17,6 +17,8 @@ jobs:
       run: dotnet build --configuration Release
     - name: Run xUnit tests
       run: dotnet test
+      env : 
+      MYSQL_DB : ${{ secrets.MYSQL_DB }}
     - name: Client project setup
       run: cd app && npm install && cd ..
     - name: Client unit tests

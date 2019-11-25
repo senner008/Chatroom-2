@@ -17,19 +17,19 @@ namespace SignalRChat.Hubs
     public class ConnectionMapping<T>
     {
      
-        public  Dictionary<T, UserConnectionInfo> _connections =
+        private  Dictionary<T, UserConnectionInfo> _connections =
             new Dictionary<T, UserConnectionInfo>();
         private UserAddedEvent userAdded;
         
         //https://stackoverflow.com/questions/2205711/should-i-lock-event
-        private readonly object eventLock = new object();
+        private readonly object ineverchange_eventLock = new object();
 
         public event UserAddedEvent UserAdded
         {
             add
             {   
           
-                lock (eventLock) 
+                lock (ineverchange_eventLock) 
                 {
                         if (userAdded == null || !userAdded.GetInvocationList().Contains(value))
                         {
@@ -42,7 +42,7 @@ namespace SignalRChat.Hubs
             }
             remove
             {
-                lock (eventLock)
+                lock (ineverchange_eventLock)
                 {
                     System.Console.WriteLine("removing...");
                      userAdded -= value;
@@ -63,7 +63,7 @@ namespace SignalRChat.Hubs
             }
 
             UserAddedEvent handler;
-            lock (eventLock)
+            lock (ineverchange_eventLock)
             {
                 handler = userAdded;
             }

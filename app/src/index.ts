@@ -38,7 +38,7 @@ import { Logger } from "./GlobalLogger";
     });
 
     connection.onLog(async (log, status) => {
-       if (log === "Error") {
+       if (log.trim().toLowerCase() == "fatalerror") {
         window.location.replace(location.origin + "/Home/Error");
        }
         Logger.message(log, status);

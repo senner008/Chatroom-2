@@ -5,15 +5,15 @@ const headerRender = (function IIFE ()  {
     function removeClasses(elem) {
         elem.find(".alert").removeClass("alert-success").removeClass("alert-danger")
     }
-    var cnmessage = $("#connection-message");
-    var stateMessage = $("#connection-state");
-
+    
     return {
         message (msg, color) {
+            var cnmessage = $("#connection-message");
             removeClasses(cnmessage);
             cnmessage.find(".alert").text(msg).addClass(msg ? color : "");
         },
         state (msg, color) {
+            var stateMessage = $("#connection-state");
             removeClasses(stateMessage);
             stateMessage.find(".alert").text(msg).addClass(msg ? color : "");
         }

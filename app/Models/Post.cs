@@ -47,7 +47,6 @@ namespace app.Models
 
         public ApplicationUser User { get; set; }
 
-        // TODO : rename Rooms to Room
         public Room Room { get; set; }
     }
 

@@ -33,6 +33,7 @@
 - fix scrolling layout - DONE
 - add content security policies - DONE
 - add scroll to rooms - DONE
+- fix when no room route
 - remove logic from listeners
 
 

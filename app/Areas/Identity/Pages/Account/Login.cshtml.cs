@@ -61,9 +61,9 @@ namespace app.Areas.Identity.Pages.Account
         public async Task OnGetAsync(string returnUrl = null)
         {
             System.Console.WriteLine(Request.Scheme);
-      
+            System.Console.WriteLine("https://" + Request.Host.Host + "/Identity/Account/Login");
             if (Request.Scheme != "https") {
-                Response.Redirect("https://" + Request.Host.Host + "/Account/Login", true);
+                Response.Redirect("https://" + Request.Host.Host + "Identity/Account/Login", true);
             }
 
             if (!string.IsNullOrEmpty(ErrorMessage))

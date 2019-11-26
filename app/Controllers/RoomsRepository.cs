@@ -22,16 +22,36 @@ namespace app.Controllers
     {
         private readonly ILogger<RoomsRepository> _logger;
         public ApplicationDbContext _context { get; }
+        public IHubContext<ChatHub> _hubContext { get; }
+        public UserManager<ApplicationUser> _userManager { get; }
 
-        public RoomsRepository(ILogger<RoomsRepository> logger, ApplicationDbContext context)
+        public RoomsRepository(ILogger<RoomsRepository> logger, ApplicationDbContext context, IHubContext<ChatHub> hubContext, UserManager<ApplicationUser> userManager)
         {
             _logger = logger;
             _context = context;
+            _hubContext = hubContext;
+            _userManager = userManager;
+        }
+
+        public async Task<List<ApplicationUser>> getUsersByNuckname(RoomCreateModel roomCreateModel) 
+        {
+            return await _userManager.Users.Where(user => roomCreateModel.UserList.Any(nickname => user.NickName == nickname)).ToListAsync();
         }
 
         public async Task<List<Room>> getRooms()
         {
             return await _context.Rooms.ToListAsync();
+        }
+
+        public async Task addRoom(Room room) 
+        {
+            await _context.Rooms.AddAsync(room);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task sendWSRoom(Room room)
+        {
+             await _hubContext.Clients.All.SendAsync ("CreateRoomMessage", room.Name, room.Id);
         }
   
     }
@@ -39,6 +59,9 @@ namespace app.Controllers
     public interface IRoomsRepository
     {
         Task<List<Room>> getRooms();
+        Task addRoom(Room room);
+        Task sendWSRoom(Room room);
+        Task<List<ApplicationUser>> getUsersByNuckname(RoomCreateModel roomCreateModel);
     }
 
 

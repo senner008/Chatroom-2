@@ -26,16 +26,13 @@ namespace app.Controllers
         public IRoomsRepository _roomsRepository { get; }
         public ApplicationDbContext _context { get; }
 
-        public UserManager<ApplicationUser> _userManager { get; }
         public IHubContext<ChatHub> _hubContext { get; }
 
-        public RoomsController(IRoomsRepository roomsRepository, ILogger<RoomsController> logger, ApplicationDbContext context,  UserManager<ApplicationUser> userManager, IHubContext<ChatHub> hubContext)
+        public RoomsController(IRoomsRepository roomsRepository, ILogger<RoomsController> logger, ApplicationDbContext context)
         {
             _roomsRepository = roomsRepository;
             _logger = logger;
             _context = context;
-            _userManager = userManager;
-            _hubContext = hubContext;
             // _context.Database.EnsureCreated();
         }
 
@@ -63,7 +60,7 @@ namespace app.Controllers
 
             List<ApplicationUser> users;
             try {
-                 users = await _userManager.Users.Where(user => roomCreateModel.UserList.Any(nickname => user.NickName == nickname)).ToListAsync();
+                 users = await _roomsRepository.getUsersByNuckname(roomCreateModel);
             } catch (Exception) {
                 throw new Exception(); 
             }
@@ -87,14 +84,13 @@ namespace app.Controllers
                 UsersLink = userRoomsList
             };
             try {
-                await _context.Rooms.AddAsync(room);
-                await _context.SaveChangesAsync();
-                await _hubContext.Clients.All.SendAsync ("CreateRoomMessage", room.Name, room.Id);
+                await _roomsRepository.addRoom(room);
+                await _roomsRepository.sendWSRoom(room);
             }
             catch (Exception) {
                 throw new Exception();
             }
-          
+            Response.Headers.Add("Response-message", "Room " + room.Name + "created");
             return Ok();
 
         }

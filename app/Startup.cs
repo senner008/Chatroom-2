@@ -15,6 +15,8 @@ using Microsoft.AspNetCore.Mvc;
 using app.Repositories;
 using app.Controllers;
 using System.Linq;
+using Joonasw.AspNetCore.SecurityHeaders;
+using System.Threading.Tasks;
 
 namespace app
 {
@@ -67,6 +69,7 @@ namespace app
                 options.Filters.Add(new ModelStateValidationActionFilterAttribute());  
                 options.Filters.Add(typeof(HttpGlobalExceptionFilter));
             });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -85,14 +88,31 @@ namespace app
 
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
+                
   
             }
             else
             {
                 app.UseExceptionHandler("/Home/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
+                HstsBuilderExtensions.UseHsts(app);
                 app.UseStatusCodePagesWithRedirects("/Error/{0}");
+
+                   app.UseCsp(csp =>
+                    {
+                        csp.AllowScripts
+                                .FromSelf()
+                                .From("https://kit.fontawesome.com");
+                        csp.AllowStyles
+                                .FromSelf()
+                                .From("kit-free.fontawesome.com/releases/latest/css/");
+
+                            csp.OnSendingHeader = context =>
+                            {
+                                context.ShouldNotSend = context.HttpContext.Request.Path.StartsWithSegments("/Identity");
+                                return Task.CompletedTask;
+                            };
+                    });
             }
 
             // app.ConfigureExceptionHandler();

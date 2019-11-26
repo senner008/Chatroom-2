@@ -31,9 +31,11 @@
 - global exception handling, return a redirect in ws message on db error - DONE
 - controller tests, integration tests - DONE
 - fix scrolling layout - DONE
-- add scroll to rooms
+- add content security policies - DONE
+- add scroll to rooms - DONE
+- fix when no room route
 - remove logic from listeners
-- add content security policies
+
 
 
 ## TODO SECONDARY : 

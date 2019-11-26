@@ -23,9 +23,8 @@ export function actionInitRender(rooms) {
 
 function triggerInitRoom () {
 
-    var header = $("#chatroom-header")[0];
-    var initRoom = header.dataset.initRoom
-    if (initRoom) {
-        actionRoomSelect(initRoom, actionRoomSelectRender1, actionRoomSelectRender2, false)
+    var routeElem = $("#chatroom-route-config")[0];
+    if (routeElem) {
+        actionRoomSelect(routeElem.dataset.initRoom, actionRoomSelectRender1, actionRoomSelectRender2, false)
     }
 }

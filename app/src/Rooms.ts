@@ -22,7 +22,6 @@ function RoomClass (name : string, id : number) : IRoomClass {
             posts.forEach(post => this.addPost(post));
         },
         addPost(post : IPost) {
-            console.log(post.identifier in posts)
             posts[post.identifier] = {
                 postBody : post.postBody,
                 postUser : post.userName,
@@ -30,7 +29,6 @@ function RoomClass (name : string, id : number) : IRoomClass {
                 createDate : post.createDate,
                 createDateNumber :  new Date(post.createDate).getTime()
             }
-            console.log(posts)
         },
         getSortedPostsList() {
             // TODO : show create date

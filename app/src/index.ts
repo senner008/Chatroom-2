@@ -1,5 +1,6 @@
 import "./css/aspstyles.css";
 import "./css/main.css";
+import "./css/master-list.css";
 
 import { Connection } from "./Connection";
 import * as signalR from "@aspnet/signalr";

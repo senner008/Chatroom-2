@@ -6,28 +6,6 @@
  
 }
 
-@if(@ViewBag.RouteId != null) 
-{
-    @:<header data-init-room=@ViewBag.RouteId id='chatroom-header'>
-}
-else 
-{
-    @:<header id='chatroom-header' >
-}    
-
-    <h2>Chatroom</h2>
-    <div id="connectionInfo">
-        <ul>
-
-            <li id="connection-message">
-                <div class="alert" role="alert">
-               
-                </div>
-            </li>
-            <li id="reconnect-button"> <button class="btn btn-outline-secondary" type="button">Reconnect</button></li>
-        </ul>
-    </div>
-</header>
 
 <div class="modal fade" id="room-create-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -61,15 +39,26 @@ else
 
 <div id="posts-container">
     <nav id="master-list">
-         <ul class="list-group connection">
-           <li class="list-group-item" id="connection-state">
+
+          <ul class="list-group connection">
+               <li class="list-group-item" id="connection-state">
                 <div class="alert" role="alert">
                
                 </div>
             </li>
-        </ul>
+
+            <li class="list-group-item" id="connection-message">
+                    <div class="alert" role="alert">
+                
+                    </div>
+                </li>
+            <li id="reconnect-button"> <button class="btn btn-outline-secondary" type="button">Reconnect</button></li>
+
+          </ul>
         <ul class="list-group create">
-            <li class="list-group-item">Create room<i class="fas fa-folder-plus fa-lg" style="padding-left: 10px"></i></li>
+            <li class="list-group-item">Create room
+                <i class="fas fa-folder-plus fa-lg"></i>
+                </li>
         </ul>
         <ul class="list-group rooms">
             
@@ -95,7 +84,13 @@ else
         </div>
     </main>
 </div>
- <form id="hubsendpost" style="display:none" method="post"></form>
+<form id="hubsendpost" method="post"></form>
+@if(@ViewBag.RouteId != null) 
+{
+    <div data-init-room=@ViewBag.RouteId id='chatroom-route-config'></div>
+}
+
+
 <script src="~/custom/main.js" asp-append-version="true"></script>
 
 

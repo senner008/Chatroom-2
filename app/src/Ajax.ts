@@ -34,6 +34,7 @@ export async function ErrorHandler<T> (action) : Promise<T[]> {
         if (!response.ok) {
             throw await jsonOrText(response);
         }
+        console.log(response)
         Logger.message(response.headers.get('Response-message'), StatusEnum.success);
         return await jsonOrText<T>(response);
     } catch (err) {

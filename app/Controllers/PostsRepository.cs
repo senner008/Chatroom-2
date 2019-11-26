@@ -28,8 +28,6 @@ namespace app.Controllers
             _context = context;
         }
 
-        // post because of validation token
-
         public async Task<IEnumerable<PostModel>> getPostsByRoomId(int id)
         {
             return await _context.Posts

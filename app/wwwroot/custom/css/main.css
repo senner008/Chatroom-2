@@ -294,3 +294,8 @@ h2 {
       transform: rotate(360deg);
     }
   }
+
+
+ #hubsendpost {
+   display: none;
+ }

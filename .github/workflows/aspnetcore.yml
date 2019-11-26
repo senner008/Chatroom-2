@@ -16,7 +16,7 @@ jobs:
     - name: Build with dotnet
       run: dotnet build --configuration Release
     - name: Client project setup
-      run: cd app && npm install && cd ..
+      run: cd app && npm install && npm run release && cd ..
     - name: Client unit tests
       run: cd app && npm run test && cd ..
     - name: Run xUnit tests

@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Mvc;
 using app.Repositories;
 using app.Controllers;
 using System.Linq;
+using Joonasw.AspNetCore.SecurityHeaders;
 
 namespace app
 {
@@ -91,11 +92,21 @@ namespace app
             {
                 app.UseExceptionHandler("/Home/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
+                HstsBuilderExtensions.UseHsts(app);
                 app.UseStatusCodePagesWithRedirects("/Error/{0}");
             }
 
-            // app.ConfigureExceptionHandler();
+            // app.ConfigureExceptionHandler();¨
+
+            app.UseCsp(csp =>
+            {
+                csp.AllowScripts
+                        .FromSelf();
+                        //  .From("https://kit.fontawesome.com");
+                csp.AllowStyles
+                        .FromSelf();
+                        // .From("https://kit.fontawesome.com");
+            });
 
             app.UseHttpsRedirection();
              app.UseStaticFiles();

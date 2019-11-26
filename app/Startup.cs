@@ -69,6 +69,7 @@ namespace app
                 options.Filters.Add(new ModelStateValidationActionFilterAttribute());  
                 options.Filters.Add(typeof(HttpGlobalExceptionFilter));
             });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -87,6 +88,7 @@ namespace app
 
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
+                
   
             }
             else
@@ -99,9 +101,11 @@ namespace app
                    app.UseCsp(csp =>
                     {
                         csp.AllowScripts
-                                .FromSelf();
+                                .FromSelf()
+                                .From("https://kit.fontawesome.com");
                         csp.AllowStyles
-                                .FromSelf();
+                                .FromSelf()
+                                .From("kit-free.fontawesome.com/releases/latest/css/");
 
                             csp.OnSendingHeader = context =>
                             {

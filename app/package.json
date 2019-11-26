@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "webpack --mode=development --watch",
-    "release": "webpack --mode=production",
+    "release": "webpack --mode=production --watch",
     "publish": "npm run release && dotnet publish -c Release",
     "test": "jest"
   },
@@ -30,6 +30,7 @@
     "@aspnet/signalr": "^1.1.4",
     "@babel/core": "^7.7.2",
     "@babel/preset-env": "^7.7.1",
+    "@fortawesome/fontawesome-svg-core": "^1.2.25",
     "@types/jquery": "^3.3.31",
     "babel-jest": "^24.9.0",
     "jquery": "^3.4.1"

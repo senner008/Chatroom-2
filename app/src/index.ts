@@ -1,12 +1,6 @@
 import "./css/aspstyles.css";
 import "./css/main.css";
 
-
-import '@fortawesome/fontawesome-free/js/fontawesome'
-import '@fortawesome/fontawesome-free/js/solid'
-import '@fortawesome/fontawesome-free/js/regular'
-import '@fortawesome/fontawesome-free/js/brands'
-
 import { Connection } from "./Connection";
 import * as signalR from "@aspnet/signalr";
 import { IPost, IRoom } from "./ajaxMethods";

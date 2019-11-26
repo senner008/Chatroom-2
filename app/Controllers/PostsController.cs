@@ -1,21 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using app.Models;
-using app.Data;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.EntityFrameworkCore;
-using System.IO;
 using app.Repositories;
-using System.Net.Http;
-using System.Net;
-using System.Numerics;
-using System.Threading;
 
 namespace app.Controllers
 {
@@ -41,7 +31,6 @@ namespace app.Controllers
             IEnumerable<PostModel> posts;
             try {
                 Room hasRoomAccess = await _hubRepository.FindAndValidateRoom(id);
-
                 posts = await _postsRepository.getPostsByRoomId(id);
 
             } catch (MyChatHubException ex) {

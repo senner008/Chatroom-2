@@ -16,6 +16,7 @@ using app.Repositories;
 using app.Controllers;
 using System.Linq;
 using Joonasw.AspNetCore.SecurityHeaders;
+using System.Threading.Tasks;
 
 namespace app
 {
@@ -94,19 +95,26 @@ namespace app
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 HstsBuilderExtensions.UseHsts(app);
                 app.UseStatusCodePagesWithRedirects("/Error/{0}");
+
+                   app.UseCsp(csp =>
+                    {
+                        csp.AllowScripts
+                                .FromSelf();
+                        csp.AllowStyles
+                                .FromSelf();
+
+                            csp.OnSendingHeader = context =>
+                            {
+                                context.ShouldNotSend = context.HttpContext.Request.Path.StartsWithSegments("/Identity");
+                                return Task.CompletedTask;
+                            };
+                    });
             }
 
             // app.ConfigureExceptionHandler();¨
 
-            app.UseCsp(csp =>
-            {
-                csp.AllowScripts
-                        .FromSelf();
-                        //  .From("https://kit.fontawesome.com");
-                csp.AllowStyles
-                        .FromSelf();
-                        // .From("https://kit.fontawesome.com");
-            });
+         
+            
 
             app.UseHttpsRedirection();
              app.UseStaticFiles();

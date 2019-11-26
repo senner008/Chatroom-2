@@ -60,7 +60,9 @@ namespace app.Areas.Identity.Pages.Account
 
         public async Task OnGetAsync(string returnUrl = null)
         {
-            if (!HttpContext.Request.IsHttps) {
+            System.Console.WriteLine(Request.Scheme);
+      
+            if (Request.Scheme != "https") {
                 Response.Redirect("https://" + Request.Host.Host, true);
             }
 

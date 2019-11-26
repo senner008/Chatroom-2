@@ -111,10 +111,7 @@ namespace app
                     });
             }
 
-            // app.ConfigureExceptionHandler();¨
-
-         
-            
+            // app.ConfigureExceptionHandler();
 
             app.UseHttpsRedirection();
              app.UseStaticFiles();

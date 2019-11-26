@@ -1,7 +1,6 @@
 import "./css/aspstyles.css";
 import "./css/main.css";
 
-window.__webpack_nonce__ = 'c29tZSBjb29sIHN0cmluZyB3aWxsIHBvcCB1cCAxMjM=';
 
 import '@fortawesome/fontawesome-free/js/fontawesome'
 import '@fortawesome/fontawesome-free/js/solid'

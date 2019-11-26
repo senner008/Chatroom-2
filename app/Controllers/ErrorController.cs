@@ -27,9 +27,6 @@ namespace app.Controllers
         [Route("Error/{StatusCode}")]
         public IActionResult HttpStatusCodeHandler(int statusCode) 
         {
-            // if (Request.Scheme != "https") {
-                // Response.Redirect("https://www.google.com", true);
-            // }
             if (statusCode == 404) {
                 Response.StatusCode = 404;
                 ViewBag.ErrorMessage = "Sorry, the resource you requested not not exist";

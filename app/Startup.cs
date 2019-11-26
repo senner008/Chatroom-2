@@ -70,9 +70,6 @@ namespace app
                 options.Filters.Add(typeof(HttpGlobalExceptionFilter));
             });
 
-
-            
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -98,7 +95,7 @@ namespace app
             {
                 app.UseExceptionHandler("/Home/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                // HstsBuilderExtensions.UseHsts(app);
+                HstsBuilderExtensions.UseHsts(app);
                 app.UseStatusCodePagesWithRedirects("/Error/{0}");
 
                    app.UseCsp(csp =>
@@ -120,15 +117,13 @@ namespace app
 
             // app.ConfigureExceptionHandler();
 
-            // app.UseHttpsRedirection();
-            app.UseStaticFiles();
+            app.UseHttpsRedirection();
+             app.UseStaticFiles();
 
             app.UseRouting();
 
             app.UseAuthentication();
             app.UseAuthorization();
-
-            
 
             app.UseEndpoints(endpoints =>
             {

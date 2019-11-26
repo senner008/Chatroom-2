@@ -90,7 +90,7 @@ namespace app.Controllers
             catch (Exception) {
                 throw new Exception();
             }
-          
+            Response.Headers.Add("Response-message", "Room " + room.Name + "created");
             return Ok();
 
         }

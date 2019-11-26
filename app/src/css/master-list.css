@@ -1,0 +1,33 @@
+#master-list {
+  display: flex;
+  flex-direction: column;
+
+}
+.room-selected {
+    background: lightblue;
+}
+
+.list-group.connection #connection-message div {
+  height: 100px !important;
+  overflow-y: auto;
+}
+
+.list-group.connection #connection-message div::-webkit-scrollbar {
+  width: 8px;
+} 
+
+/* Track */
+.list-group.connection #connection-message div::-webkit-scrollbar-track {
+  background: grey;
+}
+  
+/* Handle */
+.list-group.connection #connection-message div::-webkit-scrollbar-thumb {
+  background: white;
+}
+
+.list-group.rooms {
+  overflow-y: auto;
+}
+
+

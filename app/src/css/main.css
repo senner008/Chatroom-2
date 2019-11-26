@@ -1,4 +1,4 @@
-/* Custom styles
+/* Global custom styles
 -------------------------------------------------- */
 
 * {
@@ -10,7 +10,6 @@ body {
   height : 100vh;
   flex-direction: column;
   margin: 0;
-
 }
 
 body header {
@@ -22,63 +21,56 @@ body .container {
   height: 100%;
 }
 
-footer {
-  position: relative !important;
-  height: 60px;
-  width: 100%;
-}
-
-.container main {
+#main-layout-container {
   display : flex;
   flex-direction: column;
   height: 100%;
   padding : 0 !important;
 }
 
+body footer {
+  position: relative !important;
+  height: 60px;
+  width: 100%;
+}
+
+/* Chathub custum styles
+-------------------------------------------------- */
+
+
+#main-layout-container  h2 {
+  margin : 0;
+  margin-left: 4px;
+}
+
+
+
 #posts-container {
     display : flex;
     flex-grow: 1;
     overflow: hidden;
+    margin-top: 8px;
   }
 
-#posts-container .container {
+#posts-container main .container {
   display : flex;
   flex-direction: column;
   justify-content: space-between;;
 }
 
-#posts-container .container #posts {
+#posts-container main .container #posts {
   overflow: auto;
   flex-grow : 1;
+  margin-left: 5px;
 }
 
-#input-container {
+#posts-container main #post-input #input-container {
   margin-top: 10px;
   margin-bottom: 0px !important;
 }
-#post-input .row{
+
+#posts-container main #post-input .row{
   margin: 0 !important;
-}
-
-
-/* width */
-::-webkit-scrollbar {
-  width: 12px;
-}
-
-/* Track */
-::-webkit-scrollbar-track {
-  background: white;
-}
- 
-/* Handle */
-::-webkit-scrollbar-thumb {
-  background: lightgrey;
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-  background: #555; 
 }
 
 #posts-container nav {
@@ -87,9 +79,9 @@ footer {
 }
 
 #posts-container main {
-  margin-left: 20px;
+  margin-left: 15px;
   flex: 3 1 200px;
-  padding-top: 10px !important;
+
 }
 
 #posts-container .container {
@@ -100,45 +92,33 @@ footer {
 display: none;
 }
 
-h2 {
-  margin : 0;
-  margin-left: 4px;
-  
-}
 
-.post {
+#posts-container .container .post {
   display: flex;
   padding: 10px 0px;
 }
   
-.post .user {
+#posts-container .container .post .user {
   margin-right: 20px;
   font-weight: bold;
 }
 
-.post p {
+#posts-container .container .post p {
   margin : 0 !important;
-
 }
 
-.room-selected {
-  background: lightblue;
-}
 
-#chatroom-header {
-  display: flex;
-  justify-content: space-between;
-  height : 50px;
-  padding-top: 10px;
-  margin-bottom: 5px;
-}
-
-#chatroom-header li {
-  list-style: none;
-}
-
-.alert {
+#main-layout-container .alert {
   margin: 0 !important;
+}
+
+form #hubsendpost {
+  display: none;
+}
+
+
+.fa-folder-plus {
+ padding-left: 10px;
 }
 
 
@@ -221,12 +201,24 @@ h2 {
     }
   }
 
+/* Scrollbar
+-------------------------------------------------- */
 
- #hubsendpost {
-   display: none;
- }
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: white;
+    border-radius: 10px;
 
+  }
+   
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: lightgrey;
+    border-radius: 20px;
 
- .fa-folder-plus {
-  padding-left: 10px;
- }
+  }
+  

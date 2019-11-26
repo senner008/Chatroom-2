@@ -9,6 +9,7 @@ using app;
 using app.Controllers;
 using app.Models;
 using app.Repositories;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
@@ -65,11 +66,23 @@ namespace test
             // Arrange
             var mockhubRepo = new Mock<IHubRepository>();
             var mockPostsRepo = new Mock<IPostsRepository>();
+
             mockPostsRepo.Setup(repo => repo.getPostsByRoomId(1)).ReturnsAsync(GetTestSessions());
 
             var controller = new PostsController(mockhubRepo.Object, mockPostsRepo.Object);
+            var headerDictionary = new HeaderDictionary();
+            var response = new Mock<HttpResponse>();
+            response.SetupGet(r => r.Headers).Returns(headerDictionary);
+            var httpContext = new Mock<HttpContext>();
+            httpContext.SetupGet(a => a.Response).Returns(response.Object);
 
             // Act
+            controller.ControllerContext = new ControllerContext()
+            {
+                HttpContext = httpContext.Object
+            };
+
+            
             var result = await controller.getPostsByRoomId(1);
             
             // Assert

@@ -6,13 +6,14 @@ using Microsoft.AspNetCore.Mvc;
 using app.Models;
 using Microsoft.AspNetCore.Authorization;
 using app.Repositories;
+using Microsoft.AspNetCore.Http;
 
 namespace app.Controllers
 {
     [Authorize (Roles = "Admin")]
     [ApiController]
     [Route("[controller]")]
-    public class PostsController : Controller
+    public class PostsController : ControllerBase
     {
         public IHubRepository _hubRepository { get; }
         public IPostsRepository _postsRepository { get; }
@@ -41,7 +42,7 @@ namespace app.Controllers
 
             if (posts != null && posts.Any())
             {
-                // Response.Headers.Add("Response-message", "Posts received for room " + id);
+                Response.Headers.Add("Response-message", "Posts received for room " + id);
                 return Ok(posts);
             }
 

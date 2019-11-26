@@ -70,6 +70,25 @@ namespace app
                 options.Filters.Add(typeof(HttpGlobalExceptionFilter));
             });
 
+
+            // ===== Configure Identity =======
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.Cookie.Name = "auth_cookie";
+                options.Cookie.SameSite = SameSiteMode.None;
+                // options.LoginPath = new PathString("/api/contests");
+                // options.AccessDeniedPath = new PathString("/");
+
+                // Not creating a new object since ASP.NET Identity has created
+                // one already and hooked to the OnValidatePrincipal event.
+                // See https://github.com/aspnet/AspNetCore/blob/5a64688d8e192cacffda9440e8725c1ed41a30cf/src/Identity/src/Identity/IdentityServiceCollectionExtensions.cs#L56
+                options.Events.OnRedirectToLogin = context =>
+                {
+                    context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                    return Task.CompletedTask;
+                };
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

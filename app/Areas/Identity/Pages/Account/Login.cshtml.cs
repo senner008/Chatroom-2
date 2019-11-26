@@ -61,7 +61,7 @@ namespace app.Areas.Identity.Pages.Account
         public async Task OnGetAsync(string returnUrl = null)
         {
             if (!HttpContext.Request.IsHttps) {
-                Response.Redirect("https://" + Request.Host.Host + Request.Path, true);
+                Response.Redirect("https://" + Request.Host.Host, true);
             }
 
             if (!string.IsNullOrEmpty(ErrorMessage))

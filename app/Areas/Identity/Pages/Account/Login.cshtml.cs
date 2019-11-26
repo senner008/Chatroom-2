@@ -62,9 +62,9 @@ namespace app.Areas.Identity.Pages.Account
         {
             System.Console.WriteLine(Request.Scheme);
       
-            if (Request.Scheme != "https") {
-                Response.Redirect("https://" + Request.Host.Host, true);
-            }
+            // if (Request.Scheme != "https") {
+            //     Response.Redirect("https://" + Request.Host.Host, true);
+            // }
 
             if (!string.IsNullOrEmpty(ErrorMessage))
             {

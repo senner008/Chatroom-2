@@ -98,7 +98,7 @@ namespace app
             {
                 app.UseExceptionHandler("/Home/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                HstsBuilderExtensions.UseHsts(app);
+                // HstsBuilderExtensions.UseHsts(app);
                 app.UseStatusCodePagesWithRedirects("/Error/{0}");
 
                    app.UseCsp(csp =>
@@ -120,7 +120,7 @@ namespace app
 
             // app.ConfigureExceptionHandler();
 
-            app.UseHttpsRedirection();
+            // app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();

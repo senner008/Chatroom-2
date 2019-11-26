@@ -120,15 +120,15 @@ namespace app
 
             // app.ConfigureExceptionHandler();
 
-           
-             app.UseStaticFiles();
+            app.UseHttpsRedirection();
+            app.UseStaticFiles();
 
             app.UseRouting();
 
             app.UseAuthentication();
             app.UseAuthorization();
 
-             app.UseHttpsRedirection();
+            
 
             app.UseEndpoints(endpoints =>
             {

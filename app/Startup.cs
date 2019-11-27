@@ -17,6 +17,7 @@ using app.Controllers;
 using System.Linq;
 using Joonasw.AspNetCore.SecurityHeaders;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.HttpOverrides;
 
 namespace app
 {
@@ -70,10 +71,10 @@ namespace app
                 options.Filters.Add(typeof(HttpGlobalExceptionFilter));
             });
 
-            services.AddHttpsRedirection(options =>
+           services.Configure<ForwardedHeadersOptions>(options =>
             {
-                options.RedirectStatusCode = StatusCodes.Status307TemporaryRedirect;
-                options.HttpsPort = 443;
+                options.ForwardedHeaders = 
+                    ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
             });
 
             
@@ -83,6 +84,22 @@ namespace app
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, UserManager<ApplicationUser> userManager, ApplicationDbContext context)
         {
+
+            app.UseForwardedHeaders();
+            app.Use(async (context, next) =>
+            {
+                if (context.Request.IsHttps || context.Request.Headers["X-Forwarded-Proto"] == Uri.UriSchemeHttps)
+                {
+                    await next();
+                }
+                else
+                {
+                    string queryString = context.Request.QueryString.HasValue ? context.Request.QueryString.Value : string.Empty;
+                    var https = "https://" + context.Request.Host + context.Request.Path + queryString;
+                    context.Response.Redirect(https);
+                }
+            });
+
             if (env.IsDevelopment())
             {
                 // These will run synchronously when without await 

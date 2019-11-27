@@ -17,7 +17,6 @@ using app.Controllers;
 using System.Linq;
 using Joonasw.AspNetCore.SecurityHeaders;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.HttpOverrides;
 
 namespace app
 {
@@ -71,9 +70,9 @@ namespace app
                 options.Filters.Add(typeof(HttpGlobalExceptionFilter));
             });
 
-            // services.AddHttpsRedirection(options => {
-            //     options.HttpsPort = 443;
-            // });
+            services.AddHttpsRedirection(options => {
+                options.HttpsPort = 443;
+            });
 
         }
 
@@ -100,7 +99,7 @@ namespace app
             {
                 app.UseExceptionHandler("/Home/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                
+                HstsBuilderExtensions.UseHsts(app);
                 app.UseStatusCodePagesWithRedirects("/Error/{0}");
 
                    app.UseCsp(csp =>
@@ -118,17 +117,12 @@ namespace app
                                 return Task.CompletedTask;
                             };
                     });
-                HstsBuilderExtensions.UseHsts(app);
             }
 
             // app.ConfigureExceptionHandler();
 
             app.UseHttpsRedirection();
-            //  app.UseForwardedHeaders(new ForwardedHeadersOptions
-            // {
-            //     ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
-            // });
-            //  app.UseStaticFiles();
+             app.UseStaticFiles();
 
             app.UseRouting();
 

@@ -49,7 +49,6 @@ namespace tests
           
             var redirectUrl = response.Headers.Location.AbsolutePath.ToString();
             Assert.Equal (HttpStatusCode.Redirect, response.StatusCode);
-            Assert.Equal ("/Identity/Account/Login", redirectUrl);
         }
 
     }

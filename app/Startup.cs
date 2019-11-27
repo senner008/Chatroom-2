@@ -70,7 +70,7 @@ namespace app
                 options.Filters.Add(new ModelStateValidationActionFilterAttribute());  
                 options.Filters.Add(typeof(HttpGlobalExceptionFilter));
             });
-
+            //https://stackoverflow.com/questions/52954158/asp-net-core-2-1-no-http-https-redirection-in-app-engine
            services.Configure<ForwardedHeadersOptions>(options =>
             {
                 options.ForwardedHeaders = 
@@ -84,7 +84,7 @@ namespace app
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, UserManager<ApplicationUser> userManager, ApplicationDbContext context)
         {
-
+            //https://stackoverflow.com/questions/52954158/asp-net-core-2-1-no-http-https-redirection-in-app-engine
             app.UseForwardedHeaders();
             app.Use(async (context, next) =>
             {

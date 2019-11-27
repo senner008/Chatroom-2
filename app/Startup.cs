@@ -17,6 +17,7 @@ using app.Controllers;
 using System.Linq;
 using Joonasw.AspNetCore.SecurityHeaders;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.HttpOverrides;
 
 namespace app
 {
@@ -123,6 +124,10 @@ namespace app
             // app.ConfigureExceptionHandler();
 
             app.UseHttpsRedirection();
+             app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
              app.UseStaticFiles();
 
             app.UseRouting();

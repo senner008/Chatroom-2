@@ -79,6 +79,13 @@ namespace app
 
             
 
+            //https://stackoverflow.com/questions/52954158/asp-net-core-2-1-no-http-https-redirection-in-app-engine
+           services.Configure<ForwardedHeadersOptions>(options =>
+            {
+                options.ForwardedHeaders = 
+                    ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -99,7 +106,10 @@ namespace app
                     context.Response.Redirect(https);
                 }
             });
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
             if (env.IsDevelopment())
             {
                 // These will run synchronously when without await 

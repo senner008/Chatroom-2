@@ -71,9 +71,9 @@ namespace app
                 options.Filters.Add(typeof(HttpGlobalExceptionFilter));
             });
 
-            services.AddHttpsRedirection(options => {
-                options.HttpsPort = 443;
-            });
+            // services.AddHttpsRedirection(options => {
+            //     options.HttpsPort = 443;
+            // });
 
         }
 
@@ -124,11 +124,11 @@ namespace app
             // app.ConfigureExceptionHandler();
 
             app.UseHttpsRedirection();
-             app.UseForwardedHeaders(new ForwardedHeadersOptions
-            {
-                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
-            });
-             app.UseStaticFiles();
+            //  app.UseForwardedHeaders(new ForwardedHeadersOptions
+            // {
+            //     ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            // });
+            //  app.UseStaticFiles();
 
             app.UseRouting();
 

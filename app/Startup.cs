@@ -106,10 +106,6 @@ namespace app
                     context.Response.Redirect(https);
                 }
             });
-<<<<<<< HEAD
-
-=======
->>>>>>> master
             if (env.IsDevelopment())
             {
                 // These will run synchronously when without await 

@@ -34,7 +34,7 @@ namespace app
         public void ConfigureServices(IServiceCollection services)
         {
             var envdb = Environment.GetEnvironmentVariable ("MYSQL_DB");
-            string CnString = !String.IsNullOrEmpty (envdb) ? envdb : Configuration.GetConnectionString("CodeToShowDb");
+            string CnString = !String.IsNullOrEmpty (envdb) ? envdb : Configuration.GetConnectionString("test");
 
            services.AddDbContext<ApplicationDbContext>(options => options.UseMySql(CnString));
 
@@ -77,14 +77,6 @@ namespace app
                     ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
             });
 
-            
-
-            //https://stackoverflow.com/questions/52954158/asp-net-core-2-1-no-http-https-redirection-in-app-engine
-           services.Configure<ForwardedHeadersOptions>(options =>
-            {
-                options.ForwardedHeaders = 
-                    ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
-            });
 
         }
 

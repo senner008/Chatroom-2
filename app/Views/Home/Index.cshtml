@@ -2,10 +2,7 @@
 @{
     ViewData["Title"] = "Home Page";
 
-  
- 
 }
-
 
 <div class="modal fade" id="room-create-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -47,25 +44,27 @@
                 </div>
             </li>
 
-            <li class="list-group-item" id="connection-message">
+            <li class="list-group-item connection-conditional" id="connection-message">
                     <div class="alert" role="alert">
                 
                     </div>
                 </li>
-            <li id="reconnect-button"> <button class="btn btn-outline-secondary" type="button">Reconnect</button></li>
+            <li class="list-group-item" id="reconnect-button"> 
+              <button class="btn btn-outline-secondary" type="button">Reconnect</button>
+            </li>
 
           </ul>
-        <ul class="list-group create">
+        <ul class="list-group create connection-conditional">
             <li class="list-group-item">Create room
                 <i class="fas fa-folder-plus fa-lg"></i>
                 </li>
         </ul>
-        <ul class="list-group rooms">
+        <ul class="list-group rooms connection-conditional">
             
         </ul>
     </nav>
     <main>
-        <div class="container">
+        <div class="container connection-conditional">
              <div class="loader">Loading...</div>
             <div id="posts">
                 <div class="post">

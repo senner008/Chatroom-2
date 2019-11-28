@@ -1,7 +1,6 @@
 const modalUserList = ".modal-body .user-list";
 
 export function renderUsers(users) {
-    console.log("render")
     var publicLi = [`<li data-user-nickname="public" class='list-group-item'>Public</li>`];
     var usersLis = users.map(user => `<li data-user-nickname="${user.nickName}" class="list-group-item">${user.nickName}</li>`);
     $(modalUserList).html(publicLi.concat(usersLis).join(""));

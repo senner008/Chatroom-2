@@ -16,11 +16,11 @@ window.onpopstate = function(event) {
     actionRoomSelect(Number(event.state), actionRoomSelectRender1, actionRoomSelectRender2, false)
 };
 
-export function appendRoom (room) {
-    var roomLi = `<li data-id='${room.id}' class="list-group-item">${room.name}</li>`;
-    roomsList.find('.rooms').append(roomLi);
-}
+const createRoomLi = (room) => `<li data-id='${room.id}' class="list-group-item">${room.name}</li>`;
 
+export function appendRoom (room) {
+    roomsList.find('.rooms').append(createRoomLi(room));
+}
 
 export function roomExists(id) {
     return roomsList.find(`[data-id='${id}']`).length > 0;
@@ -28,8 +28,5 @@ export function roomExists(id) {
 
 export async function renderRooms (rooms) {
     if (rooms.length === 0) return;
-    var list = rooms.map(room => {
-        return `<li data-id='${room.id}' class="list-group-item">${room.name}</li>`;
-    })
-    roomsList.find('.rooms').html(list);
+    roomsList.find('.rooms').html(rooms.map(createRoomLi));
 }

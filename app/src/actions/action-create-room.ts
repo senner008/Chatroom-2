@@ -1,6 +1,6 @@
 import { State } from "../State";
 import { getAllUsers, sendCreateRoom } from "../ajaxMethods";
-import { renderUsers, getUsersRendered, getNameRendered } from "../render/render-create-room";
+import { renderUsers, getNameRendered, getUserNicknamesSelected } from "../render/render-create-room";
 import { showModal } from "../render/render";
 
 
@@ -13,7 +13,7 @@ export async function createRoom() {
 
 
 export function modalSaveChanges(render) {
-    var users = getUsersRendered();
+    var users = getUserNicknamesSelected();
     var name = getNameRendered();
     sendCreateRoom(users, name);
     render();

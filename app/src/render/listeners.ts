@@ -10,7 +10,7 @@ function roomClickListener () {
     });
 }
 
-function CreateRoomClickHandler() {
+function createRoomClickHandler() {
     $("#master-list .create").on("click", async () => {
         createRoom();
     });    
@@ -31,7 +31,7 @@ function modalSaveChangesClickHandler() {
 
 export function addListeners () {
     roomClickListener();
-    CreateRoomClickHandler()
+    createRoomClickHandler()
     usersClickHandler();
     modalSaveChangesClickHandler();
 }

@@ -1,36 +1,42 @@
+
+const modal = {
+    "userlist" : ".modal-body .user-list",
+    "userselect" : "user-select"
+};
+
 const modalUserList = ".modal-body .user-list";
 
 export function renderUsers(users) {
-    var publicLi = [`<li data-user-nickname="public" class='list-group-item'>Public</li>`];
-    var usersLis = users.map(user => `<li data-user-nickname="${user.nickName}" class="list-group-item">${user.nickName}</li>`);
-    $(modalUserList).html(publicLi.concat(usersLis).join(""));
+    var publicLi = userLiElement("public");
+    var userLiElements = users.map(user => userLiElement(user.nickName));
+    $(modalUserList).html(publicLi.concat(userLiElements).join(""));
 }
 
+const userLiElement = (nickName) => [`<li data-user-nickname=${nickName} class='list-group-item'>${nickName}</li>`];
 
-export function getUsersRendered() {
-    var users = [];
-    $(modalUserList).find("li").each((index,li) => {
-        if ($(li).hasClass("user-select")) {
-            users.push(li.dataset.userNickname)
-        }
-    });
-    return users;
+export function getUserNicknamesSelected() {
+    return  getUserLis()
+        .filter(li => li.classList.contains(modal.userselect))
+        .map((li : HTMLElement) => li.dataset.userNickname)
 }
+
+const getUserLis = () => [...document.querySelector(modalUserList).children];
+
 
 export function getNameRendered() {
     return $(".modal-body").find(".room-name").val();
 }
 
 export function userlistSelectRender(e) {
- 
-    const removeClasses = () => $(modalUserList).find("li").each((index,li) => li.classList.remove("user-select")); 
-    var publicLi = $(modalUserList).find("[data-user-nickname='public']");
+   
+    const removeClasses = () => getUserLis().forEach(li => li.classList.remove(modal.userselect));
+    const publicLi = getUserLis().filter((li : HTMLElement) => li.dataset.userNickname === "public")[0];
 
     if ( $(e.target).is(publicLi) ) {
         removeClasses();
-        publicLi.addClass("user-select")
+        publicLi.classList.add(modal.userselect)
     } else {
-        publicLi.removeClass("user-select")
-        e.target.classList.toggle("user-select")
+        publicLi.classList.remove(modal.userselect)
+        e.target.classList.toggle(modal.userselect)
     }
 }

@@ -1,9 +1,9 @@
 import {  actionRoomSelect, actionRoomSelectRender1, actionRoomSelectRender2 } from "../actions/action-room-select";
 import { State } from "../State";
-import { renderUsers } from "./render-create-room";
-import { setUsers, createRoom } from "../actions/createRoom";
+import { renderUsers, userlistSelectRender } from "./render-create-room";
+import { createRoom } from "../actions/action-create-room";
 import { showModal } from "./render";
-
+import { sendCreateRoom } from "../ajaxMethods";
 
 
 function roomClickListener () {
@@ -13,38 +13,17 @@ function roomClickListener () {
     });
 }
 
-// TODO : move logic to actions
-// function sendClickListener() {
-//     $("#sendButton").on("click", function (e) {
-//         var message = (<HTMLInputElement> document.getElementById("messageInput")).value;
-//         sendMessage(message);
-//     });    
-// }
 
 // TODO : move logic to actions
 function CreateRoomClickHandler() {
     $("#master-list .create").on("click", async () => {
-        await setUsers()
-        renderUsers(State.getUsers())
-        showModal();
-        usersClickHandler();
+        createRoom();
     });    
 }
 
 // TODO : move logic to render folder
 function usersClickHandler() {
-    $(".modal-body .user-list").off();
-    $(".modal-body .user-list").on("click", handler)
-    var publicLi = $(".modal-body .user-list").find("[data-user-nickname='public']");
-    function handler (e) {
-        if ( e.target.dataset.userNickname === "public" ) {
-            $(".modal-body .user-list li").each((index,li) => li.classList.remove("user-select"))
-            publicLi.addClass("user-select")
-        } else {
-            publicLi.removeClass("user-select")
-            e.target.classList.toggle("user-select")
-        }
-    }
+    $(".modal-body .user-list").on("click", userlistSelectRender)
 }
 
 // TODO : move logic to render folder
@@ -58,7 +37,7 @@ function modalSaveChangesClickHandler() {
             }
         });
         var name = $(".modal-body").find(".room-name").val();
-        createRoom(users, name);
+        sendCreateRoom(users, name);
         $('#room-create-modal').modal('hide');
 
     })

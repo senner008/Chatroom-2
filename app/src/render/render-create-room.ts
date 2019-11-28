@@ -1,10 +1,27 @@
 const modalUserList = ".modal-body .user-list";
 
 export function renderUsers(users) {
+    console.log("render")
     var publicLi = [`<li data-user-nickname="public" class='list-group-item'>Public</li>`];
     var usersLis = users.map(user => `<li data-user-nickname="${user.nickName}" class="list-group-item">${user.nickName}</li>`);
-    $(modalUserList).append(publicLi.concat(usersLis).join(""));
+    $(modalUserList).html(publicLi.concat(usersLis).join(""));
 }
+
+
+export function getUsersRendered() {
+    var users = [];
+    $(".modal-body .user-list li").each((index,li) => {
+        if ($(li).hasClass("user-select")) {
+            users.push(li.dataset.userNickname)
+        }
+    });
+    return users;
+}
+
+export function getNameRendered() {
+    return $(".modal-body").find(".room-name").val();
+}
+
 
 export function userlistSelectRender(e) {
  

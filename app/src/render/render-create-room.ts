@@ -9,7 +9,7 @@ export function renderUsers(users) {
 
 export function getUsersRendered() {
     var users = [];
-    $(".modal-body .user-list li").each((index,li) => {
+    $(modalUserList).find("li").each((index,li) => {
         if ($(li).hasClass("user-select")) {
             users.push(li.dataset.userNickname)
         }
@@ -21,11 +21,9 @@ export function getNameRendered() {
     return $(".modal-body").find(".room-name").val();
 }
 
-
 export function userlistSelectRender(e) {
  
     const removeClasses = () => $(modalUserList).find("li").each((index,li) => li.classList.remove("user-select")); 
-
     var publicLi = $(modalUserList).find("[data-user-nickname='public']");
 
     if ( $(e.target).is(publicLi) ) {
@@ -35,5 +33,4 @@ export function userlistSelectRender(e) {
         publicLi.removeClass("user-select")
         e.target.classList.toggle("user-select")
     }
-
 }

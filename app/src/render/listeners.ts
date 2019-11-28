@@ -1,9 +1,5 @@
 import {  actionRoomSelect, actionRoomSelectRender1, actionRoomSelectRender2 } from "../actions/action-room-select";
-import { State } from "../State";
-import { renderUsers, userlistSelectRender } from "./render-create-room";
 import { createRoom, modalSaveChanges, modalSaveChangesRender } from "../actions/action-create-room";
-import { showModal } from "./render";
-import { sendCreateRoom } from "../ajaxMethods";
 
 
 function roomClickListener () {
@@ -12,7 +8,6 @@ function roomClickListener () {
         actionRoomSelect(id, actionRoomSelectRender1, actionRoomSelectRender2, true)
     });
 }
-
 
 function CreateRoomClickHandler() {
     $("#master-list .create").on("click", async () => {

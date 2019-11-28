@@ -64,7 +64,6 @@ namespace app {
     {
         public override bool IsValid(object value)
         {
-            System.Console.WriteLine("dfsfsdfdsfdsfdsfdsfdsfdsfs");
             var list = value as IList;
             if (list != null)
             {

@@ -18,10 +18,12 @@ const headerRender = (function IIFE ()  {
     }
 })();
 
-
-export function showModal() {
-    $('#room-create-modal').modal('show');
+export const renderModal = (modal) => {
+    $("#modal-container").html(modal);
+    $('#modal').modal('show');
+    return $('#modal');
 }
+
 
 export function renderPostInputField (isOn : boolean) {
     $("#posts-container #post-input")[isOn ? 'show' : 'hide']();

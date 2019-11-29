@@ -1,6 +1,6 @@
 import {  actionRoomSelect, actionRoomSelectRender1, actionRoomSelectRender2 } from "../actions/action-room-select";
-import { createRoom, modalSaveChanges, modalSaveChangesRender } from "../actions/action-create-room";
-import { userlistSelectRender } from "./render-create-room";
+import { createRoom } from "../actions/action-create-room";
+
 
 
 function roomClickListener () {
@@ -17,14 +17,9 @@ function createRoomClickHandler() {
 }
 
 
-function usersClickHandler() {
-    $(".modal-body .user-list").on("click", userlistSelectRender)
-}
-
-
-function modalSaveChangesClickHandler() {
-    $(".modal-footer .save-changes").on('click', () => {
-        modalSaveChanges(modalSaveChangesRender);
+export function modalSaveChangesClickHandler() {
+    $("#modal-container").on('click', ".save-changes", () => {
+        $('#modal').modal('hide');
     });
 }
 
@@ -34,7 +29,7 @@ window.onpopstate = function(event) {
 
 export function addListeners () {
     roomClickListener();
-    createRoomClickHandler()
-    usersClickHandler();
+    createRoomClickHandler();
     modalSaveChangesClickHandler();
 }
+

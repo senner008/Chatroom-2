@@ -24,7 +24,6 @@ export const renderModal = (modal) => {
     return $('#modal');
 }
 
-
 export function renderPostInputField (isOn : boolean) {
     $("#posts-container #post-input")[isOn ? 'show' : 'hide']();
 }

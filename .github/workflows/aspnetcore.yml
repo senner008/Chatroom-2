@@ -18,9 +18,9 @@ jobs:
     - name: Client unit tests
       run: cd app && npm run test && cd ..
     - name : Client minify for production
-      run : cd app && npm run release && cd ..
-    - name: Build with dotnet
-      run: dotnet build --configuration Release
+      run : cd app && npm run publish && cd ..
+    # - name: Build with dotnet
+    #   run: dotnet build --configuration Release
     - name: Run xUnit tests
       run: dotnet test
       env : 

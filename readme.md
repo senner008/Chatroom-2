@@ -59,7 +59,7 @@
 ## NOTES:
 - _context.Database.EnsureCreated(); adds an extrea 200 ms to the db call
 - users only allowed to send one message to hub at a time when not in controller
-- 
+- To link github action to heroku : https://dev.to/mscccc/github-actions-deploy-to-heroku-22np
 
 ![Db issue unsolved](https://github.com/senner008/Chatroom-2/blob/master/dbissue.png)
 ![Db issue unsolved](https://github.com/senner008/Chatroom-2/blob/master/dbissue_solved.png)

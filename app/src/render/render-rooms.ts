@@ -1,20 +1,20 @@
 
     
 export const RoomRender = (() =>  {
-    const roomsList = "#master-list .rooms";
-    const findById =  id => $(roomsList).find(`[data-id='${id}']`);
-    const createLi =  room => `<li data-id='${room.id}' class="list-group-item">${room.name}</li>`;
+    const _roomsList = "#master-list .rooms";
+    const _findById =  id => $(_roomsList).find(`[data-id='${id}']`);
+    const _createLi =  room => `<li data-id='${room.id}' class="list-group-item">${room.name}</li>`;
 
     const self  = {
-            append : room => $(roomsList).append(createLi(room)),
-            exists : id => findById(id).length > 0,
+            append : room => $(_roomsList).append(_createLi(room)),
+            exists : id => _findById(id).length > 0,
             renderList : (rooms) => {
                 if (rooms.length === 0) return;
-                $(roomsList).html(rooms.map(createLi));
+                $(_roomsList).html(rooms.map(_createLi));
             },
             renderSelect : id => {
-                $(roomsList).find('li').removeClass("room-selected");
-                findById(id).addClass("room-selected");
+                $(_roomsList).find('li').removeClass("room-selected");
+                _findById(id).addClass("room-selected");
             }
         }
     return self;

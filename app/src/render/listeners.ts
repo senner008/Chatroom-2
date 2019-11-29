@@ -28,6 +28,9 @@ function modalSaveChangesClickHandler() {
     });
 }
 
+window.onpopstate = function(event) {
+    actionRoomSelect(Number(event.state), actionRoomSelectRender1, actionRoomSelectRender2, false)
+};
 
 export function addListeners () {
     roomClickListener();

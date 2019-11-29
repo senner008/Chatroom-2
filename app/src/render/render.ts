@@ -1,4 +1,5 @@
 
+
 // TODO : refactor
 const headerRender = (function IIFE ()  {
 
@@ -36,5 +37,10 @@ export function renderView(isTrue : boolean) : void {
     $("#reconnect-button")[isTrue ? 'hide' : 'show'](); 
     $(".connection-conditional")[isTrue ? 'show' : 'hide'](); 
 }
+
+export function pushState (id) {
+    history.pushState(id, id, `/RoomInit/${id}`);
+}
+
 
 export { headerRender }

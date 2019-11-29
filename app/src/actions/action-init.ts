@@ -1,4 +1,4 @@
-import { renderRooms } from "../render/render-rooms";
+import { RoomRender } from "../render/render-rooms";
 import { renderView, showLoader } from "../render/render";
 import { addListeners } from "../render/listeners";
 import { getRooms } from "../ajaxMethods";
@@ -15,7 +15,7 @@ export async function actionInit(render) {
 }
 
 export function actionInitRender(rooms) {
-    renderRooms(rooms);
+    RoomRender.renderList(rooms);
     renderView(true);
     addListeners();
     showLoader(false);

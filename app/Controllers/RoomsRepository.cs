@@ -33,7 +33,7 @@ namespace app.Controllers
             _userManager = userManager;
         }
 
-        public async Task<List<ApplicationUser>> getUsersByNuckname(RoomCreateModel roomCreateModel) 
+        public async Task<List<ApplicationUser>> getUsersByNickname(RoomCreateModel roomCreateModel) 
         {
             return await _userManager.Users.Where(user => roomCreateModel.UserList.Any(nickname => user.NickName == nickname)).ToListAsync();
         }
@@ -61,7 +61,7 @@ namespace app.Controllers
         Task<List<Room>> getRooms();
         Task addRoom(Room room);
         Task sendWSRoom(Room room);
-        Task<List<ApplicationUser>> getUsersByNuckname(RoomCreateModel roomCreateModel);
+        Task<List<ApplicationUser>> getUsersByNickname(RoomCreateModel roomCreateModel);
     }
 
 

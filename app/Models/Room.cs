@@ -17,10 +17,10 @@ namespace app.Models
         public ICollection<Post> Posts { get; set; }
     }
 
-     public class RoomCreateModel
+    public class RoomCreateModel
     {
         [Required (ErrorMessage ="Please enter a valid room name")]
-        [RegularExpression(@"^[a-zA-Z''-'\s]{1,30}$", ErrorMessage = "Characters are not allowed or length exceeded")]
+        [RegularExpression(@"^[a-zA-Z''-'\s]{1,30}$", ErrorMessage = "Characters are not allowed or room name length exceeded")]
         [HTMLSanitizerError(ErrorMessage = "Invalid input")]
         public string RoomName { get; set; }
 

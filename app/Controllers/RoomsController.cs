@@ -57,10 +57,9 @@ namespace app.Controllers
         public async Task<IActionResult> Index([FromBody] RoomCreateModel roomCreateModel)
         {
     
-
             List<ApplicationUser> users;
             try {
-                 users = await _roomsRepository.getUsersByNuckname(roomCreateModel);
+                 users = await _roomsRepository.getUsersByNickname(roomCreateModel);
             } catch (Exception) {
                 throw new Exception(); 
             }
@@ -90,7 +89,7 @@ namespace app.Controllers
             catch (Exception) {
                 throw new Exception();
             }
-            Response.Headers.Add("Response-message", "Room " + room.Name + "created");
+            Response.Headers.Add("Response-message", "Room " + room.Name + " created");
             return Ok();
 
         }

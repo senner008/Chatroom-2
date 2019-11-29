@@ -1,12 +1,12 @@
 
 import { State } from "../State";
 import { getPostsByRoomId } from "../ajaxMethods";
-import { showLoader, renderPostInputField, renderView } from "../render/render";
-import { renderRoomListSelect, roomExists, pushState } from "../render/render-rooms";
+import { showLoader, renderPostInputField, renderView, pushState } from "../render/render";
+import { RoomRender } from "../render/render-rooms";
 import { renderPostList, scrollToBottom } from "../render/render-posts";
 
 export async function actionRoomSelect(id, render1, render2, shouldPushState) {
-    if (!roomExists(id)) return 
+    if (!RoomRender.exists(id)) return 
     render1(id);
     var getPosts = await getPostsByRoomId(id)
     State.setActiveRoom(id, getPosts);
@@ -16,7 +16,7 @@ export async function actionRoomSelect(id, render1, render2, shouldPushState) {
 
 export async function actionRoomSelectRender1(id) {
     showLoader(true)
-    renderRoomListSelect(id);
+    RoomRender.renderSelect(id);
 }
 export async function actionRoomSelectRender2() {
     renderPostInputField(true);

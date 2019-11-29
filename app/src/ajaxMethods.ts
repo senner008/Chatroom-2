@@ -31,6 +31,7 @@ export async function getRooms() {
 }
 
 export async function sendCreateRoom(users, name) {
+    console.log(users)
     return await ajaxPost<IRoom>("/rooms/create", { roomname : name , UserList : users });
 }
 

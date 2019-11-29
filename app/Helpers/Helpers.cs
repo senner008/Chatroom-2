@@ -64,7 +64,6 @@ namespace app {
     {
         public override bool IsValid(object value)
         {
-            System.Console.WriteLine("dfsfsdfdsfdsfdsfdsfdsfdsfs");
             var list = value as IList;
             if (list != null)
             {
@@ -105,6 +104,7 @@ namespace app {
         public override bool IsValid(object value)
         {
             HtmlSanitizer sanitizer  = new HtmlSanitizer();
+            if (value == null) return true;
             var sanitized = sanitizer.Sanitize(value.ToString());
             if(value.ToString() != sanitized) return false;
             return true;

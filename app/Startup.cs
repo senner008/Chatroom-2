@@ -34,7 +34,7 @@ namespace app
         public void ConfigureServices(IServiceCollection services)
         {
             var envdb = Environment.GetEnvironmentVariable ("MYSQL_DB");
-            string CnString = !String.IsNullOrEmpty (envdb) ? envdb : Configuration.GetConnectionString("CodeToShowDb");
+            string CnString = !String.IsNullOrEmpty (envdb) ? envdb : Configuration.GetConnectionString("test");
 
            services.AddDbContext<ApplicationDbContext>(options => options.UseMySql(CnString));
 
@@ -70,13 +70,13 @@ namespace app
                 options.Filters.Add(new ModelStateValidationActionFilterAttribute());  
                 options.Filters.Add(typeof(HttpGlobalExceptionFilter));
             });
-
             //https://stackoverflow.com/questions/52954158/asp-net-core-2-1-no-http-https-redirection-in-app-engine
            services.Configure<ForwardedHeadersOptions>(options =>
             {
                 options.ForwardedHeaders = 
                     ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
             });
+
 
         }
 
@@ -116,11 +116,11 @@ namespace app
             }
             else
             {
+                app.UseStatusCodePagesWithRedirects("/Error/{0}");
                 app.UseExceptionHandler("/Home/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 HstsBuilderExtensions.UseHsts(app);
-                app.UseStatusCodePagesWithRedirects("/Error/{0}");
-
+            
                    app.UseCsp(csp =>
                     {
                         csp.AllowScripts

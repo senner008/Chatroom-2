@@ -1,29 +1,29 @@
 
+
 // TODO : refactor
 const headerRender = (function IIFE ()  {
 
-    function removeClasses(elem) {
+    function switchClass(elem, msg, color) {
         elem.find(".alert").removeClass("alert-success").removeClass("alert-danger")
+        elem.find(".alert").text(msg).addClass(msg ? color : "");
     }
     
     return {
         message (msg, color) {
-            var cnmessage = $("#connection-message");
-            removeClasses(cnmessage);
-            cnmessage.find(".alert").text(msg).addClass(msg ? color : "");
+            switchClass($("#connection-message"), msg, color);
         },
         state (msg, color) {
-            var stateMessage = $("#connection-state");
-            removeClasses(stateMessage);
-            stateMessage.find(".alert").text(msg).addClass(msg ? color : "");
+            switchClass($("#connection-state"), msg, color);
         }
     }
 })();
 
-
-export function showModal() {
-    $('#room-create-modal').modal('show');
+export const renderModal = (modal) => {
+    $("#modal-container").html(modal);
+    $('#modal').modal('show');
+    return $('#modal');
 }
+
 
 export function renderPostInputField (isOn : boolean) {
     $("#posts-container #post-input")[isOn ? 'show' : 'hide']();
@@ -36,11 +36,13 @@ export function showLoader(isOn : boolean) {
 
 // TODO : get all elems with class state-conditional
 export function renderView(isTrue : boolean) : void {
-    $("#posts-container main")[isTrue ? 'show' : 'hide'](); 
-    $("#master-list .create")[isTrue ? 'show' : 'hide'](); 
-    $("#master-list .rooms")[isTrue ? 'show' : 'hide'](); 
-    $("#connection-message")[isTrue ? 'show' : 'hide'](); 
     $("#reconnect-button")[isTrue ? 'hide' : 'show'](); 
+    $(".connection-conditional")[isTrue ? 'show' : 'hide'](); 
 }
+
+export function pushState (id) {
+    history.pushState(id, id, `/RoomInit/${id}`);
+}
+
 
 export { headerRender }

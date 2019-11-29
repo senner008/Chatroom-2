@@ -1,7 +1,6 @@
 import { State } from "../State";
 import { RoomsFactory } from "../Rooms";
-import { renderRooms, appendRoom } from "../render/render-rooms";
-import { getRooms } from "../ajaxMethods";
+import { RoomRender } from "../render/render-rooms";
 
 
 export async function actionReceiveRoom(room, render) {
@@ -11,5 +10,5 @@ export async function actionReceiveRoom(room, render) {
 }
 
 export function actionReceiveRoomRender(room) {
-    appendRoom(room)
+    RoomRender.append(room)
 }

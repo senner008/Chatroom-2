@@ -1,35 +1,23 @@
-import { actionRoomSelect, actionRoomSelectRender1, actionRoomSelectRender2 } from "../actions/action-room-select";
+
+    
+export const RoomRender = (() =>  {
+    const _roomsList = "#master-list .rooms";
+    const _findById =  id => $(_roomsList).find(`[data-id='${id}']`);
+    const _createLi =  room => `<li data-id='${room.id}' class="list-group-item">${room.name}</li>`;
+
+    const self  = {
+        append : room => $(_roomsList).append(_createLi(room)),
+        exists : id => _findById(id).length > 0,
+        renderList : (rooms) => {
+            if (rooms.length === 0) return;
+            $(_roomsList).html(rooms.map(_createLi));
+        },
+        renderSelect : id => {
+            $(_roomsList).find('li').removeClass("room-selected");
+            _findById(id).addClass("room-selected");
+        }
+    }
+    return self;
+})();
 
 
-const roomsList = $("#master-list");
-
-export function renderRoomListSelect(id) {
-    roomsList.find('li').each((index, li) => li.classList.remove("room-selected"));
-    roomsList.find(`[data-id='${id}']`)[0].classList.add("room-selected");
-}
-
-export function pushState (id) {
-    history.pushState(id, id, `/RoomInit/${id}`);
-}
-
-window.onpopstate = function(event) {
-    actionRoomSelect(Number(event.state), actionRoomSelectRender1, actionRoomSelectRender2, false)
-};
-
-export function appendRoom (room) {
-    var roomLi = `<li data-id='${room.id}' class="list-group-item">${room.name}</li>`;
-    roomsList.find('.rooms').append(roomLi);
-}
-
-
-export function roomExists(id) {
-    return roomsList.find(`[data-id='${id}']`).length > 0;
-}
-
-export async function renderRooms (rooms) {
-    if (rooms.length === 0) return;
-    var list = rooms.map(room => {
-        return `<li data-id='${room.id}' class="list-group-item">${room.name}</li>`;
-    })
-    roomsList.find('.rooms').html(list);
-}

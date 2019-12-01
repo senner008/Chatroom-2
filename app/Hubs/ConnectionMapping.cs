@@ -45,7 +45,8 @@ namespace SignalRChat.Hubs
                 {
                     System.Console.WriteLine("removing...");
                      userAdded -= value;
-                }  
+                }
+                
             }
         }
 
@@ -67,7 +68,7 @@ namespace SignalRChat.Hubs
             }
                 
             if (handler != null)
-                handler(this, new AddMyUserEventArgs { Id = key as string});
+                userAdded?.invoke(this, new AddMyUserEventArgs { Id = key as string});
         }
 
         public UserConnectionInfo GetConnections(T key)

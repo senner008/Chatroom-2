@@ -68,7 +68,7 @@ namespace SignalRChat.Hubs
             }
                 
             if (handler != null)
-                userAdded(this, new AddMyUserEventArgs { Id = key as string});
+                handler(this, new AddMyUserEventArgs { Id = key as string});
         }
 
         public UserConnectionInfo GetConnections(T key)

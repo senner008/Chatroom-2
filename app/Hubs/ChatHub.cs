@@ -99,8 +99,11 @@ namespace SignalRChat.Hubs
 
             System.Console.WriteLine(Context.ConnectionId);
             var id = Context.UserIdentifier;
-             _hubLogger._connections.Add(id, new UserConnectionInfo { ConnectionId = Context.ConnectionId});
-
+            try {
+                _hubLogger._connections.Add(id, new UserConnectionInfo { ConnectionId = Context.ConnectionId});
+            } catch (Exception) {
+                await Clients.Caller.SendAsync ("ErrorMessage", "FatalError"); 
+            }    
             // System.Console.WriteLine("----------------");
             // System.Console.WriteLine("User has connected : ");
 	        // System.Console.WriteLine(Context.User.Identity.Name);
@@ -114,7 +117,11 @@ namespace SignalRChat.Hubs
 	    {       
 
             var id = Context.UserIdentifier;
+            try {
             _hubLogger._connections.Remove(id);
+            } catch (Exception) {
+                await Clients.Caller.SendAsync ("ErrorMessage", "FatalError"); 
+            }
 
             // System.Console.WriteLine("----------------");
             // System.Console.WriteLine("User has dis-connected : ");

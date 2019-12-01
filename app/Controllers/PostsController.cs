@@ -49,7 +49,6 @@ namespace app.Controllers
             return NotFound("There are no posts in this room");
 
         }
-
     }
  
 }

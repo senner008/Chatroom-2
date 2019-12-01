@@ -45,8 +45,7 @@ namespace SignalRChat.Hubs
                 {
                     System.Console.WriteLine("removing...");
                      userAdded -= value;
-                }
-                
+                }  
             }
         }
 

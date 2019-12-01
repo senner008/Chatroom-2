@@ -61,14 +61,7 @@ namespace SignalRChat.Hubs
                 
             }
 
-            UserAddedEvent handler;
-            lock (ineverchange_eventLock)
-            {
-                handler = userAdded;
-            }
-                
-            if (handler != null)
-                userAdded?.invoke(this, new AddMyUserEventArgs { Id = key as string});
+            userAdded?.Invoke(this, new AddMyUserEventArgs { Id = key as string});
         }
 
         public UserConnectionInfo GetConnections(T key)

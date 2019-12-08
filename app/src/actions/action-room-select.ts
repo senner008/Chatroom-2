@@ -26,4 +26,10 @@ export async function actionRoomSelectRender2() {
     scrollToBottom();
 }
 
+export function triggerInitRoom () {
 
+    var routeElem = $("#chatroom-route-config")[0];
+    if (routeElem) {
+        actionRoomSelect(routeElem.dataset.initRoom, actionRoomSelectRender1, actionRoomSelectRender2, false)
+    }
+}

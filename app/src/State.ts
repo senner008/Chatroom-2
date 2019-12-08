@@ -35,6 +35,9 @@ const State = (function IIFE() {
         },
         getUsers() {
             return state.users;
+        },
+        getState() {
+            return Object.freeze(state);
         }
     });
 })();

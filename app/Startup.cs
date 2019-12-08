@@ -48,7 +48,7 @@ namespace app
             .AddEntityFrameworkStores<ApplicationDbContext> ();
 
             services.AddControllersWithViews();
-            services.AddRazorPages();
+            // services.AddRazorPages();
             services.AddSignalR();
             services.AddScoped<IDisposable, UserManager<ApplicationUser>>();
             services.AddScoped<HttpContextAccessor>();

@@ -1,6 +1,7 @@
 import { Connection } from "../Connection.ts";
 import {State} from "../State.ts";
 import * as ajaxPostDependencies  from "../Ajax.ts";
+import {actionInit}  from "../actions/action-init.ts";
 
 var connectionMock = {
     onclose(cb) {
@@ -14,9 +15,9 @@ var connectionMock = {
     state : 0
 }
 
-// replace ajaxPost with mock
-ajaxPostDependencies.ajaxPost = () => [{name: 'Public', id: 1}];
-// replace asynCallback with mock
+
+
+
 
 var onStart_Callback = jest.fn();
 var onLogConnection_Callback = jest.fn();
@@ -58,4 +59,22 @@ test('Connection start should fire onLogConnection callback', async () => {
 
 });
 
+test('actionInit should update state', async () => {
 
+    // replace ajaxPost with mock
+    ajaxPostDependencies.ajaxPost = () => [{name: 'Public', id: 1}];
+    // replace asynCallback with mock
+   
+    const triggerInitRoom =  jest.fn();
+    const actionInitRender =  jest.fn();
+
+    await actionInit(actionInitRender, triggerInitRoom);  
+    var state = State.getState();
+
+    // Assert
+    expect(actionInitRender).toHaveBeenCalledTimes(1);
+    expect(triggerInitRoom).toHaveBeenCalledTimes(1);
+
+    expect(Object.keys(state.rooms)).toStrictEqual(["1"]);
+
+});

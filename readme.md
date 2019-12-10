@@ -86,6 +86,7 @@
 ```
 ## EF NOTES 1:
 
+```
 _context.Posts
     .Where(post => post.RoomId == id)
     .OrderByDescending(post => post.Id)
@@ -112,9 +113,9 @@ _context.Posts
       ) AS `t`
       INNER JOIN `AspNetUsers` AS `a` ON `t`.`UserId` = `a`.`Id`
       ORDER BY `t`.`Id` DESC
-
+```
 ## EF NOTES 2: (Limit before sorting)
-
+```
 _context.Posts
     .Where(post => post.RoomId == id)
     .OrderByDescending(post => post.Id)
@@ -137,3 +138,4 @@ _context.Posts
       WHERE (`p`.`RoomId` = @__id_0) AND @__id_0 IS NOT NULL
       ORDER BY `p`.`Id` DESC
       LIMIT @__p_1
+```

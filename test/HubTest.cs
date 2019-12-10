@@ -59,7 +59,7 @@ namespace test
             // Arrange
             room.IsPublic = false;
             mockClients.Setup(clients => clients.Users(receivers)).Returns(mockClientProxy.Object);
-            mockCallerContext.Setup(clients => clients.UserIdentifier).Returns(UserIdentifierString);
+            mockCallerContext.Setup(context => context.UserIdentifier).Returns(UserIdentifierString);
 
             // Act
             ChatHub chathub = new ChatHub(mockRepo.Object, new HubLogger())
@@ -85,7 +85,7 @@ namespace test
             room.IsPublic = true;
 
             mockClients.Setup(clients => clients.All).Returns(mockClientProxy.Object);
-            mockCallerContext.Setup(clients => clients.UserIdentifier).Returns(UserIdentifierString);
+            mockCallerContext.Setup(context => context.UserIdentifier).Returns(UserIdentifierString);
 
             // Act
             ChatHub chathub = new ChatHub(mockRepo.Object, new HubLogger())
@@ -107,7 +107,7 @@ namespace test
             room.IsPublic = false;
             mockClients.Setup(clients => clients.All).Returns(mockClientProxy.Object);
             mockClients.Setup(clients => clients.Users(receivers)).Returns(mockClientProxy.Object);
-            mockCallerContext.Setup(clients => clients.UserIdentifier).Returns(UserIdentifierString);
+            mockCallerContext.Setup(context => context.UserIdentifier).Returns(UserIdentifierString);
 
             // Act
             ChatHub chathub = new ChatHub(mockRepo.Object, new HubLogger())
@@ -128,7 +128,7 @@ namespace test
             // Arrange
             room.IsPublic = false;
             mockClients.Setup(clients => clients.Users(receivers)).Returns(mockClientProxy.Object);
-            mockCallerContext.Setup(clients => clients.UserIdentifier).Returns(UserIdentifierString);
+            mockCallerContext.Setup(context => context.UserIdentifier).Returns(UserIdentifierString);
 
             // Act
             ChatHub chathub = new ChatHub(mockRepo.Object, new HubLogger())
@@ -164,7 +164,7 @@ namespace test
                 return true;
             }));
 
-            mockCallerContext.Setup(clients => clients.UserIdentifier).Returns(UserIdentifierString);
+            mockCallerContext.Setup(context => context.UserIdentifier).Returns(UserIdentifierString);
 
             // Act
             ChatHub chathub = new ChatHub(mockRepo.Object, new HubLogger())
@@ -173,8 +173,7 @@ namespace test
                 Context = mockCallerContext.Object
             };
 
-            Task task1 = Task.Factory.StartNew
-            (() => chathub.SendMessage(postmessage));
+            Task task1 = Task.Factory.StartNew(() => chathub.SendMessage(postmessage));
             Thread.Sleep(1000);
             // Wait, then execute OnConnectedAsync like when user is connected
             Task task2 = Task.Factory.StartNew(() => chathub.OnConnectedAsync());

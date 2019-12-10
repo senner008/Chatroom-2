@@ -50,17 +50,17 @@ namespace app.Models
         public Room Room { get; set; }
     }
 
-       public class PostModel
-        {
-            public string PostBody { get; set; }
+    public class PostModel
+    {
+        public string PostBody { get; set; }
 
-            public string UserName { get; set; }
+        public string UserName { get; set; }
 
-            public DateTime CreateDate { get; set; }
+        public DateTime CreateDate { get; set; }
 
-            public int RoomId { get; set;}
+        public int RoomId { get; set; }
 
-            public string Identifier { get; set; }
+        public string Identifier { get; set; }
 
-        }
+    }
 }

@@ -34,8 +34,8 @@ namespace app.Controllers
                 .Where(post => post.RoomId == id)
                 .OrderByDescending(post => post.Id)
                 .Take(100)
-                .Include(post => post.Room)
-                .ThenInclude(room => room.UsersLink)
+                // .Include(post => post.Room)
+                // .ThenInclude(room => room.UsersLink)
                 .Select(post => new PostModel { 
                     PostBody = post.PostBody, 
                     UserName = post.User.NickName, 

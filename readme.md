@@ -60,7 +60,7 @@
 ## NOTES:
 - _context.Database.EnsureCreated(); adds an extrea 200 ms to the db call
 - users only allowed to send one message to hub at a time when not in controller
-- 
+
 
 ![Db issue unsolved](https://github.com/senner008/Chatroom-2/blob/master/dbissue.png)
 ![Db issue unsolved](https://github.com/senner008/Chatroom-2/blob/master/dbissue_solved.png)
@@ -69,7 +69,7 @@
 ```
 {
   "ConnectionStrings": {
-    "CodeToShowDb": {{CNSTRING}
+    "CodeToShowDb": {{Test}
   },
   "Passwords" : {
     "adminpass" : {{USER SEEDS PASSWORD}}
@@ -84,3 +84,56 @@
   "AllowedHosts": "*"
 }
 ```
+## EF NOTES 1:
+
+_context.Posts
+    .Where(post => post.RoomId == id)
+    .OrderByDescending(post => post.Id)
+    .Take(100)
+    // .Include(post => post.Room)
+    // .ThenInclude(room => room.UsersLink)
+    .Select(post => new PostModel { 
+        PostBody = post.PostBody, 
+        UserName = post.User.NickName, 
+        CreateDate = post.CreateDate,
+        RoomId = post.RoomId,
+        Identifier = post.Identifier.ToString()
+    })
+    .AsNoTracking()
+    .ToListAsync();
+
+ SELECT `t`.`PostBody`, `a`.`NickName` AS `UserName`, `t`.`CreateDate`, `t`.`RoomId`, CONVERT(`t`.`Identifier`, CHAR(36)) AS `Identifier`
+      FROM (
+          SELECT `p`.`Id`, `p`.`CreateDate`, `p`.`Identifier`, `p`.`Likes`, `p`.`PostBody`, `p`.`RoomId`, `p`.`UpdateDate`, `p`.`UserId`
+          FROM `Posts` AS `p`
+          WHERE (`p`.`RoomId` = @__id_0) AND @__id_0 IS NOT NULL
+          ORDER BY `p`.`Id` DESC
+          LIMIT @__p_1
+      ) AS `t`
+      INNER JOIN `AspNetUsers` AS `a` ON `t`.`UserId` = `a`.`Id`
+      ORDER BY `t`.`Id` DESC
+
+## EF NOTES 2: (Limit before sorting)
+
+_context.Posts
+    .Where(post => post.RoomId == id)
+    .OrderByDescending(post => post.Id)
+    // .Include(post => post.Room)
+    // .ThenInclude(room => room.UsersLink)
+    .Select(post => new PostModel { 
+        PostBody = post.PostBody, 
+        UserName = post.User.NickName, 
+        CreateDate = post.CreateDate,
+        RoomId = post.RoomId,
+        Identifier = post.Identifier.ToString()
+    })
+    .AsNoTracking()
+    .Take(100)
+    .ToListAsync();
+
+  SELECT `p`.`PostBody`, `a`.`NickName` AS `UserName`, `p`.`CreateDate`, `p`.`RoomId`, CONVERT(`p`.`Identifier`, CHAR(36)) AS `Identifier`
+      FROM `Posts` AS `p`
+      INNER JOIN `AspNetUsers` AS `a` ON `p`.`UserId` = `a`.`Id`
+      WHERE (`p`.`RoomId` = @__id_0) AND @__id_0 IS NOT NULL
+      ORDER BY `p`.`Id` DESC
+      LIMIT @__p_1

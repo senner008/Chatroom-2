@@ -63,7 +63,7 @@ test('actionInit should update state', async () => {
 
     // replace ajaxPost with mock
     ajaxPostDependencies.ajaxPost = () => [{name: 'Public', id: 1}];
-    // replace asynCallback with mock
+
    
     const triggerInitRoom =  jest.fn();
     const actionInitRender =  jest.fn();
@@ -76,5 +76,6 @@ test('actionInit should update state', async () => {
     expect(triggerInitRoom).toHaveBeenCalledTimes(1);
 
     expect(Object.keys(state.rooms)).toStrictEqual(["1"]);
+
 
 });

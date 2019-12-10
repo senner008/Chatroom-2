@@ -21,9 +21,7 @@ namespace SignalRChat.Hubs
         public IHubLogger _hubLogger { get; }
 
         public ChatHub(IHubRepository hubRepository, IHubLogger hubLogger)
-        {
-            // System.Console.WriteLine("----------instantiate ChatHub-------------");
-            
+        {            
             _hubRepository = hubRepository;
             _hubLogger = hubLogger;
         }

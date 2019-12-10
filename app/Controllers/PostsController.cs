@@ -7,6 +7,7 @@ using app.Models;
 using Microsoft.AspNetCore.Authorization;
 using app.Repositories;
 using Microsoft.AspNetCore.Http;
+using System.Diagnostics;
 
 namespace app.Controllers
 {
@@ -32,7 +33,13 @@ namespace app.Controllers
             IEnumerable<PostModel> posts;
             try {
                 Room hasRoomAccess = await _hubRepository.FindAndValidateRoom(id);
+                Stopwatch watch = new Stopwatch();
+                watch.Start();
                 posts = await _postsRepository.getPostsByRoomId(id);
+                watch.Stop();
+                Console.WriteLine("Time elapsed as per stopwatch: {0} ", watch.ElapsedMilliseconds);
+
+
 
             } catch (MyChatHubException ex) {
                  return BadRequest(ex.Message);

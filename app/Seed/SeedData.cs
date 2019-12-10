@@ -129,7 +129,7 @@ public static class SeedData
 
         List<Post> Posts = new List<Post>();
 
-        int rowsToInsert = 10;
+        int rowsToInsert = 100;
 
         for (var i = 1; i < rowsToInsert; i++) 
         {
@@ -143,14 +143,10 @@ public static class SeedData
                 Identifier = Guid.NewGuid()
             });
         }
-        EntityFrameworkManager.ContextFactory = context => {
-            	var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
-                optionsBuilder.UseMySql(cnString);
-                return new ApplicationDbContext(optionsBuilder.Options);
-        };
         System.Console.WriteLine("------------------");
         System.Console.WriteLine($"Inserting {rowsToInsert} rows into Posts table...");
-        context.BulkInsert(Posts);
+        context.Posts.AddRange(Posts);
+        context.SaveChanges();
         System.Console.WriteLine($"{rowsToInsert} rows inserted");
         System.Console.WriteLine("------------------");
 

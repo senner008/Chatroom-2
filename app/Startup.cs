@@ -48,10 +48,8 @@ namespace app
             .AddEntityFrameworkStores<ApplicationDbContext> ();
 
             services.AddControllersWithViews();
-            services.AddRazorPages();
             services.AddSignalR();
-            services.AddScoped<IDisposable, UserManager<ApplicationUser>>();
-            services.AddScoped<HttpContextAccessor>();
+
             services.AddScoped<IHubRepository, HubRepository>();
             services.AddScoped<IPostsRepository, PostsRepository>();
             services.AddScoped<IRoomsRepository, RoomsRepository>();
@@ -100,7 +98,7 @@ namespace app
             });
             if (env.IsDevelopment())
             {
-                // These will run synchronously when without await 
+                // These will run synchronously
                 var pass = Configuration.GetSection ("Passwords").GetSection ("adminpass").Value;
                 SeedData.SeedApplicationUsers (userManager, "alpha@mail.com", "alpha", pass);
                 SeedData.SeedApplicationUsers (userManager, "beta@mail.com", "beta", pass);

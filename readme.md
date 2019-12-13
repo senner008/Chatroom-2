@@ -36,6 +36,7 @@
 - fix when no room route
 - remove logic from listeners
 - add random thread access test : https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/lock-statement
+- Dockerize
 
 
 
@@ -60,10 +61,6 @@
 ## NOTES:
 - _context.Database.EnsureCreated(); adds an extrea 200 ms to the db call
 - users only allowed to send one message to hub at a time when not in controller
-
-
-![Db issue unsolved](https://github.com/senner008/Chatroom-2/blob/master/dbissue.png)
-![Db issue unsolved](https://github.com/senner008/Chatroom-2/blob/master/dbissue_solved.png)
 
 
 ```

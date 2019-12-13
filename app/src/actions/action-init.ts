@@ -1,17 +1,15 @@
 import { RoomRender } from "../render/render-rooms";
 import { renderView, showLoader } from "../render/render";
 import { addListeners } from "../render/listeners";
-import { getRooms } from "../ajaxMethods";
 import { State } from "../State";
 import { RoomsFactory } from "../Rooms";
-import { actionRoomSelect, actionRoomSelectRender1, actionRoomSelectRender2 } from "./action-room-select";
+import { getRooms } from "../ajaxMethods";
 
-
-export async function actionInit(render) {
+export async function actionInit(render, trigger) {
     var rooms = await getRooms();
     State.setRooms(RoomsFactory(rooms));
     render(rooms);
-    triggerInitRoom();
+    trigger();
 }
 
 export function actionInitRender(rooms) {
@@ -21,10 +19,3 @@ export function actionInitRender(rooms) {
     showLoader(false);
 }
 
-function triggerInitRoom () {
-
-    var routeElem = $("#chatroom-route-config")[0];
-    if (routeElem) {
-        actionRoomSelect(routeElem.dataset.initRoom, actionRoomSelectRender1, actionRoomSelectRender2, false)
-    }
-}

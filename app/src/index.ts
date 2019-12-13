@@ -4,7 +4,7 @@ import "./css/master-list.css";
 
 import { Connection } from "./Connection";
 import * as signalR from "@aspnet/signalr";
-import { IPost, IRoom } from "./ajaxMethods";
+import { IPost, IRoom, getRooms } from "./ajaxMethods";
 import { actionInit, actionInitRender } from "./actions/action-init";
 import { actionReceiveMessage, actionReceiveMessageRender } from "./actions/action-receive-message";
 import { actionReceiveRoom, actionReceiveRoomRender } from "./actions/action-receive-room";
@@ -12,6 +12,7 @@ import { actionOncloseRender } from "./actions/action-onclose";
 import {  actionOnRestart } from "./actions/action-onrestart";
 import { State } from "./State";
 import { Logger } from "./GlobalLogger";
+import { triggerInitRoom } from "./actions/action-room-select";
 
 
 (async function init () {
@@ -19,7 +20,7 @@ import { Logger } from "./GlobalLogger";
     var connection = Connection(new signalR.HubConnectionBuilder().withUrl("/hub").build());
 
     connection.onStart(async () => {
-        await actionInit(actionInitRender)  
+        await actionInit(actionInitRender, triggerInitRoom)  
     });
     
     connection.onReceiveMessage(async (post : IPost) => {
@@ -57,7 +58,8 @@ import { Logger } from "./GlobalLogger";
         var message = (<HTMLInputElement> document.getElementById("messageInput")).value;
         const roomId = State.getActiveRoom().id;
         connection.send(message,roomId);
-    });    
+    });   
+     
 })();
 
 

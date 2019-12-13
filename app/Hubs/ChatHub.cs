@@ -21,9 +21,7 @@ namespace SignalRChat.Hubs
         public IHubLogger _hubLogger { get; }
 
         public ChatHub(IHubRepository hubRepository, IHubLogger hubLogger)
-        {
-            // System.Console.WriteLine("----------instantiate ChatHub-------------");
-            
+        {            
             _hubRepository = hubRepository;
             _hubLogger = hubLogger;
         }
@@ -71,11 +69,6 @@ namespace SignalRChat.Hubs
                 // Send Websocket message
                 await SendWSMessage (room.IsPublic ? Clients.All : Clients.Users (receivers));
      
-                ///
-                /// DANGER ZONE
-                ///
-
-                // Thread.Sleep (20000);
                 // Message saved
                 await _hubRepository.SavePost (post);
 

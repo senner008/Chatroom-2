@@ -105,7 +105,7 @@ namespace app
                 SeedData.SeedApplicationUsers (userManager, "gamma@mail.com", "gamma", pass);
 
                 SeedData.SeedApplicationRooms(context, userManager);
-                SeedData.SeedApplicationPosts(context, userManager, Configuration.GetConnectionString("CodeToShowDb"));
+                SeedData.SeedApplicationPosts(context, userManager, Configuration.GetConnectionString("test"));
 
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();

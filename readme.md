@@ -65,7 +65,7 @@
 ```
 {
   "ConnectionStrings": {
-    "CodeToShowDb": {{Test}
+    "test": {{Mysqldb}
   },
   "Passwords" : {
     "adminpass" : {{USER SEEDS PASSWORD}}

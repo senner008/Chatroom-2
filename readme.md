@@ -62,7 +62,6 @@
 - _context.Database.EnsureCreated(); adds an extrea 200 ms to the db call
 - users only allowed to send one message to hub at a time when not in controller
 
-
 ```
 {
   "ConnectionStrings": {

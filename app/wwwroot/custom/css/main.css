@@ -95,6 +95,10 @@ body .container {
   height: 100%;
 }
 
+#body-container {
+  overflow-y: auto;
+}
+
 #main-layout-container {
   display : flex;
   flex-direction: column;

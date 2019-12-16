@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Security.Claims;
+using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using app.Data;
 using app.Models;
@@ -126,7 +127,7 @@ namespace app.Repositories
             { 
                 UserId = userId, 
                 RoomId = roomId, 
-                PostBody = message, 
+                PostBody = HtmlEncoder.Default.Encode(message), 
                 CreateDate = DateTime.Now,
                 Identifier = Guid.NewGuid()
             };

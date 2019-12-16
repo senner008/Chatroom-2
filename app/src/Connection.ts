@@ -41,18 +41,23 @@ export function Connection(connection : IHubConnection) {
     const api = {
         onStart(cb) {
             callback['onStart'] = cb; 
+            return this;
         },
         onClose(cb) {
             callback['onClose'] = cb; 
+            return this;
         },
         onReceiveMessage(cb) {
             callback['onReceive'] = cb; 
+            return this;
         },
         onReceiveRoom(cb) {
             callback['onReceiveRoom'] = cb; 
+            return this;
         },
         onRestart(cb) {
-            callback['onRestart'] = cb; 
+            callback['onRestart'] = cb;
+            return this;
         },
         async start() {
             await StartConnection(_internal.onStart);
@@ -63,12 +68,15 @@ export function Connection(connection : IHubConnection) {
         },
         send(message, roomId) {
            connection.send("SendMessage", {"message" : message, "roomId" : roomId});
+           return this;
         },
         onLog(cb) {
             callback['onLog'] = cb;
+            return this;
         },
         onLogConnection(cb) {
             callback['onLogConnection'] = cb;
+            return this;
         }
     }
 

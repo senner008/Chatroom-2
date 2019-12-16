@@ -21,6 +21,10 @@ body .container {
   height: 100%;
 }
 
+#body-container {
+  overflow-y: auto;
+}
+
 #main-layout-container {
   display : flex;
   flex-direction: column;
@@ -30,7 +34,7 @@ body .container {
 
 body footer {
   position: relative !important;
-  height: 60px;
+  height: 40px;
   width: 100%;
 }
 
@@ -88,9 +92,12 @@ body footer {
 }
 
 #posts-container #post-input { 
-display: none;
-}
+  display: none;
 
+}
+textarea {
+  resize: none;
+}
 
 #posts-container .container .post {
   display: flex;

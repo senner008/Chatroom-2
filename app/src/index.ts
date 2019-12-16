@@ -19,34 +19,29 @@ import { triggerInitRoom } from "./actions/action-room-select";
 
     var connection = Connection(new signalR.HubConnectionBuilder().withUrl("/hub").build());
 
-    connection.onStart(async () => {
+    connection
+    .onStart(async () => {
         await actionInit(actionInitRender, triggerInitRoom)  
-    });
-    
-    connection.onReceiveMessage(async (post : IPost) => {
+    })
+    .onReceiveMessage(async (post : IPost) => {
         await actionReceiveMessage(post, actionReceiveMessageRender);   
-    });
-
-    connection.onReceiveRoom(async (room: IRoom) => {
+    })
+    .onReceiveRoom(async (room: IRoom) => {
         await actionReceiveRoom(room, actionReceiveRoomRender)
-    });
-
-    connection.onClose(async () => {
+    })
+    .onClose(async () => {
         await actionOncloseRender();
-    });
-
-    connection.onRestart(async () => {
+    })
+    .onRestart(async () => {
         await actionOnRestart();
-    });
-
-    connection.onLog(async (log, status) => {
+    })
+    .onLog(async (log, status) => {
        if (log.trim().toLowerCase() == "fatalerror") {
         window.location.replace(location.origin + "/Home/Error");
        }
         Logger.message(log, status);
-    });
-
-    connection.onLogConnection(async (log, status) => {
+    })
+    .onLogConnection(async (log, status) => {
         Logger.connectionState(log, status);
     });
     
@@ -55,9 +50,10 @@ import { triggerInitRoom } from "./actions/action-room-select";
     $("#reconnect-button").on("click", connection.restart);
 
     $("#sendButton").on("click", function (e) {
-        var message = (<HTMLInputElement> document.getElementById("messageInput")).value;
+        var messageElem : any = document.getElementById("message-input");
         const roomId = State.getActiveRoom().id;
-        connection.send(message,roomId);
+        connection.send(messageElem.value,roomId);
+        messageElem.value = "";
     });   
      
 })();

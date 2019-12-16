@@ -55,6 +55,7 @@ namespace app.Areas.Identity.Pages.Account
             [Required]
             [StringLength(30, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 5)]
             [HTMLSanitizerError(ErrorMessage = "Invalid input")]
+            [RegularExpression(@"^[a-zA-Z''-'\s]{1,30}$", ErrorMessage = "Characters are not allowed")]
             [Display(Name = "Nickname")]
             public string NickName { get; set; }
 

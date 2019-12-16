@@ -53,7 +53,8 @@ namespace app.Areas.Identity.Pages.Account
             public string Email { get; set; }
 
             [Required]
-            [StringLength(20, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 5)]
+            [StringLength(30, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 5)]
+            [HTMLSanitizerError(ErrorMessage = "Invalid input")]
             [Display(Name = "Nickname")]
             public string NickName { get; set; }
 

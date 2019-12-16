@@ -50,9 +50,10 @@ import { triggerInitRoom } from "./actions/action-room-select";
     $("#reconnect-button").on("click", connection.restart);
 
     $("#sendButton").on("click", function (e) {
-        var message = (<HTMLInputElement> document.getElementById("message-input")).value;
+        var messageElem : any = document.getElementById("message-input");
         const roomId = State.getActiveRoom().id;
-        connection.send(message,roomId);
+        connection.send(messageElem.value,roomId);
+        messageElem.value = "";
     });   
      
 })();

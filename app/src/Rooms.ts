@@ -1,6 +1,5 @@
 
 import { IRoom, IPost } from "./ajaxMethods";
-import { postElement } from "./render/render-posts";
 
 export interface IRoomClass {
     posts: any;
@@ -8,7 +7,6 @@ export interface IRoomClass {
     onActive : (posts) => void;
     addPost : (post : IPost) => void;
     getSortedPostsList : () => any;
-
 }
 
 function RoomClass (name : string, id : number) : IRoomClass {
@@ -32,13 +30,9 @@ function RoomClass (name : string, id : number) : IRoomClass {
         },
         getSortedPostsList() {
             // TODO : show create date
-            var list = "";
-            Object.keys(posts)
+            return Object.keys(posts)
             .sort((a, b) => (posts[a].createDateNumber > posts[b].createDateNumber) ? 1 : -1)
-            .forEach(function(v, i) {
-                list += postElement(posts[v].postUser, posts[v].postBody);
-            });
-            return list;
+            .map((post, i) => [posts[post].postUser, posts[post].postBody]);
         }
     }
 }

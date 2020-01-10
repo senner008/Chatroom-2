@@ -16,8 +16,18 @@ export function renderPost(user, msg) {
 
 export function postElement(user, msg) {
 
-    const msgLines = msg.split("\n").map(line => {
-        return `<p class="post-message">${line}</p>`
+    var decoded = $('<textarea/>').html(msg).text();
+
+    function htmlEnc(s) {
+        return s.replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/'/g, '&#39;')
+          .replace(/"/g, '&#34;');
+      }
+
+    const msgLines = decoded.split("\n").map(line => {
+        return `<p class="post-message">${htmlEnc(line)}</p>`
     }).join("");
 
     return `<div class="post">

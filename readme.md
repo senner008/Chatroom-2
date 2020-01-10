@@ -110,7 +110,7 @@ _context.Posts
       INNER JOIN `AspNetUsers` AS `a` ON `t`.`UserId` = `a`.`Id`
       ORDER BY `t`.`Id` DESC
 ```
-## EF NOTES 2: (Limit before sorting)
+## EF NOTES 2: 
 ```
 _context.Posts
     .Where(post => post.RoomId == id)
